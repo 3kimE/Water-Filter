@@ -168,10 +168,10 @@ export function SiteHeader() {
                 ))}
               </div>
               <a
-                href="tel:0634585463"
+                href="tel:0660781919"
                 className="mt-2 flex items-center gap-2 rounded-xl bg-neutral-100 px-4 py-3 font-medium text-ink"
               >
-                <Phone className="h-4 w-4" /> 0634 585 463
+                <Phone className="h-4 w-4" /> 0660 781 919
               </a>
             </div>
           </div>

@@ -234,7 +234,7 @@ export function ProductView({ product }: { product: Product }) {
             <Banknote className="h-5 w-5" /> {t("common.orderCod")}
           </Button>
           <a
-            href={`https://wa.me/212634585463?text=${encodeURIComponent(
+            href={`https://wa.me/212660781919?text=${encodeURIComponent(
               `${t("product.whatsappMessage")} ${product.name}`,
             )}`}
             target="_blank"

@@ -140,7 +140,7 @@ export default function OrderConfirmationPage() {
       <div className="mx-auto mt-8 flex max-w-2xl flex-wrap justify-center gap-3">
         <Button href="/shop" size="lg">{t("confirmation.continueShopping")}</Button>
         <a
-          href="https://wa.me/212634585463"
+          href="https://wa.me/212660781919"
           target="_blank"
           rel="noopener noreferrer"
           className="flex h-14 items-center justify-center gap-2 rounded-full bg-[#25D366] px-8 font-semibold text-white transition hover:brightness-105"

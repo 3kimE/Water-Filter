@@ -17,8 +17,8 @@ const CONTACTS = [
   {
     icon: Phone,
     titleKey: "contact.info.phone",
-    lines: ["0634 585 463", "0760 629 315"],
-    href: "tel:0634585463",
+    lines: ["0660 781 919", "0664 302 923"],
+    href: "tel:0660781919",
   },
   {
     icon: Mail,
@@ -89,7 +89,7 @@ export default function ContactPage() {
           })}
 
           <a
-            href="https://wa.me/212634585463"
+            href="https://wa.me/212660781919"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-center gap-2 rounded-full bg-[#25D366] px-6 py-4 font-semibold text-white shadow-soft transition hover:brightness-105"

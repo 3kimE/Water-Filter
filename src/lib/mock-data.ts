@@ -3493,7 +3493,7 @@ export const ORDERS: Order[] = [
   {
     "id": "FM-2041",
     "customerName": "Yassine Bennani",
-    "phone": "0634585463",
+    "phone": "0660781919",
     "city": "Casablanca",
     "address": "12 Rue des Fleurs, Maârif",
     "items": [
@@ -3510,7 +3510,7 @@ export const ORDERS: Order[] = [
   {
     "id": "FM-2040",
     "customerName": "Fatima Zahra El Amrani",
-    "phone": "0760629315",
+    "phone": "0664302923",
     "city": "Rabat",
     "address": "45 Avenue Hassan II, Agdal",
     "items": [

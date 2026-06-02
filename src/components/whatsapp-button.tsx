@@ -6,7 +6,7 @@ export async function WhatsappButton() {
   const { t } = await getT();
   return (
     <a
-      href="https://wa.me/212634585463?text=Bonjour%20Filtre%20Maroc,%20j'ai%20une%20question"
+      href="https://wa.me/212660781919?text=Bonjour%20Filtre%20Maroc,%20j'ai%20une%20question"
       target="_blank"
       rel="noopener noreferrer"
       aria-label={t("whatsapp.aria")}

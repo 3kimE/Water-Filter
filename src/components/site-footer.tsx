@@ -27,7 +27,7 @@ const SOCIALS = [
   { Icon: FacebookIcon, href: "https://facebook.com", label: "Facebook" },
   { Icon: InstagramIcon, href: "https://instagram.com", label: "Instagram" },
   { Icon: TiktokIcon, href: "https://tiktok.com", label: "TikTok" },
-  { Icon: MessageCircle, href: "https://wa.me/212634585463", label: "WhatsApp" },
+  { Icon: MessageCircle, href: "https://wa.me/212660781919", label: "WhatsApp" },
 ];
 
 export async function SiteFooter() {
@@ -106,11 +106,11 @@ export async function SiteFooter() {
           <ul className="mt-4 space-y-3 text-sm">
             <li className="flex items-center gap-2">
               <Phone className="h-4 w-4 text-brand-500" />
-              <a href="tel:0634585463" className="text-ink-soft hover:text-ink">0634 585 463</a>
+              <a href="tel:0660781919" className="text-ink-soft hover:text-ink">0660 781 919</a>
             </li>
             <li className="flex items-center gap-2">
               <Phone className="h-4 w-4 text-brand-500" />
-              <a href="tel:0760629315" className="text-ink-soft hover:text-ink">0760 629 315</a>
+              <a href="tel:0664302923" className="text-ink-soft hover:text-ink">0664 302 923</a>
             </li>
             <li className="flex items-center gap-2">
               <Mail className="h-4 w-4 text-brand-500" />
@@ -120,7 +120,7 @@ export async function SiteFooter() {
             </li>
           </ul>
           <a
-            href="https://wa.me/212634585463"
+            href="https://wa.me/212660781919"
             className="mt-5 inline-flex items-center gap-2 rounded-full bg-[#25D366] px-5 py-2.5 text-sm font-semibold text-white transition hover:brightness-105"
           >
             <MessageCircle className="h-4 w-4" /> {t("footer.orderWhatsapp")}
