@@ -11,7 +11,7 @@ import {
   Banknote,
 } from "lucide-react";
 import { useCart } from "@/context/cart-context";
-import { ProductImage } from "@/components/product-image";
+import { ProductPhoto } from "@/components/product-photo";
 import { Button } from "@/components/ui/button";
 import { formatMAD } from "@/lib/utils";
 
@@ -61,12 +61,16 @@ export default function CartPage() {
               key={item.productId + (item.variantLabel ?? "")}
               className="flex gap-4 rounded-card border border-brand-100 bg-white p-4 shadow-soft"
             >
-              <Link href={`/product/${item.slug}`} className="shrink-0">
-                <ProductImage
-                  name={item.name}
+              <Link
+                href={`/product/${item.slug}`}
+                className="relative h-24 w-24 shrink-0 overflow-hidden rounded-2xl border border-brand-100 bg-white"
+              >
+                <ProductPhoto
+                  src={item.image}
+                  alt={item.name}
                   hue={item.hue}
-                  showName={false}
-                  className="h-24 w-24 rounded-2xl"
+                  sizes="96px"
+                  className="p-1.5"
                 />
               </Link>
               <div className="flex flex-1 flex-col">
@@ -74,7 +78,8 @@ export default function CartPage() {
                   <div>
                     <Link
                       href={`/product/${item.slug}`}
-                      className="font-display font-semibold text-ink hover:text-brand-600"
+                      dir="auto"
+                      className="block font-display font-semibold text-ink hover:text-brand-600"
                     >
                       {item.name}
                     </Link>

@@ -64,7 +64,9 @@ export default async function ProductPage({
       <div className="mt-14 grid gap-10 lg:grid-cols-[1fr_20rem]">
         <div>
           <h2 className="font-display text-2xl font-bold text-ink">Description</h2>
-          <p className="mt-4 leading-relaxed text-ink-soft">{product.description}</p>
+          <p dir="auto" className="mt-4 whitespace-pre-line leading-relaxed text-ink-soft">
+            {product.description}
+          </p>
         </div>
         <div>
           <h2 className="font-display text-2xl font-bold text-ink">Caractéristiques</h2>
@@ -121,7 +123,7 @@ export default async function ProductPage({
           </div>
         ) : (
           <p className="mt-4 text-ink-soft">
-            Aucun avis pour le moment. Soyez le premier à donner votre avis !
+            Les avis détaillés de nos clients seront bientôt affichés ici.
           </p>
         )}
       </div>

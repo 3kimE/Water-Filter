@@ -14,7 +14,7 @@ import {
   CircleCheck,
 } from "lucide-react";
 import type { Product } from "@/lib/types";
-import { ProductImage } from "./product-image";
+import { ProductPhoto } from "./product-photo";
 import { StarRating } from "./star-rating";
 import { Badge, toneForBadge } from "./ui/badge";
 import { Button } from "./ui/button";
@@ -31,6 +31,7 @@ export function ProductView({ product }: { product: Product }) {
 
   const unitPrice = product.price + (variant?.priceDelta ?? 0);
   const off = discountPercent(product.price, product.oldPrice);
+  const images = product.images;
 
   function add() {
     addItem(
@@ -40,6 +41,7 @@ export function ProductView({ product }: { product: Product }) {
         name: product.name,
         price: unitPrice,
         hue: product.hue,
+        image: product.images[0],
         variantLabel: variant?.label,
       },
       qty,
@@ -61,35 +63,40 @@ export function ProductView({ product }: { product: Product }) {
     <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
       {/* Gallery */}
       <div>
-        <div className="overflow-hidden rounded-card border border-brand-100 shadow-soft">
-          <ProductImage
-            name={product.name}
+        <div className="relative aspect-square overflow-hidden rounded-card border border-brand-100 bg-white shadow-soft">
+          <ProductPhoto
+            src={images[activeImg] ?? images[0]}
+            alt={product.name}
             hue={product.hue}
-            variant={activeImg}
-            showName={false}
-            className="aspect-square w-full"
+            sizes="(max-width: 1024px) 100vw, 45vw"
+            priority
+            className="p-4"
           />
         </div>
-        <div className="mt-4 grid grid-cols-4 gap-3">
-          {[0, 1, 2, 3].map((i) => (
-            <button
-              key={i}
-              onClick={() => setActiveImg(i)}
-              className={cn(
-                "overflow-hidden rounded-2xl border-2 transition-all",
-                activeImg === i ? "border-brand-500" : "border-transparent opacity-70 hover:opacity-100",
-              )}
-            >
-              <ProductImage
-                name={product.name}
-                hue={product.hue}
-                variant={i}
-                showName={false}
-                className="aspect-square w-full"
-              />
-            </button>
-          ))}
-        </div>
+        {images.length > 1 && (
+          <div className="mt-4 grid grid-cols-4 gap-3 sm:grid-cols-5">
+            {images.slice(0, 10).map((src, i) => (
+              <button
+                key={i}
+                onClick={() => setActiveImg(i)}
+                className={cn(
+                  "relative aspect-square overflow-hidden rounded-2xl border-2 bg-white transition-all",
+                  activeImg === i
+                    ? "border-brand-500"
+                    : "border-transparent opacity-70 hover:opacity-100",
+                )}
+              >
+                <ProductPhoto
+                  src={src}
+                  alt={`${product.name} ${i + 1}`}
+                  hue={product.hue}
+                  sizes="120px"
+                  className="p-1"
+                />
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Info */}
@@ -105,7 +112,10 @@ export function ProductView({ product }: { product: Product }) {
           )}
         </div>
 
-        <h1 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
+        <h1
+          dir="auto"
+          className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl"
+        >
           {product.name}
         </h1>
 
@@ -115,7 +125,9 @@ export function ProductView({ product }: { product: Product }) {
           <span className="text-ink-soft">· {product.reviewCount} avis</span>
         </div>
 
-        <p className="mt-4 text-ink-soft">{product.shortDescription}</p>
+        <p dir="auto" className="mt-4 text-ink-soft">
+          {product.shortDescription}
+        </p>
 
         {/* Price */}
         <div className="mt-5 flex items-end gap-3">
@@ -250,7 +262,7 @@ export function ProductView({ product }: { product: Product }) {
         {product.features.length > 0 && (
           <ul className="mt-6 grid gap-2 sm:grid-cols-2">
             {product.features.map((f) => (
-              <li key={f} className="flex items-start gap-2 text-sm text-ink">
+              <li key={f} dir="auto" className="flex items-start gap-2 text-sm text-ink">
                 <Check className="mt-0.5 h-4 w-4 shrink-0 text-brand-500" />
                 {f}
               </li>

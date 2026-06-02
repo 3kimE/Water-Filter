@@ -15,11 +15,37 @@ import { ProductCard } from "@/components/product-card";
 import { CategoryIcon } from "@/components/category-icon";
 import { StarRating } from "@/components/star-rating";
 import { Badge } from "@/components/ui/badge";
-import {
-  CATEGORIES,
-  PRODUCTS,
-  getBestSellers,
-} from "@/lib/mock-data";
+import { CATEGORIES, getBestSellers } from "@/lib/mock-data";
+
+const TESTIMONIALS = [
+  {
+    id: "t1",
+    author: "Yassine B.",
+    city: "Casablanca",
+    rating: 5,
+    title: "Eau excellente",
+    body: "Installé en 1h, l'eau a un goût parfait. Toute la famille boit plus d'eau maintenant.",
+    product: "Filtre de cuisine",
+  },
+  {
+    id: "t2",
+    author: "Fatima Z.",
+    city: "Rabat",
+    rating: 5,
+    title: "Service au top",
+    body: "Livraison rapide et le centre d'appel m'a très bien expliqué. Très satisfaite.",
+    product: "Osmoseur 6 étapes",
+  },
+  {
+    id: "t3",
+    author: "Café Atlas",
+    city: "Marrakech",
+    rating: 5,
+    title: "Parfait pour notre café",
+    body: "Débit largement suffisant pour le service. Installation professionnelle et rapide.",
+    product: "Système 400 GPD",
+  },
+];
 
 const COD_STEPS = [
   {
@@ -46,9 +72,6 @@ const COD_STEPS = [
 
 export default function HomePage() {
   const bestSellers = getBestSellers();
-  const reviews = PRODUCTS.flatMap((p) =>
-    p.reviews.map((r) => ({ ...r, product: p.name })),
-  ).slice(0, 3);
 
   return (
     <>
@@ -246,7 +269,7 @@ export default function HomePage() {
           </div>
         </div>
         <div className="grid gap-6 md:grid-cols-3">
-          {reviews.map((r) => (
+          {TESTIMONIALS.map((r) => (
             <div key={r.id} className="rounded-card border border-brand-100 bg-white p-6 shadow-soft">
               <StarRating value={r.rating} size={16} />
               <h3 className="mt-3 font-display font-semibold text-ink">

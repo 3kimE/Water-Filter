@@ -15,6 +15,7 @@ export type Category = {
 
 export type CategoryIcon =
   | "kitchen"
+  | "home"
   | "fountain"
   | "industrial"
   | "cartridge"
@@ -57,7 +58,8 @@ export type Product = {
   inStock: boolean;
   stock: number;
   bestSeller?: boolean;
-  hue: number; // 0..360, drives the product visual gradient
+  hue: number; // 0..360, fallback visual gradient when no photo
+  images: string[]; // real product photo URLs (Shopify CDN for now)
   features: string[];
   specs: Spec[];
   variants?: ProductVariant[];
@@ -70,6 +72,7 @@ export type CartItem = {
   name: string;
   price: number;
   hue: number;
+  image?: string;
   qty: number;
   variantLabel?: string;
 };

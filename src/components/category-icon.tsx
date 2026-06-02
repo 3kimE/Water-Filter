@@ -1,8 +1,9 @@
-import { GlassWater, CupSoda, Factory, Filter, Wrench } from "lucide-react";
+import { GlassWater, House, CupSoda, Factory, Filter, Wrench } from "lucide-react";
 import type { CategoryIcon as IconName } from "@/lib/types";
 
 const MAP = {
   kitchen: GlassWater,
+  home: House,
   fountain: CupSoda,
   industrial: Factory,
   cartridge: Filter,

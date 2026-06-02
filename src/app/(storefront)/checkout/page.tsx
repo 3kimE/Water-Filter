@@ -15,7 +15,7 @@ import {
   Lock,
 } from "lucide-react";
 import { useCart } from "@/context/cart-context";
-import { ProductImage } from "@/components/product-image";
+import { ProductPhoto } from "@/components/product-photo";
 import { MOROCCAN_CITIES } from "@/lib/mock-data";
 import { formatMAD } from "@/lib/utils";
 
@@ -254,19 +254,22 @@ export default function CheckoutPage() {
                   key={item.productId + (item.variantLabel ?? "")}
                   className="flex items-center gap-3"
                 >
-                  <div className="relative">
-                    <ProductImage
-                      name={item.name}
-                      hue={item.hue}
-                      showName={false}
-                      className="h-14 w-14 rounded-xl"
-                    />
+                  <div className="relative shrink-0">
+                    <div className="relative h-14 w-14 overflow-hidden rounded-xl border border-brand-100 bg-white">
+                      <ProductPhoto
+                        src={item.image}
+                        alt={item.name}
+                        hue={item.hue}
+                        sizes="56px"
+                        className="p-1"
+                      />
+                    </div>
                     <span className="absolute -right-1.5 -top-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-brand-700 px-1 text-xs font-bold text-white">
                       {item.qty}
                     </span>
                   </div>
                   <div className="flex-1 text-sm">
-                    <p className="font-medium text-ink">{item.name}</p>
+                    <p dir="auto" className="font-medium text-ink">{item.name}</p>
                     {item.variantLabel && (
                       <p className="text-xs text-ink-soft">{item.variantLabel}</p>
                     )}

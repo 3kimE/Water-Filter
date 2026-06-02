@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { ShoppingCart, Check } from "lucide-react";
 import type { Product } from "@/lib/types";
-import { ProductImage } from "./product-image";
+import { ProductPhoto } from "./product-photo";
 import { Badge, toneForBadge } from "./ui/badge";
 import { StarRating } from "./star-rating";
 import { useCart } from "@/context/cart-context";
@@ -24,6 +24,7 @@ export function ProductCard({ product }: { product: Product }) {
       name: product.name,
       price: product.price,
       hue: product.hue,
+      image: product.images[0],
     });
     setAdded(true);
     setTimeout(() => setAdded(false), 1500);
@@ -34,14 +35,15 @@ export function ProductCard({ product }: { product: Product }) {
       href={`/product/${product.slug}`}
       className="group flex flex-col overflow-hidden rounded-card border border-brand-100 bg-white shadow-soft transition-all duration-300 hover:-translate-y-1.5 hover:shadow-glow"
     >
-      <div className="relative aspect-square overflow-hidden">
-        <ProductImage
-          name={product.name}
+      <div className="relative aspect-square overflow-hidden bg-white">
+        <ProductPhoto
+          src={product.images[0]}
+          alt={product.name}
           hue={product.hue}
-          className="h-full w-full transition-transform duration-500 group-hover:scale-105"
-          showName={false}
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+          className="p-3 transition-transform duration-500 group-hover:scale-105"
         />
-        <div className="absolute left-3 top-3 flex flex-col gap-1.5">
+        <div className="absolute left-3 top-3 z-10 flex flex-col gap-1.5">
           {product.badges.map((b) => (
             <Badge key={b} tone={toneForBadge(b)}>
               {b}
@@ -58,7 +60,10 @@ export function ProductCard({ product }: { product: Product }) {
             {product.capacity ? ` · ${product.capacity}` : ""}
           </span>
         )}
-        <h3 className="line-clamp-2 font-display text-base font-semibold text-ink group-hover:text-brand-600">
+        <h3
+          dir="auto"
+          className="line-clamp-2 font-display text-base font-semibold text-ink group-hover:text-brand-600"
+        >
           {product.name}
         </h3>
 

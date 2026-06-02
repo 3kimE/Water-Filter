@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Plus, Search, Pencil, Trash2 } from "lucide-react";
 import { PRODUCTS, getCategoryBySlug } from "@/lib/mock-data";
-import { ProductImage } from "@/components/product-image";
+import { ProductPhoto } from "@/components/product-photo";
 import { formatMAD } from "@/lib/utils";
 
 export default function AdminProductsPage() {
@@ -56,14 +56,17 @@ export default function AdminProductsPage() {
                   >
                     <td className="px-5 py-3">
                       <div className="flex items-center gap-3">
-                        <ProductImage
-                          name={p.name}
-                          hue={p.hue}
-                          showName={false}
-                          className="h-11 w-11 rounded-xl"
-                        />
-                        <div>
-                          <p className="font-medium text-ink">{p.name}</p>
+                        <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-xl border border-slate-200 bg-white">
+                          <ProductPhoto
+                            src={p.images[0]}
+                            alt={p.name}
+                            hue={p.hue}
+                            sizes="44px"
+                            className="p-0.5"
+                          />
+                        </div>
+                        <div className="min-w-0">
+                          <p dir="auto" className="line-clamp-1 font-medium text-ink">{p.name}</p>
                           <p className="text-xs text-ink-soft">
                             {p.stages ? `${p.stages} étapes` : p.capacity ?? "—"}
                           </p>
