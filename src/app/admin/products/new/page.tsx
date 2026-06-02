@@ -296,7 +296,7 @@ export default function NewProductPage() {
           {/* Live preview */}
           <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
             <h2 className="mb-3 font-display font-bold text-ink">Aperçu boutique</h2>
-            <div className="overflow-hidden rounded-card border border-brand-100">
+            <div className="overflow-hidden rounded-card border border-line">
               <div className="relative aspect-square">
                 {image ? (
                   // eslint-disable-next-line @next/next/no-img-element

@@ -43,11 +43,11 @@ export default function ContactPage() {
   }
 
   const input =
-    "h-12 w-full rounded-xl border border-brand-100 bg-white px-4 text-sm outline-none transition-all focus:border-brand-300 focus:ring-4 focus:ring-brand-100";
+    "h-12 w-full rounded-xl border border-line bg-white px-4 text-sm outline-none transition-all focus:border-brand-300 focus:ring-4 focus:ring-brand-100";
 
   return (
     <>
-      <section className="hero-water border-b border-brand-100">
+      <section className="hero-water border-b border-line">
         <div className="container-page py-14 text-center">
           <h1 className="font-display text-4xl font-extrabold text-ink sm:text-5xl">
             {t("contact.hero.title")}
@@ -66,7 +66,7 @@ export default function ContactPage() {
             return (
               <div
                 key={c.titleKey}
-                className="flex items-start gap-4 rounded-card border border-brand-100 bg-white p-5 shadow-soft"
+                className="flex items-start gap-4 rounded-card border border-line bg-white p-5 shadow-soft"
               >
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-brand-50 text-brand-600">
                   <c.icon className="h-6 w-6" />
@@ -103,7 +103,7 @@ export default function ContactPage() {
         </div>
 
         {/* Form */}
-        <div className="rounded-card border border-brand-100 bg-white p-6 shadow-soft sm:p-8">
+        <div className="rounded-card border border-line bg-white p-6 shadow-soft sm:p-8">
           {sent ? (
             <div className="flex h-full flex-col items-center justify-center py-12 text-center">
               <div className="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
@@ -158,7 +158,7 @@ export default function ContactPage() {
                   value={form.message}
                   onChange={(e) => setForm({ ...form, message: e.target.value })}
                   rows={5}
-                  className="w-full rounded-xl border border-brand-100 bg-white px-4 py-3 text-sm outline-none transition-all focus:border-brand-300 focus:ring-4 focus:ring-brand-100"
+                  className="w-full rounded-xl border border-line bg-white px-4 py-3 text-sm outline-none transition-all focus:border-brand-300 focus:ring-4 focus:ring-brand-100"
                   placeholder={t("contact.form.messagePlaceholder")}
                 />
               </div>

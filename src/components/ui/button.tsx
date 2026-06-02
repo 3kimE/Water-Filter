@@ -11,24 +11,21 @@ type Variant =
 type Size = "sm" | "md" | "lg";
 
 const base =
-  "inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all duration-200 focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-200 disabled:opacity-50 disabled:pointer-events-none whitespace-nowrap";
+  "inline-flex items-center justify-center gap-2 rounded-full font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none whitespace-nowrap";
 
 const variants: Record<Variant, string> = {
-  primary:
-    "bg-brand-500 text-white shadow-[var(--shadow-glow)] hover:bg-brand-600 hover:-translate-y-0.5 active:translate-y-0",
-  secondary: "bg-brand-50 text-brand-700 hover:bg-brand-100",
-  outline:
-    "border-2 border-brand-200 text-brand-700 hover:border-brand-400 hover:bg-brand-50",
-  ghost: "text-brand-700 hover:bg-brand-50",
-  whatsapp:
-    "bg-[#25D366] text-white shadow-[0_10px_30px_-12px_rgba(37,211,102,0.6)] hover:brightness-105 hover:-translate-y-0.5",
-  dark: "bg-ink text-white hover:bg-brand-900 hover:-translate-y-0.5",
+  primary: "bg-brand-600 text-white hover:bg-brand-700 active:bg-brand-800",
+  secondary: "bg-neutral-100 text-ink hover:bg-neutral-200",
+  outline: "border border-line text-ink hover:bg-neutral-50",
+  ghost: "text-ink hover:bg-neutral-100",
+  whatsapp: "bg-[#25D366] text-white hover:brightness-105",
+  dark: "bg-ink text-white hover:bg-neutral-800",
 };
 
 const sizes: Record<Size, string> = {
   sm: "h-9 px-4 text-sm",
   md: "h-11 px-6 text-sm",
-  lg: "h-14 px-8 text-base",
+  lg: "h-13 px-8 text-base",
 };
 
 type BaseProps = {

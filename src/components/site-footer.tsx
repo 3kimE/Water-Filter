@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import {
   Phone,
   Mail,
@@ -24,21 +23,28 @@ const TRUST = [
   { icon: Headphones, titleKey: "footer.trust.support.title", textKey: "footer.trust.support.text" },
 ];
 
+const SOCIALS = [
+  { Icon: FacebookIcon, href: "https://facebook.com", label: "Facebook" },
+  { Icon: InstagramIcon, href: "https://instagram.com", label: "Instagram" },
+  { Icon: TiktokIcon, href: "https://tiktok.com", label: "TikTok" },
+  { Icon: MessageCircle, href: "https://wa.me/212634585463", label: "WhatsApp" },
+];
+
 export async function SiteFooter() {
   const { t } = await getT();
   return (
-    <footer className="mt-20 bg-brand-950 text-brand-100">
+    <footer className="mt-24 border-t border-line bg-neutral-50 text-ink-soft">
       {/* Trust strip */}
-      <div className="border-b border-white/10">
+      <div className="border-b border-line">
         <div className="container-page grid grid-cols-2 gap-6 py-10 lg:grid-cols-4">
           {TRUST.map((item) => (
             <div key={item.titleKey} className="flex items-start gap-3">
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white/10 text-aqua-300">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-line bg-white text-brand-600">
                 <item.icon className="h-5 w-5" />
               </div>
               <div>
-                <p className="font-display font-semibold text-white">{t(item.titleKey)}</p>
-                <p className="text-sm text-brand-200">{t(item.textKey)}</p>
+                <p className="font-display text-sm font-semibold text-ink">{t(item.titleKey)}</p>
+                <p className="text-sm text-ink-soft">{t(item.textKey)}</p>
               </div>
             </div>
           ))}
@@ -48,61 +54,34 @@ export async function SiteFooter() {
       {/* Main footer */}
       <div className="container-page grid gap-10 py-14 md:grid-cols-2 lg:grid-cols-4">
         <div>
-          <div className="flex items-center gap-2.5">
-            <Image
-              src="/logo.jpeg"
-              alt="Filtre Maroc"
-              width={44}
-              height={44}
-              className="h-11 w-11 rounded-full object-cover"
-            />
-            <span className="font-display text-lg font-extrabold text-white">
-              Filtre<span className="text-aqua-400">Maroc</span>
-            </span>
-          </div>
-          <p className="mt-4 text-sm leading-relaxed text-brand-200">
+          <span className="font-display text-xl font-extrabold tracking-tight text-ink">
+            Filtre<span className="text-brand-600">Maroc</span>
+          </span>
+          <p className="mt-4 max-w-xs text-sm leading-relaxed text-ink-soft">
             {t("footer.blurb")}
           </p>
-          <div className="mt-5 flex gap-3">
-            <a
-              href="https://facebook.com"
-              aria-label="Facebook"
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 transition-colors hover:bg-white/20"
-            >
-              <FacebookIcon className="h-5 w-5" />
-            </a>
-            <a
-              href="https://instagram.com"
-              aria-label="Instagram"
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 transition-colors hover:bg-white/20"
-            >
-              <InstagramIcon className="h-5 w-5" />
-            </a>
-            <a
-              href="https://tiktok.com"
-              aria-label="TikTok"
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 transition-colors hover:bg-white/20"
-            >
-              <TiktokIcon className="h-5 w-5" />
-            </a>
-            <a
-              href="https://wa.me/212634585463"
-              aria-label="WhatsApp"
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 transition-colors hover:bg-white/20"
-            >
-              <MessageCircle className="h-5 w-5" />
-            </a>
+          <div className="mt-5 flex gap-2.5">
+            {SOCIALS.map((s) => (
+              <a
+                key={s.label}
+                href={s.href}
+                aria-label={s.label}
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-line bg-white text-ink-soft transition-colors hover:border-neutral-300 hover:text-ink"
+              >
+                <s.Icon className="h-4 w-4" />
+              </a>
+            ))}
           </div>
         </div>
 
         <div>
-          <h4 className="font-display font-semibold text-white">{t("footer.categories")}</h4>
+          <h4 className="font-display text-sm font-semibold text-ink">{t("footer.categories")}</h4>
           <ul className="mt-4 space-y-2.5 text-sm">
             {CATEGORIES.map((c) => (
               <li key={c.slug}>
                 <Link
                   href={`/shop?cat=${c.slug}`}
-                  className="text-brand-200 transition-colors hover:text-white"
+                  className="text-ink-soft transition-colors hover:text-ink"
                 >
                   {t(`cat.${c.slug}.name`)}
                 </Link>
@@ -112,30 +91,30 @@ export async function SiteFooter() {
         </div>
 
         <div>
-          <h4 className="font-display font-semibold text-white">{t("footer.info")}</h4>
+          <h4 className="font-display text-sm font-semibold text-ink">{t("footer.info")}</h4>
           <ul className="mt-4 space-y-2.5 text-sm">
-            <li><Link href="/about" className="text-brand-200 hover:text-white">{t("nav.about")}</Link></li>
-            <li><Link href="/contact" className="text-brand-200 hover:text-white">{t("nav.contact")}</Link></li>
-            <li><Link href="/shop" className="text-brand-200 hover:text-white">{t("nav.shop")}</Link></li>
-            <li><span className="text-brand-200">{t("footer.info.deliveryPayment")}</span></li>
-            <li><span className="text-brand-200">{t("footer.info.warrantyReturns")}</span></li>
+            <li><Link href="/about" className="text-ink-soft hover:text-ink">{t("nav.about")}</Link></li>
+            <li><Link href="/contact" className="text-ink-soft hover:text-ink">{t("nav.contact")}</Link></li>
+            <li><Link href="/shop" className="text-ink-soft hover:text-ink">{t("nav.shop")}</Link></li>
+            <li><span className="text-ink-soft">{t("footer.info.deliveryPayment")}</span></li>
+            <li><span className="text-ink-soft">{t("footer.info.warrantyReturns")}</span></li>
           </ul>
         </div>
 
         <div>
-          <h4 className="font-display font-semibold text-white">{t("footer.contact")}</h4>
+          <h4 className="font-display text-sm font-semibold text-ink">{t("footer.contact")}</h4>
           <ul className="mt-4 space-y-3 text-sm">
             <li className="flex items-center gap-2">
-              <Phone className="h-4 w-4 text-aqua-300" />
-              <a href="tel:0634585463" className="text-brand-100 hover:text-white">0634 585 463</a>
+              <Phone className="h-4 w-4 text-brand-500" />
+              <a href="tel:0634585463" className="text-ink-soft hover:text-ink">0634 585 463</a>
             </li>
             <li className="flex items-center gap-2">
-              <Phone className="h-4 w-4 text-aqua-300" />
-              <a href="tel:0760629315" className="text-brand-100 hover:text-white">0760 629 315</a>
+              <Phone className="h-4 w-4 text-brand-500" />
+              <a href="tel:0760629315" className="text-ink-soft hover:text-ink">0760 629 315</a>
             </li>
             <li className="flex items-center gap-2">
-              <Mail className="h-4 w-4 text-aqua-300" />
-              <a href="mailto:filter.water.maoc@gmail.com" className="break-all text-brand-100 hover:text-white">
+              <Mail className="h-4 w-4 text-brand-500" />
+              <a href="mailto:filter.water.maoc@gmail.com" className="break-all text-ink-soft hover:text-ink">
                 filter.water.maoc@gmail.com
               </a>
             </li>
@@ -150,8 +129,8 @@ export async function SiteFooter() {
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-white/10">
-        <div className="container-page flex flex-col items-center justify-between gap-2 py-5 text-xs text-brand-300 sm:flex-row">
+      <div className="border-t border-line">
+        <div className="container-page flex flex-col items-center justify-between gap-2 py-5 text-xs text-ink-soft sm:flex-row">
           <p>{t("footer.copyright")}</p>
           <p>{t("footer.codLine")}</p>
         </div>

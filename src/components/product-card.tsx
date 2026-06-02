@@ -36,7 +36,7 @@ export function ProductCard({ product }: { product: Product }) {
   return (
     <Link
       href={`/product/${product.slug}`}
-      className="group flex flex-col overflow-hidden rounded-card border border-brand-100 bg-white shadow-soft transition-all duration-300 hover:-translate-y-1.5 hover:shadow-glow"
+      className="group flex flex-col overflow-hidden rounded-card border border-line bg-white transition-all duration-300 hover:border-neutral-300 hover:shadow-soft"
     >
       <div className="relative aspect-square overflow-hidden bg-white">
         <ProductPhoto
@@ -58,14 +58,14 @@ export function ProductCard({ product }: { product: Product }) {
 
       <div className="flex flex-1 flex-col p-4">
         {product.stages && (
-          <span className="mb-1 text-xs font-semibold uppercase tracking-wide text-brand-400">
+          <span className="mb-1 text-xs font-medium text-ink-soft">
             {t("product.stagesShort", { n: product.stages })}
             {product.capacity ? ` · ${product.capacity}` : ""}
           </span>
         )}
         <h3
           dir="auto"
-          className="line-clamp-2 font-display text-base font-semibold text-ink group-hover:text-brand-600"
+          className="line-clamp-2 font-display text-[15px] font-semibold text-ink"
         >
           {product.name}
         </h3>
@@ -77,7 +77,7 @@ export function ProductCard({ product }: { product: Product }) {
 
         <div className="mt-auto flex items-end justify-between pt-3">
           <div className="leading-tight">
-            <div className="text-lg font-bold text-brand-700">
+            <div className="text-lg font-semibold text-ink">
               {formatMAD(product.price)}
             </div>
             {product.oldPrice && (
@@ -91,8 +91,8 @@ export function ProductCard({ product }: { product: Product }) {
             onClick={handleAdd}
             aria-label={t("common.addToCart")}
             className={cn(
-              "flex h-11 w-11 items-center justify-center rounded-full text-white shadow-md transition-all active:scale-90",
-              added ? "bg-emerald-500" : "bg-brand-500 hover:bg-brand-600",
+              "flex h-10 w-10 items-center justify-center rounded-full text-white transition-all active:scale-90",
+              added ? "bg-emerald-500" : "bg-brand-600 hover:bg-brand-700",
             )}
           >
             {added ? (

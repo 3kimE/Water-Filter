@@ -47,7 +47,7 @@ export default async function AboutPage() {
 
       {/* Stats */}
       <section className="container-page -mt-8">
-        <div className="grid grid-cols-2 gap-4 rounded-card border border-brand-100 bg-white p-6 shadow-soft sm:grid-cols-4">
+        <div className="grid grid-cols-2 gap-4 rounded-card border border-line bg-white p-6 shadow-soft sm:grid-cols-4">
           {STATS.map((s) => (
             <div key={s.labelKey} className="text-center">
               <p className="font-display text-3xl font-extrabold text-brand-600">{s.value}</p>

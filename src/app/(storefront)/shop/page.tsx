@@ -61,7 +61,7 @@ export default async function ShopPage({
   return (
     <>
       {/* Page header */}
-      <div className="hero-water border-b border-brand-100">
+      <div className="hero-water border-b border-line">
         <div className="container-page py-10">
           <nav className="text-sm text-ink-soft">
             <Link href="/" className="hover:text-brand-600">{t("nav.home")}</Link>
@@ -96,7 +96,7 @@ export default async function ShopPage({
               className={`flex shrink-0 items-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-medium transition-colors ${
                 !cat
                   ? "border-brand-500 bg-brand-500 text-white"
-                  : "border-brand-100 bg-white text-ink hover:border-brand-200 hover:bg-brand-50"
+                  : "border-line bg-white text-ink hover:border-line hover:bg-brand-50"
               }`}
             >
               {t("shop.allProducts")}
@@ -110,7 +110,7 @@ export default async function ShopPage({
                   className={`flex shrink-0 items-center gap-2.5 rounded-xl border px-4 py-2.5 text-sm font-medium transition-colors ${
                     active
                       ? "border-brand-500 bg-brand-500 text-white"
-                      : "border-brand-100 bg-white text-ink hover:border-brand-200 hover:bg-brand-50"
+                      : "border-line bg-white text-ink hover:border-line hover:bg-brand-50"
                   }`}
                 >
                   <CategoryIcon name={c.icon} className="h-4 w-4" />
@@ -152,7 +152,7 @@ export default async function ShopPage({
               ))}
             </div>
           ) : (
-            <div className="rounded-card border border-dashed border-brand-200 bg-brand-50/50 py-20 text-center">
+            <div className="rounded-card border border-dashed border-line bg-brand-50/50 py-20 text-center">
               <PackageSearch className="mx-auto h-12 w-12 text-brand-300" />
               <p className="mt-4 font-display text-lg font-semibold text-ink">
                 {t("shop.empty.title")}

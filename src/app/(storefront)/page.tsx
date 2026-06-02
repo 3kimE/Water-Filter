@@ -170,7 +170,7 @@ export default async function HomePage() {
             <Link
               key={c.slug}
               href={`/shop?cat=${c.slug}`}
-              className="group flex flex-col items-center rounded-card border border-brand-100 bg-white p-6 text-center shadow-soft transition-all hover:-translate-y-1 hover:border-brand-200 hover:shadow-glow"
+              className="group flex flex-col items-center rounded-card border border-line bg-white p-6 text-center transition-all hover:border-neutral-300 hover:shadow-soft"
             >
               <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-brand-50 text-brand-500 transition-colors group-hover:bg-brand-500 group-hover:text-white">
                 <CategoryIcon name={c.icon} className="h-8 w-8" />
@@ -275,7 +275,7 @@ export default async function HomePage() {
         </div>
         <div className="grid gap-6 md:grid-cols-3">
           {TESTIMONIALS.map((r) => (
-            <div key={r.id} className="rounded-card border border-brand-100 bg-white p-6 shadow-soft">
+            <div key={r.id} className="rounded-card border border-line bg-white p-6 shadow-soft">
               <StarRating value={r.rating} size={16} />
               <h3 className="mt-3 font-display font-semibold text-ink">
                 {r.title}
@@ -283,7 +283,7 @@ export default async function HomePage() {
               <p className="mt-2 text-sm leading-relaxed text-ink-soft">
                 “{r.body}”
               </p>
-              <div className="mt-4 flex items-center gap-3 border-t border-brand-100 pt-4">
+              <div className="mt-4 flex items-center gap-3 border-t border-line pt-4">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-100 font-bold text-brand-700">
                   {r.author.charAt(0)}
                 </div>

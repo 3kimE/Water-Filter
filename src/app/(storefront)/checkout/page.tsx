@@ -116,7 +116,7 @@ export default function CheckoutPage() {
         className="mt-8 grid gap-8 lg:grid-cols-[1fr_22rem]"
       >
         {/* Form */}
-        <div className="rounded-card border border-brand-100 bg-white p-6 shadow-soft sm:p-8">
+        <div className="rounded-card border border-line bg-white p-6 shadow-soft sm:p-8">
           <h2 className="flex items-center gap-2 font-display text-lg font-bold text-ink">
             <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-500 text-sm text-white">
               1
@@ -136,7 +136,7 @@ export default function CheckoutPage() {
                   value={form.name}
                   onChange={(e) => set("name", e.target.value)}
                   placeholder={t("checkout.field.name.placeholder")}
-                  className={`${inputBase} ${errors.name ? "border-rose-400" : "border-brand-100 focus:border-brand-300"}`}
+                  className={`${inputBase} ${errors.name ? "border-rose-400" : "border-line focus:border-brand-300"}`}
                 />
               </div>
               {errors.name && <p className="mt-1 text-xs text-rose-500">{errors.name}</p>}
@@ -154,7 +154,7 @@ export default function CheckoutPage() {
                   onChange={(e) => set("phone", e.target.value)}
                   inputMode="tel"
                   placeholder="0612345678"
-                  className={`${inputBase} ${errors.phone ? "border-rose-400" : "border-brand-100 focus:border-brand-300"}`}
+                  className={`${inputBase} ${errors.phone ? "border-rose-400" : "border-line focus:border-brand-300"}`}
                 />
               </div>
               {errors.phone ? (
@@ -176,7 +176,7 @@ export default function CheckoutPage() {
                 <select
                   value={form.city}
                   onChange={(e) => set("city", e.target.value)}
-                  className={`${inputBase} appearance-none ${errors.city ? "border-rose-400" : "border-brand-100 focus:border-brand-300"}`}
+                  className={`${inputBase} appearance-none ${errors.city ? "border-rose-400" : "border-line focus:border-brand-300"}`}
                 >
                   <option value="">{t("checkout.field.city.placeholder")}</option>
                   {MOROCCAN_CITIES.map((c) => (
@@ -199,7 +199,7 @@ export default function CheckoutPage() {
                   onChange={(e) => set("address", e.target.value)}
                   rows={3}
                   placeholder={t("checkout.field.address.placeholder")}
-                  className={`w-full rounded-xl border bg-white py-3 ps-11 pe-4 text-sm outline-none transition-all focus:ring-4 focus:ring-brand-100 ${errors.address ? "border-rose-400" : "border-brand-100 focus:border-brand-300"}`}
+                  className={`w-full rounded-xl border bg-white py-3 ps-11 pe-4 text-sm outline-none transition-all focus:ring-4 focus:ring-brand-100 ${errors.address ? "border-rose-400" : "border-line focus:border-brand-300"}`}
                 />
               </div>
               {errors.address && (
@@ -219,7 +219,7 @@ export default function CheckoutPage() {
                   onChange={(e) => set("note", e.target.value)}
                   rows={2}
                   placeholder={t("checkout.field.note.placeholder")}
-                  className="w-full rounded-xl border border-brand-100 bg-white py-3 ps-11 pe-4 text-sm outline-none transition-all focus:border-brand-300 focus:ring-4 focus:ring-brand-100"
+                  className="w-full rounded-xl border border-line bg-white py-3 ps-11 pe-4 text-sm outline-none transition-all focus:border-brand-300 focus:ring-4 focus:ring-brand-100"
                 />
               </div>
             </div>
@@ -245,7 +245,7 @@ export default function CheckoutPage() {
 
         {/* Summary */}
         <aside className="lg:sticky lg:top-28 lg:self-start">
-          <div className="rounded-card border border-brand-100 bg-white p-6 shadow-soft">
+          <div className="rounded-card border border-line bg-white p-6 shadow-soft">
             <h2 className="font-display text-lg font-bold text-ink">
               {t("checkout.summary.title")}
             </h2>
@@ -257,7 +257,7 @@ export default function CheckoutPage() {
                   className="flex items-center gap-3"
                 >
                   <div className="relative shrink-0">
-                    <div className="relative h-14 w-14 overflow-hidden rounded-xl border border-brand-100 bg-white">
+                    <div className="relative h-14 w-14 overflow-hidden rounded-xl border border-line bg-white">
                       <ProductPhoto
                         src={item.image}
                         alt={item.name}
@@ -283,7 +283,7 @@ export default function CheckoutPage() {
               ))}
             </div>
 
-            <dl className="mt-5 space-y-2.5 border-t border-brand-100 pt-4 text-sm">
+            <dl className="mt-5 space-y-2.5 border-t border-line pt-4 text-sm">
               <div className="flex justify-between">
                 <dt className="text-ink-soft">{t("common.subtotal")}</dt>
                 <dd className="font-semibold text-ink">{formatMAD(subtotal)}</dd>
@@ -294,7 +294,7 @@ export default function CheckoutPage() {
                   {delivery === 0 ? t("common.free") : formatMAD(delivery)}
                 </dd>
               </div>
-              <div className="flex justify-between border-t border-brand-100 pt-3">
+              <div className="flex justify-between border-t border-line pt-3">
                 <dt className="font-bold text-ink">{t("checkout.summary.totalToPay")}</dt>
                 <dd className="font-display text-xl font-extrabold text-brand-700">
                   {formatMAD(total)}

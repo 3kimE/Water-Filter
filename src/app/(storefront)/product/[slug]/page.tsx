@@ -73,7 +73,7 @@ export default async function ProductPage({
         </div>
         <div>
           <h2 className="font-display text-2xl font-bold text-ink">{t("product.specs")}</h2>
-          <dl className="mt-4 overflow-hidden rounded-card border border-brand-100">
+          <dl className="mt-4 overflow-hidden rounded-card border border-line">
             {product.specs.map((s, i) => (
               <div
                 key={s.label}
@@ -105,7 +105,7 @@ export default async function ProductPage({
         {product.reviews.length > 0 ? (
           <div className="mt-6 grid gap-5 md:grid-cols-2">
             {product.reviews.map((r) => (
-              <div key={r.id} className="rounded-card border border-brand-100 bg-white p-5 shadow-soft">
+              <div key={r.id} className="rounded-card border border-line bg-white p-5 shadow-soft">
                 <div className="flex items-center justify-between">
                   <StarRating value={r.rating} size={15} />
                   <span className="text-xs text-ink-soft">{formatDate(r.date)}</span>

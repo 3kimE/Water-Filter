@@ -25,7 +25,7 @@ export function LanguageSwitcher({ className }: { className?: string }) {
     <div ref={ref} className={cn("relative", className)}>
       <button
         onClick={() => setOpen((v) => !v)}
-        className="flex h-10 items-center gap-1.5 rounded-full border border-brand-100 bg-white px-3 text-sm font-semibold text-ink transition-colors hover:bg-brand-50"
+        className="flex h-10 items-center gap-1.5 rounded-full border border-line bg-white px-3 text-sm font-semibold text-ink transition-colors hover:bg-brand-50"
         aria-label="Langue"
       >
         <Globe className="h-4 w-4 text-brand-500" />
@@ -35,7 +35,7 @@ export function LanguageSwitcher({ className }: { className?: string }) {
       </button>
 
       {open && (
-        <div className="absolute right-0 top-full z-50 mt-2 w-44 overflow-hidden rounded-2xl border border-brand-100 bg-white p-1.5 shadow-[var(--shadow-soft)]">
+        <div className="absolute right-0 top-full z-50 mt-2 w-44 overflow-hidden rounded-2xl border border-line bg-white p-1.5 shadow-[var(--shadow-soft)]">
           {LOCALES.map((l) => {
             const meta = LOCALE_META[l];
             return (

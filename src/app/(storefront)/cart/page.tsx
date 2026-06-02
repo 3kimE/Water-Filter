@@ -61,11 +61,11 @@ export default function CartPage() {
           {items.map((item) => (
             <div
               key={item.productId + (item.variantLabel ?? "")}
-              className="flex gap-4 rounded-card border border-brand-100 bg-white p-4 shadow-soft"
+              className="flex gap-4 rounded-card border border-line bg-white p-4 shadow-soft"
             >
               <Link
                 href={`/product/${item.slug}`}
-                className="relative h-24 w-24 shrink-0 overflow-hidden rounded-2xl border border-brand-100 bg-white"
+                className="relative h-24 w-24 shrink-0 overflow-hidden rounded-2xl border border-line bg-white"
               >
                 <ProductPhoto
                   src={item.image}
@@ -99,7 +99,7 @@ export default function CartPage() {
                 </div>
 
                 <div className="mt-auto flex items-end justify-between pt-2">
-                  <div className="flex items-center rounded-full border border-brand-200">
+                  <div className="flex items-center rounded-full border border-line">
                     <button
                       onClick={() =>
                         updateQty(item.productId, item.qty - 1, item.variantLabel)
@@ -139,7 +139,7 @@ export default function CartPage() {
 
         {/* Summary */}
         <aside className="lg:sticky lg:top-28 lg:self-start">
-          <div className="rounded-card border border-brand-100 bg-white p-6 shadow-soft">
+          <div className="rounded-card border border-line bg-white p-6 shadow-soft">
             <h2 className="font-display text-lg font-bold text-ink">{t("cart.summary")}</h2>
 
             {remaining > 0 ? (
@@ -164,7 +164,7 @@ export default function CartPage() {
                   {delivery === 0 ? t("common.free") : formatMAD(delivery)}
                 </dd>
               </div>
-              <div className="flex justify-between border-t border-brand-100 pt-3 text-base">
+              <div className="flex justify-between border-t border-line pt-3 text-base">
                 <dt className="font-bold text-ink">{t("common.total")}</dt>
                 <dd className="font-display text-xl font-extrabold text-brand-700">
                   {formatMAD(total)}

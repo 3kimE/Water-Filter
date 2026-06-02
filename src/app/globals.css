@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
 /* ============================================================
-   Filtre Maroc — Design System
-   Water-blue brand, fresh & trustworthy, modern e-commerce UI
+   Filtre Maroc — Design System (Sleek Minimal / Apple-style)
+   Lots of white space, crisp neutrals, blue as a single accent.
    ============================================================ */
 
 @theme {
-  /* Brand blue scale (from the water-droplet logo) */
+  /* Brand blue (the single accent) */
   --color-brand-50: #eef8fe;
   --color-brand-100: #d6eefb;
-  --color-brand-200: #b2def7;
+  --color-brand-200: #b0ddf7;
   --color-brand-300: #7cc6f0;
   --color-brand-400: #43a8e4;
   --color-brand-500: #1f8fd6;
@@ -19,34 +19,34 @@
   --color-brand-900: #0e3c5f;
   --color-brand-950: #0a2942;
 
-  /* Accent cyan (the bright droplet highlight) */
   --color-aqua-300: #67e8f9;
   --color-aqua-400: #22d3ee;
   --color-aqua-500: #06b6d4;
 
-  /* Neutral ink */
-  --color-ink: #0f2436;
-  --color-ink-soft: #43596b;
+  /* Ink + neutrals (minimal greys) */
+  --color-ink: #0a0f16;
+  --color-ink-soft: #5b6675;
+  --color-line: #ebedf0;
 
   --color-background: #ffffff;
-  --color-foreground: #0f2436;
+  --color-foreground: #0a0f16;
 
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-poppins), var(--font-inter), sans-serif;
 
   --radius-card: 1.25rem;
 
-  --shadow-soft: 0 10px 30px -12px rgba(15, 60, 95, 0.25);
-  --shadow-glow: 0 12px 40px -8px rgba(31, 143, 214, 0.45);
+  /* Soft, restrained shadows */
+  --shadow-soft: 0 1px 2px rgba(10, 15, 22, 0.04), 0 12px 28px -16px rgba(10, 15, 22, 0.18);
+  --shadow-glow: 0 18px 40px -20px rgba(31, 143, 214, 0.45);
 
   --animate-float: float 6s ease-in-out infinite;
   --animate-fade-up: fade-up 0.6s ease-out both;
-  --animate-shimmer: shimmer 2.2s linear infinite;
 }
 
 @keyframes float {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-14px); }
+  50% { transform: translateY(-12px); }
 }
 
 @keyframes fade-up {
@@ -54,13 +54,8 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
 * {
-  border-color: var(--color-brand-100);
+  border-color: var(--color-line);
 }
 
 html {
@@ -72,11 +67,12 @@ body {
   color: var(--color-foreground);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 h1, h2, h3, h4, h5 {
   font-family: var(--font-display);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
 }
 
 /* Reusable bits */
@@ -84,7 +80,7 @@ h1, h2, h3, h4, h5 {
   width: 100%;
   max-width: 80rem;
   margin-inline: auto;
-  padding-inline: 1rem;
+  padding-inline: 1.25rem;
 }
 @media (min-width: 1024px) {
   .container-page { padding-inline: 2rem; }
@@ -97,24 +93,23 @@ h1, h2, h3, h4, h5 {
   color: transparent;
 }
 
+/* Minimal hero backdrop: mostly white with a whisper of colour */
 .hero-water {
   background:
-    radial-gradient(120% 80% at 80% -10%, rgba(34, 211, 238, 0.18), transparent 60%),
-    radial-gradient(90% 70% at -10% 10%, rgba(31, 143, 214, 0.16), transparent 55%),
-    linear-gradient(180deg, #f3fafe 0%, #ffffff 100%);
+    radial-gradient(60% 50% at 85% 0%, rgba(34, 211, 238, 0.08), transparent 70%),
+    linear-gradient(180deg, #f7fbfe 0%, #ffffff 55%);
 }
 
 .glass {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
-/* Pretty thin scrollbar */
+/* Thin, quiet scrollbar */
 ::-webkit-scrollbar { width: 10px; height: 10px; }
-::-webkit-scrollbar-thumb { background: var(--color-brand-200); border-radius: 999px; }
-::-webkit-scrollbar-thumb:hover { background: var(--color-brand-300); }
+::-webkit-scrollbar-thumb { background: #d8dde3; border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: #c2c9d1; }
 
-/* Hide number input spinners in admin forms */
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }

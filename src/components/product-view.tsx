@@ -66,7 +66,7 @@ export function ProductView({ product }: { product: Product }) {
     <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
       {/* Gallery */}
       <div>
-        <div className="relative aspect-square overflow-hidden rounded-card border border-brand-100 bg-white shadow-soft">
+        <div className="relative aspect-square overflow-hidden rounded-card border border-line bg-white shadow-soft">
           <ProductPhoto
             src={images[activeImg] ?? images[0]}
             alt={product.name}
@@ -179,7 +179,7 @@ export function ProductView({ product }: { product: Product }) {
                     "rounded-xl border-2 px-4 py-2 text-sm font-medium transition-all",
                     variant?.id === v.id
                       ? "border-brand-500 bg-brand-50 text-brand-700"
-                      : "border-brand-100 text-ink hover:border-brand-300",
+                      : "border-line text-ink hover:border-brand-300",
                   )}
                 >
                   {v.label}
@@ -196,7 +196,7 @@ export function ProductView({ product }: { product: Product }) {
 
         {/* Quantity + actions */}
         <div className="mt-7 flex flex-wrap items-center gap-3">
-          <div className="flex items-center rounded-full border border-brand-200">
+          <div className="flex items-center rounded-full border border-line">
             <button
               onClick={() => setQty((q) => Math.max(1, q - 1))}
               className="flex h-12 w-12 items-center justify-center rounded-full text-brand-700 hover:bg-brand-50"

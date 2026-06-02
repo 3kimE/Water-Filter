@@ -78,7 +78,7 @@ export default function OrderConfirmationPage() {
       </div>
 
       {/* What happens next */}
-      <div className="mx-auto mt-10 max-w-2xl rounded-card border border-brand-100 bg-white p-6 shadow-soft">
+      <div className="mx-auto mt-10 max-w-2xl rounded-card border border-line bg-white p-6 shadow-soft">
         <h2 className="font-display text-lg font-bold text-ink">{t("confirmation.next.title")}</h2>
         <ol className="mt-4 space-y-4">
           {[
@@ -100,7 +100,7 @@ export default function OrderConfirmationPage() {
       </div>
 
       {/* Order summary */}
-      <div className="mx-auto mt-6 max-w-2xl rounded-card border border-brand-100 bg-white p-6 shadow-soft">
+      <div className="mx-auto mt-6 max-w-2xl rounded-card border border-line bg-white p-6 shadow-soft">
         <h2 className="font-display text-lg font-bold text-ink">
           {t("confirmation.summary.title")}
         </h2>
@@ -119,11 +119,11 @@ export default function OrderConfirmationPage() {
               </span>
             </div>
           ))}
-          <div className="flex justify-between border-t border-brand-100 pt-2 text-ink-soft">
+          <div className="flex justify-between border-t border-line pt-2 text-ink-soft">
             <span>{t("common.delivery")}</span>
             <span>{order.delivery === 0 ? t("common.free") : formatMAD(order.delivery)}</span>
           </div>
-          <div className="flex justify-between border-t border-brand-100 pt-2 text-base">
+          <div className="flex justify-between border-t border-line pt-2 text-base">
             <span className="font-bold text-ink">{t("common.total")}</span>
             <span className="font-display font-extrabold text-brand-700">
               {formatMAD(order.total)}
