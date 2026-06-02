@@ -1,0 +1,263 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import {
+  ShoppingCart,
+  Minus,
+  Plus,
+  Check,
+  Truck,
+  ShieldCheck,
+  Banknote,
+  MessageCircle,
+  CircleCheck,
+} from "lucide-react";
+import type { Product } from "@/lib/types";
+import { ProductImage } from "./product-image";
+import { StarRating } from "./star-rating";
+import { Badge, toneForBadge } from "./ui/badge";
+import { Button } from "./ui/button";
+import { useCart } from "@/context/cart-context";
+import { formatMAD, discountPercent, cn } from "@/lib/utils";
+
+export function ProductView({ product }: { product: Product }) {
+  const router = useRouter();
+  const { addItem } = useCart();
+  const [activeImg, setActiveImg] = useState(0);
+  const [qty, setQty] = useState(1);
+  const [variant, setVariant] = useState(product.variants?.[0]);
+  const [added, setAdded] = useState(false);
+
+  const unitPrice = product.price + (variant?.priceDelta ?? 0);
+  const off = discountPercent(product.price, product.oldPrice);
+
+  function add() {
+    addItem(
+      {
+        productId: product.id,
+        slug: product.slug,
+        name: product.name,
+        price: unitPrice,
+        hue: product.hue,
+        variantLabel: variant?.label,
+      },
+      qty,
+    );
+  }
+
+  function handleAddToCart() {
+    add();
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1600);
+  }
+
+  function handleBuyNow() {
+    add();
+    router.push("/checkout");
+  }
+
+  return (
+    <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
+      {/* Gallery */}
+      <div>
+        <div className="overflow-hidden rounded-card border border-brand-100 shadow-soft">
+          <ProductImage
+            name={product.name}
+            hue={product.hue}
+            variant={activeImg}
+            showName={false}
+            className="aspect-square w-full"
+          />
+        </div>
+        <div className="mt-4 grid grid-cols-4 gap-3">
+          {[0, 1, 2, 3].map((i) => (
+            <button
+              key={i}
+              onClick={() => setActiveImg(i)}
+              className={cn(
+                "overflow-hidden rounded-2xl border-2 transition-all",
+                activeImg === i ? "border-brand-500" : "border-transparent opacity-70 hover:opacity-100",
+              )}
+            >
+              <ProductImage
+                name={product.name}
+                hue={product.hue}
+                variant={i}
+                showName={false}
+                className="aspect-square w-full"
+              />
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Info */}
+      <div>
+        <div className="flex flex-wrap gap-2">
+          {product.badges.map((b) => (
+            <Badge key={b} tone={toneForBadge(b)}>{b}</Badge>
+          ))}
+          {product.inStock ? (
+            <Badge tone="success"><CircleCheck className="h-3 w-3" /> En stock</Badge>
+          ) : (
+            <Badge tone="neutral">Rupture</Badge>
+          )}
+        </div>
+
+        <h1 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
+          {product.name}
+        </h1>
+
+        <div className="mt-3 flex items-center gap-2">
+          <StarRating value={product.rating} size={18} />
+          <span className="font-semibold text-ink">{product.rating}</span>
+          <span className="text-ink-soft">· {product.reviewCount} avis</span>
+        </div>
+
+        <p className="mt-4 text-ink-soft">{product.shortDescription}</p>
+
+        {/* Price */}
+        <div className="mt-5 flex items-end gap-3">
+          <span className="font-display text-4xl font-extrabold text-brand-700">
+            {formatMAD(unitPrice)}
+          </span>
+          {product.oldPrice && (
+            <span className="mb-1 text-lg text-ink-soft line-through">
+              {formatMAD(product.oldPrice)}
+            </span>
+          )}
+          {off && <Badge tone="sale" className="mb-1.5">-{off}%</Badge>}
+        </div>
+
+        {/* Quick specs */}
+        {(product.stages || product.capacity || product.warranty) && (
+          <div className="mt-5 flex flex-wrap gap-2">
+            {product.stages && (
+              <span className="rounded-full bg-brand-50 px-3 py-1.5 text-sm font-medium text-brand-700">
+                {product.stages} étapes
+              </span>
+            )}
+            {product.capacity && (
+              <span className="rounded-full bg-brand-50 px-3 py-1.5 text-sm font-medium text-brand-700">
+                {product.capacity}
+              </span>
+            )}
+            {product.warranty && product.warranty !== "—" && (
+              <span className="rounded-full bg-brand-50 px-3 py-1.5 text-sm font-medium text-brand-700">
+                Garantie {product.warranty}
+              </span>
+            )}
+          </div>
+        )}
+
+        {/* Variants */}
+        {product.variants && product.variants.length > 0 && (
+          <div className="mt-6">
+            <p className="mb-2 text-sm font-semibold text-ink">Option</p>
+            <div className="flex flex-wrap gap-2">
+              {product.variants.map((v) => (
+                <button
+                  key={v.id}
+                  onClick={() => setVariant(v)}
+                  className={cn(
+                    "rounded-xl border-2 px-4 py-2 text-sm font-medium transition-all",
+                    variant?.id === v.id
+                      ? "border-brand-500 bg-brand-50 text-brand-700"
+                      : "border-brand-100 text-ink hover:border-brand-300",
+                  )}
+                >
+                  {v.label}
+                  {v.priceDelta > 0 && (
+                    <span className="ml-1 text-xs text-ink-soft">
+                      +{formatMAD(v.priceDelta)}
+                    </span>
+                  )}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Quantity + actions */}
+        <div className="mt-7 flex flex-wrap items-center gap-3">
+          <div className="flex items-center rounded-full border border-brand-200">
+            <button
+              onClick={() => setQty((q) => Math.max(1, q - 1))}
+              className="flex h-12 w-12 items-center justify-center rounded-full text-brand-700 hover:bg-brand-50"
+              aria-label="Diminuer"
+            >
+              <Minus className="h-4 w-4" />
+            </button>
+            <span className="w-10 text-center font-bold text-ink">{qty}</span>
+            <button
+              onClick={() => setQty((q) => q + 1)}
+              className="flex h-12 w-12 items-center justify-center rounded-full text-brand-700 hover:bg-brand-50"
+              aria-label="Augmenter"
+            >
+              <Plus className="h-4 w-4" />
+            </button>
+          </div>
+
+          <button
+            onClick={handleAddToCart}
+            className={cn(
+              "flex h-12 flex-1 items-center justify-center gap-2 rounded-full px-6 font-semibold text-white shadow-[var(--shadow-glow)] transition-all hover:-translate-y-0.5",
+              added ? "bg-emerald-500" : "bg-brand-500 hover:bg-brand-600",
+            )}
+          >
+            {added ? (
+              <><Check className="h-5 w-5" /> Ajouté au panier</>
+            ) : (
+              <><ShoppingCart className="h-5 w-5" /> Ajouter au panier</>
+            )}
+          </button>
+        </div>
+
+        <div className="mt-3 flex flex-wrap gap-3">
+          <Button onClick={handleBuyNow} variant="dark" size="lg" className="flex-1">
+            <Banknote className="h-5 w-5" /> Commander (paiement à la livraison)
+          </Button>
+          <a
+            href={`https://wa.me/212634585463?text=${encodeURIComponent(
+              `Bonjour, je veux commander : ${product.name}`,
+            )}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex h-14 items-center justify-center gap-2 rounded-full bg-[#25D366] px-6 font-semibold text-white transition hover:brightness-105"
+          >
+            <MessageCircle className="h-5 w-5" /> WhatsApp
+          </a>
+        </div>
+
+        {/* Trust row */}
+        <div className="mt-7 grid grid-cols-1 gap-3 rounded-card bg-brand-50/70 p-4 sm:grid-cols-3">
+          <div className="flex items-center gap-2 text-sm">
+            <Truck className="h-5 w-5 text-brand-500" />
+            <span className="text-ink-soft">Livraison rapide partout au Maroc</span>
+          </div>
+          <div className="flex items-center gap-2 text-sm">
+            <Banknote className="h-5 w-5 text-brand-500" />
+            <span className="text-ink-soft">Payez à la livraison</span>
+          </div>
+          <div className="flex items-center gap-2 text-sm">
+            <ShieldCheck className="h-5 w-5 text-brand-500" />
+            <span className="text-ink-soft">Garantie & support</span>
+          </div>
+        </div>
+
+        {/* Features */}
+        {product.features.length > 0 && (
+          <ul className="mt-6 grid gap-2 sm:grid-cols-2">
+            {product.features.map((f) => (
+              <li key={f} className="flex items-start gap-2 text-sm text-ink">
+                <Check className="mt-0.5 h-4 w-4 shrink-0 text-brand-500" />
+                {f}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
+  );
+}

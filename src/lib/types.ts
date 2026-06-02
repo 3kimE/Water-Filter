@@ -1,0 +1,104 @@
+/* ============================================================
+   Shared data types for Filtre Maroc
+   (Used by mock data now; same shapes will map to the DB later)
+   ============================================================ */
+
+export type Category = {
+  id: string;
+  slug: string;
+  name: string; // French label
+  nameAr: string; // Arabic label
+  tagline: string;
+  icon: CategoryIcon;
+  hue: number; // base hue for category visuals
+};
+
+export type CategoryIcon =
+  | "kitchen"
+  | "fountain"
+  | "industrial"
+  | "cartridge"
+  | "parts";
+
+export type Review = {
+  id: string;
+  author: string;
+  city: string;
+  rating: number; // 1..5
+  date: string; // ISO
+  title: string;
+  body: string;
+  verified: boolean;
+};
+
+export type ProductVariant = {
+  id: string;
+  label: string;
+  priceDelta: number; // added to base price
+};
+
+export type Spec = { label: string; value: string };
+
+export type Product = {
+  id: string;
+  slug: string;
+  name: string;
+  categorySlug: string;
+  shortDescription: string;
+  description: string;
+  price: number;
+  oldPrice?: number;
+  rating: number; // 0..5
+  reviewCount: number;
+  stages?: number; // filtration stages
+  capacity?: string; // e.g. "400 GPD"
+  warranty?: string; // e.g. "2 ans"
+  badges: string[]; // "Best Seller", "Promo", "Nouveau"
+  inStock: boolean;
+  stock: number;
+  bestSeller?: boolean;
+  hue: number; // 0..360, drives the product visual gradient
+  features: string[];
+  specs: Spec[];
+  variants?: ProductVariant[];
+  reviews: Review[];
+};
+
+export type CartItem = {
+  productId: string;
+  slug: string;
+  name: string;
+  price: number;
+  hue: number;
+  qty: number;
+  variantLabel?: string;
+};
+
+export type OrderStatus =
+  | "pending"
+  | "confirmed"
+  | "shipped"
+  | "delivered"
+  | "returned"
+  | "cancelled";
+
+export type OrderItem = {
+  name: string;
+  qty: number;
+  price: number;
+  variantLabel?: string;
+};
+
+export type Order = {
+  id: string;
+  customerName: string;
+  phone: string;
+  city: string;
+  address: string;
+  note?: string;
+  items: OrderItem[];
+  total: number;
+  status: OrderStatus;
+  createdAt: string; // ISO
+  confirmationNote?: string;
+};
