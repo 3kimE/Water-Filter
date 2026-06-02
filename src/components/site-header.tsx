@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useState } from "react";
 import {
   ShoppingCart,
@@ -16,6 +15,7 @@ import { CATEGORIES } from "@/lib/mock-data";
 import { useCart } from "@/context/cart-context";
 import { useI18n } from "@/i18n/i18n-context";
 import { LanguageSwitcher } from "@/components/language-switcher";
+import { BrandLogo } from "@/components/brand-logo";
 
 const NAV = [
   { key: "nav.home", href: "/" },
@@ -44,14 +44,7 @@ export function SiteHeader() {
         <div className="container-page flex h-18 items-center gap-4 py-3">
           {/* Logo */}
           <Link href="/" className="flex shrink-0 items-center gap-2.5">
-            <Image
-              src="/logo.jpeg"
-              alt="Filtre Maroc"
-              width={48}
-              height={48}
-              className="h-12 w-12 rounded-full object-cover ring-1 ring-brand-100"
-              priority
-            />
+            <BrandLogo className="h-11 w-11" />
             <span className="hidden font-display text-xl font-extrabold leading-none text-brand-800 sm:block">
               Filtre<span className="text-aqua-500">Maroc</span>
             </span>
