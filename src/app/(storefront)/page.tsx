@@ -15,7 +15,6 @@ import { ProductCard } from "@/components/product-card";
 import { CategoryIcon } from "@/components/category-icon";
 import { StarRating } from "@/components/star-rating";
 import { Badge } from "@/components/ui/badge";
-import Image from "next/image";
 import { CATEGORIES, getBestSellers } from "@/lib/mock-data";
 import { getT } from "@/i18n/server";
 
@@ -117,42 +116,36 @@ export default async function HomePage() {
             </div>
           </div>
 
-          {/* Hero visual — real product showcase */}
+          {/* Hero visual */}
           <div className="relative mx-auto w-full max-w-md">
-            {/* soft colored glow behind the product */}
-            <div className="absolute inset-8 -z-10 rounded-full bg-gradient-to-br from-brand-300 to-aqua-300 opacity-50 blur-3xl" />
-
-            {/* product on a clean card */}
-            <div className="relative aspect-square overflow-hidden rounded-[2.5rem] bg-white shadow-[var(--shadow-glow)] ring-1 ring-brand-100">
-              <Image
-                src="/hero/filter-system.jpg"
-                alt="Système d'osmose inverse 7 étapes — Filtre Maroc"
-                fill
-                sizes="(max-width: 1024px) 90vw, 40vw"
-                priority
-                className="object-contain p-5"
-              />
-            </div>
-
-            {/* floating cards */}
-            <div className="absolute -start-4 top-10 flex items-center gap-2 rounded-2xl bg-white px-4 py-3 shadow-soft ring-1 ring-brand-50">
-              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
-                <ShieldCheck className="h-5 w-5" />
+            <div className="relative aspect-square rounded-[2.5rem] bg-gradient-to-br from-brand-400 via-brand-500 to-brand-800 shadow-[var(--shadow-glow)]">
+              <div className="absolute inset-0 flex items-center justify-center">
+                <Droplet
+                  className="h-44 w-44 animate-float text-white/90"
+                  strokeWidth={1.2}
+                  fill="rgba(255,255,255,0.18)"
+                />
               </div>
-              <div className="text-xs leading-tight">
-                <p className="font-bold text-ink">{t("home.hero.card.impuritiesPct")}</p>
-                <p className="text-ink-soft">{t("home.hero.card.impuritiesLabel")}</p>
+              {/* floating cards */}
+              <div className="absolute -start-4 top-10 flex items-center gap-2 rounded-2xl bg-white px-4 py-3 shadow-soft">
+                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
+                  <ShieldCheck className="h-5 w-5" />
+                </div>
+                <div className="text-xs leading-tight">
+                  <p className="font-bold text-ink">{t("home.hero.card.impuritiesPct")}</p>
+                  <p className="text-ink-soft">{t("home.hero.card.impuritiesLabel")}</p>
+                </div>
               </div>
-            </div>
-            <div className="absolute -end-3 bottom-20 flex items-center gap-2 rounded-2xl bg-white px-4 py-3 shadow-soft ring-1 ring-brand-50">
-              <StarRating value={5} size={14} />
-              <div className="text-xs leading-tight">
-                <p className="font-bold text-ink">{t("home.hero.card.clientsCount")}</p>
-                <p className="text-ink-soft">{t("home.hero.card.clientsLabel")}</p>
+              <div className="absolute -end-3 bottom-12 flex items-center gap-2 rounded-2xl bg-white px-4 py-3 shadow-soft">
+                <StarRating value={5} size={14} />
+                <div className="text-xs leading-tight">
+                  <p className="font-bold text-ink">{t("home.hero.card.clientsCount")}</p>
+                  <p className="text-ink-soft">{t("home.hero.card.clientsLabel")}</p>
+                </div>
               </div>
-            </div>
-            <div className="absolute bottom-4 start-4 rounded-2xl bg-brand-600 px-4 py-2 text-sm font-bold text-white shadow-[var(--shadow-glow)]">
-              {t("home.hero.card.priceFrom")}
+              <div className="absolute bottom-5 start-6 rounded-2xl bg-white/90 px-4 py-2 text-sm font-bold text-brand-700 shadow-soft backdrop-blur">
+                {t("home.hero.card.priceFrom")}
+              </div>
             </div>
           </div>
         </div>
