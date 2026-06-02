@@ -3,6 +3,7 @@ import { SlidersHorizontal, PackageSearch } from "lucide-react";
 import { ProductCard } from "@/components/product-card";
 import { CategoryIcon } from "@/components/category-icon";
 import { CATEGORIES, PRODUCTS, getCategoryBySlug } from "@/lib/mock-data";
+import { getT } from "@/i18n/server";
 import type { Product } from "@/lib/types";
 
 export const metadata = { title: "Boutique" };
@@ -14,10 +15,10 @@ function one(v: string | string[] | undefined): string {
 }
 
 const SORTS = [
-  { key: "", label: "Pertinence" },
-  { key: "price-asc", label: "Prix croissant" },
-  { key: "price-desc", label: "Prix décroissant" },
-  { key: "rating", label: "Mieux notés" },
+  { key: "", labelKey: "shop.sort.relevance" },
+  { key: "price-asc", labelKey: "shop.sort.priceAsc" },
+  { key: "price-desc", labelKey: "shop.sort.priceDesc" },
+  { key: "rating", labelKey: "shop.sort.rating" },
 ];
 
 export default async function ShopPage({
@@ -25,6 +26,7 @@ export default async function ShopPage({
 }: {
   searchParams: Promise<SP>;
 }) {
+  const { t } = await getT();
   const params = await searchParams;
   const cat = one(params.cat);
   const q = one(params.q).toLowerCase();
@@ -62,21 +64,21 @@ export default async function ShopPage({
       <div className="hero-water border-b border-brand-100">
         <div className="container-page py-10">
           <nav className="text-sm text-ink-soft">
-            <Link href="/" className="hover:text-brand-600">Accueil</Link>
+            <Link href="/" className="hover:text-brand-600">{t("nav.home")}</Link>
             <span className="mx-2">/</span>
             <span className="font-medium text-ink">
-              {category ? category.name : "Boutique"}
+              {category ? t(`cat.${category.slug}.name`) : t("nav.shop")}
             </span>
           </nav>
           <h1 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
-            {category ? category.name : "Tous nos produits"}
+            {category ? t(`cat.${category.slug}.name`) : t("shop.title")}
           </h1>
           <p className="mt-2 max-w-2xl text-ink-soft">
-            {category ? category.tagline : "Filtres, fontaines, systèmes semi-industriels et pièces de rechange."}
+            {category ? t(`cat.${category.slug}.tagline`) : t("shop.tagline")}
           </p>
           {q && (
             <p className="mt-3 inline-flex items-center gap-2 rounded-full bg-white px-4 py-1.5 text-sm font-medium text-brand-700 shadow-soft">
-              <PackageSearch className="h-4 w-4" /> Recherche : “{q}”
+              <PackageSearch className="h-4 w-4" /> {t("shop.searchLabel")} “{q}”
             </p>
           )}
         </div>
@@ -86,7 +88,7 @@ export default async function ShopPage({
         {/* Sidebar */}
         <aside className="lg:sticky lg:top-28 lg:self-start">
           <h2 className="mb-3 flex items-center gap-2 font-display font-semibold text-ink">
-            <SlidersHorizontal className="h-4 w-4 text-brand-500" /> Catégories
+            <SlidersHorizontal className="h-4 w-4 text-brand-500" /> {t("shop.categories")}
           </h2>
           <div className="flex gap-2 overflow-x-auto pb-2 lg:flex-col lg:overflow-visible lg:pb-0">
             <Link
@@ -97,7 +99,7 @@ export default async function ShopPage({
                   : "border-brand-100 bg-white text-ink hover:border-brand-200 hover:bg-brand-50"
               }`}
             >
-              Tous les produits
+              {t("shop.allProducts")}
             </Link>
             {CATEGORIES.map((c) => {
               const active = c.slug === cat;
@@ -112,7 +114,7 @@ export default async function ShopPage({
                   }`}
                 >
                   <CategoryIcon name={c.icon} className="h-4 w-4" />
-                  {c.name}
+                  {t(`cat.${c.slug}.name`)}
                 </Link>
               );
             })}
@@ -123,8 +125,8 @@ export default async function ShopPage({
         <div>
           <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
             <p className="text-sm text-ink-soft">
-              <strong className="text-ink">{list.length}</strong> produit
-              {list.length > 1 ? "s" : ""}
+              <strong className="text-ink">{list.length}</strong>{" "}
+              {list.length > 1 ? t("shop.productsPlural") : t("shop.productsSingular")}
             </p>
             <div className="flex flex-wrap items-center gap-1.5">
               {SORTS.map((s) => (
@@ -137,7 +139,7 @@ export default async function ShopPage({
                       : "text-ink-soft hover:bg-brand-50"
                   }`}
                 >
-                  {s.label}
+                  {t(s.labelKey)}
                 </Link>
               ))}
             </div>
@@ -153,16 +155,16 @@ export default async function ShopPage({
             <div className="rounded-card border border-dashed border-brand-200 bg-brand-50/50 py-20 text-center">
               <PackageSearch className="mx-auto h-12 w-12 text-brand-300" />
               <p className="mt-4 font-display text-lg font-semibold text-ink">
-                Aucun produit trouvé
+                {t("shop.empty.title")}
               </p>
               <p className="mt-1 text-sm text-ink-soft">
-                Essayez une autre catégorie ou recherche.
+                {t("shop.empty.desc")}
               </p>
               <Link
                 href="/shop"
                 className="mt-5 inline-block font-semibold text-brand-600 hover:text-brand-700"
               >
-                Voir tous les produits
+                {t("common.viewAll")}
               </Link>
             </div>
           )}

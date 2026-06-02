@@ -16,62 +16,64 @@ import { CategoryIcon } from "@/components/category-icon";
 import { StarRating } from "@/components/star-rating";
 import { Badge } from "@/components/ui/badge";
 import { CATEGORIES, getBestSellers } from "@/lib/mock-data";
+import { getT } from "@/i18n/server";
 
-const TESTIMONIALS = [
-  {
-    id: "t1",
-    author: "Yassine B.",
-    city: "Casablanca",
-    rating: 5,
-    title: "Eau excellente",
-    body: "Installé en 1h, l'eau a un goût parfait. Toute la famille boit plus d'eau maintenant.",
-    product: "Filtre de cuisine",
-  },
-  {
-    id: "t2",
-    author: "Fatima Z.",
-    city: "Rabat",
-    rating: 5,
-    title: "Service au top",
-    body: "Livraison rapide et le centre d'appel m'a très bien expliqué. Très satisfaite.",
-    product: "Osmoseur 6 étapes",
-  },
-  {
-    id: "t3",
-    author: "Café Atlas",
-    city: "Marrakech",
-    rating: 5,
-    title: "Parfait pour notre café",
-    body: "Débit largement suffisant pour le service. Installation professionnelle et rapide.",
-    product: "Système 400 GPD",
-  },
-];
-
-const COD_STEPS = [
-  {
-    icon: MousePointerClick,
-    title: "1. Choisissez",
-    text: "Parcourez nos filtres et ajoutez votre produit au panier.",
-  },
-  {
-    icon: PackageCheck,
-    title: "2. Commandez",
-    text: "Remplissez vos coordonnées — aucun paiement en ligne requis.",
-  },
-  {
-    icon: Phone,
-    title: "3. On vous appelle",
-    text: "Notre centre de confirmation vous appelle pour valider la commande.",
-  },
-  {
-    icon: Truck,
-    title: "4. Payez à la livraison",
-    text: "Vous recevez le produit et payez en espèces à votre porte.",
-  },
-];
-
-export default function HomePage() {
+export default async function HomePage() {
+  const { t } = await getT();
   const bestSellers = getBestSellers();
+
+  const TESTIMONIALS = [
+    {
+      id: "t1",
+      author: "Yassine B.",
+      city: "Casablanca",
+      rating: 5,
+      title: t("home.reviews.t1.title"),
+      body: t("home.reviews.t1.body"),
+      product: t("home.reviews.t1.role"),
+    },
+    {
+      id: "t2",
+      author: "Fatima Z.",
+      city: "Rabat",
+      rating: 5,
+      title: t("home.reviews.t2.title"),
+      body: t("home.reviews.t2.body"),
+      product: t("home.reviews.t2.role"),
+    },
+    {
+      id: "t3",
+      author: "Café Atlas",
+      city: "Marrakech",
+      rating: 5,
+      title: t("home.reviews.t3.title"),
+      body: t("home.reviews.t3.body"),
+      product: t("home.reviews.t3.role"),
+    },
+  ];
+
+  const COD_STEPS = [
+    {
+      icon: MousePointerClick,
+      title: t("home.cod.step1.title"),
+      text: t("home.cod.step1.text"),
+    },
+    {
+      icon: PackageCheck,
+      title: t("home.cod.step2.title"),
+      text: t("home.cod.step2.text"),
+    },
+    {
+      icon: Phone,
+      title: t("home.cod.step3.title"),
+      text: t("home.cod.step3.text"),
+    },
+    {
+      icon: Truck,
+      title: t("home.cod.step4.title"),
+      text: t("home.cod.step4.text"),
+    },
+  ];
 
   return (
     <>
@@ -81,35 +83,35 @@ export default function HomePage() {
           <div className="animate-fade-up">
             <span className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-1.5 text-sm font-semibold text-brand-700 shadow-soft">
               <Droplet className="h-4 w-4 text-aqua-500" />
-              N°1 de la filtration d&apos;eau au Maroc
+              {t("home.hero.badge")}
             </span>
             <h1 className="mt-5 font-display text-4xl font-extrabold leading-tight text-ink sm:text-5xl lg:text-6xl">
-              Une eau <span className="text-gradient">pure & saine</span> pour
-              toute la famille
+              {t("home.hero.titleA")}{" "}
+              <span className="text-gradient">{t("home.hero.titleHighlight")}</span>{" "}
+              {t("home.hero.titleB")}
             </h1>
             <p className="mt-5 max-w-lg text-lg text-ink-soft">
-              Systèmes d&apos;osmose inverse, fontaines et solutions
-              semi-industrielles. Livraison partout au Maroc et{" "}
-              <strong className="text-brand-700">paiement à la livraison</strong>.
+              {t("home.hero.subtitleA")}{" "}
+              <strong className="text-brand-700">{t("home.hero.subtitleStrong")}</strong>.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button href="/shop" size="lg">
-                Découvrir la boutique <ArrowRight className="h-5 w-5" />
+                {t("home.hero.ctaShop")} <ArrowRight className="h-5 w-5" />
               </Button>
               <Button href="/shop?cat=cuisine" variant="outline" size="lg">
-                Filtres de cuisine
+                {t("home.hero.ctaKitchen")}
               </Button>
             </div>
 
             <div className="mt-9 flex flex-wrap items-center gap-x-7 gap-y-3 text-sm">
               <span className="flex items-center gap-2 font-medium text-ink">
-                <ShieldCheck className="h-5 w-5 text-brand-500" /> Garantie 1–2 ans
+                <ShieldCheck className="h-5 w-5 text-brand-500" /> {t("home.trust.warranty")}
               </span>
               <span className="flex items-center gap-2 font-medium text-ink">
-                <Truck className="h-5 w-5 text-brand-500" /> Livraison gratuite +1000 MAD
+                <Truck className="h-5 w-5 text-brand-500" /> {t("home.trust.freeDelivery")}
               </span>
               <span className="flex items-center gap-2 font-medium text-ink">
-                <Headphones className="h-5 w-5 text-brand-500" /> Support 24/7
+                <Headphones className="h-5 w-5 text-brand-500" /> {t("home.trust.support")}
               </span>
             </div>
           </div>
@@ -125,24 +127,24 @@ export default function HomePage() {
                 />
               </div>
               {/* floating cards */}
-              <div className="absolute -left-4 top-10 flex items-center gap-2 rounded-2xl bg-white px-4 py-3 shadow-soft">
+              <div className="absolute -start-4 top-10 flex items-center gap-2 rounded-2xl bg-white px-4 py-3 shadow-soft">
                 <div className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
                   <ShieldCheck className="h-5 w-5" />
                 </div>
                 <div className="text-xs leading-tight">
-                  <p className="font-bold text-ink">99% des</p>
-                  <p className="text-ink-soft">impuretés filtrées</p>
+                  <p className="font-bold text-ink">{t("home.hero.card.impuritiesPct")}</p>
+                  <p className="text-ink-soft">{t("home.hero.card.impuritiesLabel")}</p>
                 </div>
               </div>
-              <div className="absolute -right-3 bottom-12 flex items-center gap-2 rounded-2xl bg-white px-4 py-3 shadow-soft">
+              <div className="absolute -end-3 bottom-12 flex items-center gap-2 rounded-2xl bg-white px-4 py-3 shadow-soft">
                 <StarRating value={5} size={14} />
                 <div className="text-xs leading-tight">
-                  <p className="font-bold text-ink">+5000</p>
-                  <p className="text-ink-soft">clients satisfaits</p>
+                  <p className="font-bold text-ink">{t("home.hero.card.clientsCount")}</p>
+                  <p className="text-ink-soft">{t("home.hero.card.clientsLabel")}</p>
                 </div>
               </div>
-              <div className="absolute bottom-5 left-6 rounded-2xl bg-white/90 px-4 py-2 text-sm font-bold text-brand-700 shadow-soft backdrop-blur">
-                À partir de 1 020 MAD
+              <div className="absolute bottom-5 start-6 rounded-2xl bg-white/90 px-4 py-2 text-sm font-bold text-brand-700 shadow-soft backdrop-blur">
+                {t("home.hero.card.priceFrom")}
               </div>
             </div>
           </div>
@@ -153,10 +155,10 @@ export default function HomePage() {
       <section className="container-page py-16">
         <div className="mb-9 text-center">
           <h2 className="font-display text-3xl font-bold text-ink">
-            Nos catégories
+            {t("home.categories.title")}
           </h2>
           <p className="mt-2 text-ink-soft">
-            Trouvez la solution de filtration adaptée à vos besoins
+            {t("home.categories.subtitle")}
           </p>
         </div>
         <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
@@ -170,7 +172,7 @@ export default function HomePage() {
                 <CategoryIcon name={c.icon} className="h-8 w-8" />
               </div>
               <h3 className="mt-4 text-sm font-semibold text-ink group-hover:text-brand-700">
-                {c.name}
+                {t(`cat.${c.slug}.name`)}
               </h3>
             </Link>
           ))}
@@ -182,17 +184,17 @@ export default function HomePage() {
         <div className="mb-7 flex items-end justify-between">
           <div>
             <Badge tone="best">
-              <Star className="h-3 w-3" fill="currentColor" /> Best Sellers
+              <Star className="h-3 w-3" fill="currentColor" /> {t("home.bestSellers.badge")}
             </Badge>
             <h2 className="mt-3 font-display text-3xl font-bold text-ink">
-              Les plus vendus
+              {t("home.bestSellers.title")}
             </h2>
           </div>
           <Link
             href="/shop"
             className="hidden items-center gap-1 font-semibold text-brand-600 hover:text-brand-700 sm:flex"
           >
-            Tout voir <ArrowRight className="h-4 w-4" />
+            {t("common.viewAll")} <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
         <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
@@ -207,10 +209,10 @@ export default function HomePage() {
         <div className="container-page">
           <div className="mb-10 text-center">
             <h2 className="font-display text-3xl font-bold text-ink">
-              Commander, c&apos;est simple
+              {t("home.cod.title")}
             </h2>
             <p className="mt-2 text-ink-soft">
-              Paiement à la livraison — payez seulement quand vous recevez
+              {t("home.cod.subtitle")}
             </p>
           </div>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -226,7 +228,7 @@ export default function HomePage() {
                   <p className="mt-1 text-sm text-ink-soft">{s.text}</p>
                 </div>
                 {i < COD_STEPS.length - 1 && (
-                  <ArrowRight className="absolute -right-3 top-1/2 hidden h-6 w-6 -translate-y-1/2 text-brand-300 lg:block" />
+                  <ArrowRight className="absolute -end-3 top-1/2 hidden h-6 w-6 -translate-y-1/2 text-brand-300 lg:block" />
                 )}
               </div>
             ))}
@@ -237,19 +239,18 @@ export default function HomePage() {
       {/* ============ PROMO BANNER ============ */}
       <section className="container-page py-16">
         <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-r from-brand-700 to-brand-500 px-8 py-12 text-white sm:px-14">
-          <Droplet className="absolute -right-8 -top-8 h-48 w-48 text-white/10" fill="currentColor" />
+          <Droplet className="absolute -end-8 -top-8 h-48 w-48 text-white/10" fill="currentColor" />
           <div className="relative max-w-xl">
-            <Badge tone="sale">Offre limitée</Badge>
+            <Badge tone="sale">{t("home.promo.badge")}</Badge>
             <h2 className="mt-4 font-display text-3xl font-bold sm:text-4xl">
-              Jusqu&apos;à -15% sur les systèmes d&apos;osmose inverse
+              {t("home.promo.title")}
             </h2>
             <p className="mt-3 text-brand-100">
-              Profitez de nos promotions et offrez à votre famille une eau pure
-              au meilleur prix.
+              {t("home.promo.subtitle")}
             </p>
             <div className="mt-7">
               <Button href="/shop" variant="dark" size="lg">
-                J&apos;en profite <ArrowRight className="h-5 w-5" />
+                {t("home.promo.cta")} <ArrowRight className="h-5 w-5" />
               </Button>
             </div>
           </div>
@@ -260,12 +261,12 @@ export default function HomePage() {
       <section className="container-page pb-16">
         <div className="mb-9 text-center">
           <h2 className="font-display text-3xl font-bold text-ink">
-            Ils nous font confiance
+            {t("home.reviews.title")}
           </h2>
           <div className="mt-3 flex items-center justify-center gap-2">
             <StarRating value={4.8} size={20} />
-            <span className="font-semibold text-ink">4.8/5</span>
-            <span className="text-ink-soft">· +1200 avis vérifiés</span>
+            <span className="font-semibold text-ink">{t("home.reviews.score")}</span>
+            <span className="text-ink-soft">{t("home.reviews.count")}</span>
           </div>
         </div>
         <div className="grid gap-6 md:grid-cols-3">

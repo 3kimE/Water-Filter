@@ -15,28 +15,30 @@ import {
   InstagramIcon,
   TiktokIcon,
 } from "@/components/social-icons";
+import { getT } from "@/i18n/server";
 
 const TRUST = [
-  { icon: Truck, title: "Livraison rapide", text: "Partout au Maroc, gratuite dès 1 000 MAD" },
-  { icon: ShieldCheck, title: "Garantie 1–2 ans", text: "Sur tous nos systèmes de filtration" },
-  { icon: RotateCcw, title: "Retour 48h", text: "Satisfait ou échangé sous 48 heures" },
-  { icon: Headphones, title: "Support 24/7", text: "Une équipe à votre écoute" },
+  { icon: Truck, titleKey: "footer.trust.delivery.title", textKey: "footer.trust.delivery.text" },
+  { icon: ShieldCheck, titleKey: "footer.trust.warranty.title", textKey: "footer.trust.warranty.text" },
+  { icon: RotateCcw, titleKey: "footer.trust.return.title", textKey: "footer.trust.return.text" },
+  { icon: Headphones, titleKey: "footer.trust.support.title", textKey: "footer.trust.support.text" },
 ];
 
-export function SiteFooter() {
+export async function SiteFooter() {
+  const { t } = await getT();
   return (
     <footer className="mt-20 bg-brand-950 text-brand-100">
       {/* Trust strip */}
       <div className="border-b border-white/10">
         <div className="container-page grid grid-cols-2 gap-6 py-10 lg:grid-cols-4">
-          {TRUST.map((t) => (
-            <div key={t.title} className="flex items-start gap-3">
+          {TRUST.map((item) => (
+            <div key={item.titleKey} className="flex items-start gap-3">
               <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white/10 text-aqua-300">
-                <t.icon className="h-5 w-5" />
+                <item.icon className="h-5 w-5" />
               </div>
               <div>
-                <p className="font-display font-semibold text-white">{t.title}</p>
-                <p className="text-sm text-brand-200">{t.text}</p>
+                <p className="font-display font-semibold text-white">{t(item.titleKey)}</p>
+                <p className="text-sm text-brand-200">{t(item.textKey)}</p>
               </div>
             </div>
           ))}
@@ -59,8 +61,7 @@ export function SiteFooter() {
             </span>
           </div>
           <p className="mt-4 text-sm leading-relaxed text-brand-200">
-            Spécialiste des filtres à eau et systèmes d&apos;osmose inverse au
-            Maroc. Une eau pure et saine pour votre famille et votre entreprise.
+            {t("footer.blurb")}
           </p>
           <div className="mt-5 flex gap-3">
             <a
@@ -95,7 +96,7 @@ export function SiteFooter() {
         </div>
 
         <div>
-          <h4 className="font-display font-semibold text-white">Catégories</h4>
+          <h4 className="font-display font-semibold text-white">{t("footer.categories")}</h4>
           <ul className="mt-4 space-y-2.5 text-sm">
             {CATEGORIES.map((c) => (
               <li key={c.slug}>
@@ -103,7 +104,7 @@ export function SiteFooter() {
                   href={`/shop?cat=${c.slug}`}
                   className="text-brand-200 transition-colors hover:text-white"
                 >
-                  {c.name}
+                  {t(`cat.${c.slug}.name`)}
                 </Link>
               </li>
             ))}
@@ -111,18 +112,18 @@ export function SiteFooter() {
         </div>
 
         <div>
-          <h4 className="font-display font-semibold text-white">Informations</h4>
+          <h4 className="font-display font-semibold text-white">{t("footer.info")}</h4>
           <ul className="mt-4 space-y-2.5 text-sm">
-            <li><Link href="/about" className="text-brand-200 hover:text-white">À propos</Link></li>
-            <li><Link href="/contact" className="text-brand-200 hover:text-white">Contact</Link></li>
-            <li><Link href="/shop" className="text-brand-200 hover:text-white">Boutique</Link></li>
-            <li><span className="text-brand-200">Livraison & paiement (COD)</span></li>
-            <li><span className="text-brand-200">Garantie & retours</span></li>
+            <li><Link href="/about" className="text-brand-200 hover:text-white">{t("nav.about")}</Link></li>
+            <li><Link href="/contact" className="text-brand-200 hover:text-white">{t("nav.contact")}</Link></li>
+            <li><Link href="/shop" className="text-brand-200 hover:text-white">{t("nav.shop")}</Link></li>
+            <li><span className="text-brand-200">{t("footer.info.deliveryPayment")}</span></li>
+            <li><span className="text-brand-200">{t("footer.info.warrantyReturns")}</span></li>
           </ul>
         </div>
 
         <div>
-          <h4 className="font-display font-semibold text-white">Contactez-nous</h4>
+          <h4 className="font-display font-semibold text-white">{t("footer.contact")}</h4>
           <ul className="mt-4 space-y-3 text-sm">
             <li className="flex items-center gap-2">
               <Phone className="h-4 w-4 text-aqua-300" />
@@ -143,7 +144,7 @@ export function SiteFooter() {
             href="https://wa.me/212634585463"
             className="mt-5 inline-flex items-center gap-2 rounded-full bg-[#25D366] px-5 py-2.5 text-sm font-semibold text-white transition hover:brightness-105"
           >
-            <MessageCircle className="h-4 w-4" /> Commander sur WhatsApp
+            <MessageCircle className="h-4 w-4" /> {t("footer.orderWhatsapp")}
           </a>
         </div>
       </div>
@@ -151,8 +152,8 @@ export function SiteFooter() {
       {/* Bottom bar */}
       <div className="border-t border-white/10">
         <div className="container-page flex flex-col items-center justify-between gap-2 py-5 text-xs text-brand-300 sm:flex-row">
-          <p>© 2026 Filtre Maroc. Tous droits réservés.</p>
-          <p>Paiement à la livraison · Livraison partout au Maroc 🇲🇦</p>
+          <p>{t("footer.copyright")}</p>
+          <p>{t("footer.codLine")}</p>
         </div>
       </div>
     </footer>

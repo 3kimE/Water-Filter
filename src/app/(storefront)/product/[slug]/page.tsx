@@ -12,6 +12,7 @@ import {
   getRelatedProducts,
 } from "@/lib/mock-data";
 import { formatDate } from "@/lib/utils";
+import { getT } from "@/i18n/server";
 
 export function generateStaticParams() {
   return PRODUCTS.map((p) => ({ slug: p.slug }));
@@ -23,8 +24,9 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
+  const { t } = await getT();
   const product = getProductBySlug(slug);
-  return { title: product ? product.name : "Produit" };
+  return { title: product ? product.name : t("product.meta.fallback") };
 }
 
 export default async function ProductPage({
@@ -33,6 +35,7 @@ export default async function ProductPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  const { t } = await getT();
   const product = getProductBySlug(slug);
   if (!product) notFound();
 
@@ -43,14 +46,14 @@ export default async function ProductPage({
     <div className="container-page py-8">
       {/* Breadcrumb */}
       <nav className="mb-6 text-sm text-ink-soft">
-        <Link href="/" className="hover:text-brand-600">Accueil</Link>
+        <Link href="/" className="hover:text-brand-600">{t("nav.home")}</Link>
         <span className="mx-2">/</span>
-        <Link href="/shop" className="hover:text-brand-600">Boutique</Link>
+        <Link href="/shop" className="hover:text-brand-600">{t("nav.shop")}</Link>
         {category && (
           <>
             <span className="mx-2">/</span>
             <Link href={`/shop?cat=${category.slug}`} className="hover:text-brand-600">
-              {category.name}
+              {t(`cat.${category.slug}.name`)}
             </Link>
           </>
         )}
@@ -63,13 +66,13 @@ export default async function ProductPage({
       {/* Description + Specs */}
       <div className="mt-14 grid gap-10 lg:grid-cols-[1fr_20rem]">
         <div>
-          <h2 className="font-display text-2xl font-bold text-ink">Description</h2>
+          <h2 className="font-display text-2xl font-bold text-ink">{t("product.description")}</h2>
           <p dir="auto" className="mt-4 whitespace-pre-line leading-relaxed text-ink-soft">
             {product.description}
           </p>
         </div>
         <div>
-          <h2 className="font-display text-2xl font-bold text-ink">Caractéristiques</h2>
+          <h2 className="font-display text-2xl font-bold text-ink">{t("product.specs")}</h2>
           <dl className="mt-4 overflow-hidden rounded-card border border-brand-100">
             {product.specs.map((s, i) => (
               <div
@@ -90,7 +93,7 @@ export default async function ProductPage({
       <div className="mt-14">
         <div className="flex flex-wrap items-center gap-3">
           <h2 className="font-display text-2xl font-bold text-ink">
-            Avis clients
+            {t("product.reviews.title")}
           </h2>
           <div className="flex items-center gap-2">
             <StarRating value={product.rating} size={18} />
@@ -114,7 +117,7 @@ export default async function ProductPage({
                   <span className="text-ink-soft">· {r.city}</span>
                   {r.verified && (
                     <span className="inline-flex items-center gap-1 text-xs font-medium text-emerald-600">
-                      <CheckCircle2 className="h-3.5 w-3.5" /> Achat vérifié
+                      <CheckCircle2 className="h-3.5 w-3.5" /> {t("product.reviews.verified")}
                     </span>
                   )}
                 </div>
@@ -123,7 +126,7 @@ export default async function ProductPage({
           </div>
         ) : (
           <p className="mt-4 text-ink-soft">
-            Les avis détaillés de nos clients seront bientôt affichés ici.
+            {t("product.reviews.empty")}
           </p>
         )}
       </div>
@@ -132,7 +135,7 @@ export default async function ProductPage({
       {related.length > 0 && (
         <div className="mt-16">
           <h2 className="mb-6 font-display text-2xl font-bold text-ink">
-            Produits similaires
+            {t("product.related")}
           </h2>
           <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
             {related.map((p) => (

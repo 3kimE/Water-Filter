@@ -8,39 +8,39 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { getT } from "@/i18n/server";
 
 export const metadata = { title: "À propos" };
 
 const STATS = [
-  { value: "+5 000", label: "Clients satisfaits" },
-  { value: "+10", label: "Villes desservies" },
-  { value: "4.8/5", label: "Note moyenne" },
-  { value: "7 ans", label: "D'expérience" },
+  { value: "+5 000", labelKey: "about.stats.0.label" },
+  { value: "+10", labelKey: "about.stats.1.label" },
+  { value: "4.8/5", labelKey: "about.stats.2.label" },
+  { value: "7 ans", labelKey: "about.stats.3.label" },
 ];
 
 const VALUES = [
-  { icon: Droplet, title: "Eau pure garantie", text: "Des systèmes qui éliminent jusqu'à 99% des impuretés." },
-  { icon: ShieldCheck, title: "Qualité certifiée", text: "Composants de qualité et garantie jusqu'à 3 ans." },
-  { icon: Truck, title: "Partout au Maroc", text: "Livraison et installation dans tout le royaume." },
-  { icon: HeartHandshake, title: "Service de confiance", text: "Paiement à la livraison et support 24/7." },
+  { icon: Droplet, titleKey: "about.values.0.title", textKey: "about.values.0.text" },
+  { icon: ShieldCheck, titleKey: "about.values.1.title", textKey: "about.values.1.text" },
+  { icon: Truck, titleKey: "about.values.2.title", textKey: "about.values.2.text" },
+  { icon: HeartHandshake, titleKey: "about.values.3.title", textKey: "about.values.3.text" },
 ];
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const { t } = await getT();
   return (
     <>
       <section className="hero-water">
         <div className="container-page py-16 text-center">
           <span className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-1.5 text-sm font-semibold text-brand-700 shadow-soft">
-            <Droplet className="h-4 w-4 text-aqua-500" /> Notre histoire
+            <Droplet className="h-4 w-4 text-aqua-500" /> {t("about.hero.badge")}
           </span>
           <h1 className="mx-auto mt-5 max-w-3xl font-display text-4xl font-extrabold text-ink sm:text-5xl">
-            Une mission : offrir à chaque foyer marocain une{" "}
-            <span className="text-gradient">eau pure</span>
+            {t("about.hero.titleLead")}{" "}
+            <span className="text-gradient">{t("about.hero.titleHighlight")}</span>
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-lg text-ink-soft">
-            Filtre Maroc accompagne les familles et les professionnels avec des
-            solutions de filtration fiables, abordables et adaptées à la qualité
-            de l&apos;eau au Maroc.
+            {t("about.hero.subtitle")}
           </p>
         </div>
       </section>
@@ -49,9 +49,9 @@ export default function AboutPage() {
       <section className="container-page -mt-8">
         <div className="grid grid-cols-2 gap-4 rounded-card border border-brand-100 bg-white p-6 shadow-soft sm:grid-cols-4">
           {STATS.map((s) => (
-            <div key={s.label} className="text-center">
+            <div key={s.labelKey} className="text-center">
               <p className="font-display text-3xl font-extrabold text-brand-600">{s.value}</p>
-              <p className="mt-1 text-sm text-ink-soft">{s.label}</p>
+              <p className="mt-1 text-sm text-ink-soft">{t(s.labelKey)}</p>
             </div>
           ))}
         </div>
@@ -65,23 +65,18 @@ export default function AboutPage() {
           </div>
         </div>
         <div>
-          <h2 className="font-display text-3xl font-bold text-ink">Qui sommes-nous ?</h2>
+          <h2 className="font-display text-3xl font-bold text-ink">{t("about.story.heading")}</h2>
           <p className="mt-4 leading-relaxed text-ink-soft">
-            Né de la conviction qu&apos;une eau saine ne devrait pas être un luxe,
-            Filtre Maroc importe et installe des systèmes d&apos;osmose inverse de
-            haute qualité partout au Maroc. Du petit appartement au grand
-            restaurant, nous avons la solution adaptée à votre consommation.
+            {t("about.story.paragraph1")}
           </p>
           <p className="mt-4 leading-relaxed text-ink-soft">
-            Notre équipe vous accompagne du choix du produit jusqu&apos;à
-            l&apos;installation, et notre centre de confirmation s&apos;assure que
-            chaque commande se déroule en toute sérénité.
+            {t("about.story.paragraph2")}
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
             <Button href="/shop" size="lg">
-              Voir nos produits <ArrowRight className="h-5 w-5" />
+              {t("about.story.ctaProducts")} <ArrowRight className="h-5 w-5" />
             </Button>
-            <Button href="/contact" variant="outline" size="lg">Nous contacter</Button>
+            <Button href="/contact" variant="outline" size="lg">{t("about.story.ctaContact")}</Button>
           </div>
         </div>
       </section>
@@ -90,17 +85,17 @@ export default function AboutPage() {
       <section className="bg-brand-50/60 py-16">
         <div className="container-page">
           <div className="mb-10 text-center">
-            <h2 className="font-display text-3xl font-bold text-ink">Nos engagements</h2>
-            <p className="mt-2 text-ink-soft">Ce qui fait la différence Filtre Maroc</p>
+            <h2 className="font-display text-3xl font-bold text-ink">{t("about.values.heading")}</h2>
+            <p className="mt-2 text-ink-soft">{t("about.values.subtitle")}</p>
           </div>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {VALUES.map((v) => (
-              <div key={v.title} className="rounded-card bg-white p-6 shadow-soft">
+              <div key={v.titleKey} className="rounded-card bg-white p-6 shadow-soft">
                 <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-500 text-white">
                   <v.icon className="h-6 w-6" />
                 </div>
-                <h3 className="mt-4 font-display text-lg font-semibold text-ink">{v.title}</h3>
-                <p className="mt-1 text-sm text-ink-soft">{v.text}</p>
+                <h3 className="mt-4 font-display text-lg font-semibold text-ink">{t(v.titleKey)}</h3>
+                <p className="mt-1 text-sm text-ink-soft">{t(v.textKey)}</p>
               </div>
             ))}
           </div>
@@ -112,10 +107,10 @@ export default function AboutPage() {
         <div className="flex flex-col items-center gap-6 rounded-[2rem] bg-gradient-to-r from-brand-700 to-brand-500 px-8 py-12 text-center text-white">
           <Users className="h-12 w-12 text-aqua-300" />
           <h2 className="max-w-xl font-display text-3xl font-bold">
-            Rejoignez plus de 5 000 familles qui boivent une eau pure
+            {t("about.cta.heading")}
           </h2>
           <Button href="/shop" variant="dark" size="lg">
-            Découvrir la boutique <ArrowRight className="h-5 w-5" />
+            {t("about.cta.button")} <ArrowRight className="h-5 w-5" />
           </Button>
         </div>
       </section>

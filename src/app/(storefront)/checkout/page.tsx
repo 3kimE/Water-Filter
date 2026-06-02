@@ -18,6 +18,7 @@ import { useCart } from "@/context/cart-context";
 import { ProductPhoto } from "@/components/product-photo";
 import { MOROCCAN_CITIES } from "@/lib/mock-data";
 import { formatMAD } from "@/lib/utils";
+import { useI18n } from "@/i18n/i18n-context";
 
 const FREE_DELIVERY = 1000;
 
@@ -26,6 +27,7 @@ type Errors = Partial<Record<"name" | "phone" | "city" | "address", string>>;
 export default function CheckoutPage() {
   const router = useRouter();
   const { items, subtotal, clear, hydrated } = useCart();
+  const { t } = useI18n();
 
   const [form, setForm] = useState({
     name: "",
@@ -47,11 +49,11 @@ export default function CheckoutPage() {
 
   function validate(): boolean {
     const e: Errors = {};
-    if (form.name.trim().length < 3) e.name = "Entrez votre nom complet";
+    if (form.name.trim().length < 3) e.name = t("checkout.error.name");
     if (!/^0[5-7]\d{8}$/.test(form.phone.replace(/\s/g, "")))
-      e.phone = "Numéro invalide (ex : 0612345678)";
-    if (!form.city) e.city = "Choisissez votre ville";
-    if (form.address.trim().length < 6) e.address = "Entrez une adresse complète";
+      e.phone = t("checkout.error.phone");
+    if (!form.city) e.city = t("checkout.error.city");
+    if (form.address.trim().length < 6) e.address = t("checkout.error.address");
     setErrors(e);
     return Object.keys(e).length === 0;
   }
@@ -75,38 +77,38 @@ export default function CheckoutPage() {
   }
 
   if (!hydrated) {
-    return <div className="container-page py-24 text-center text-ink-soft">Chargement…</div>;
+    return <div className="container-page py-24 text-center text-ink-soft">{t("common.loading")}</div>;
   }
 
   if (items.length === 0) {
     return (
       <div className="container-page py-20 text-center">
         <h1 className="font-display text-2xl font-bold text-ink">
-          Votre panier est vide
+          {t("cart.empty.title")}
         </h1>
         <p className="mt-2 text-ink-soft">
-          Ajoutez un produit avant de passer commande.
+          {t("cart.empty.subtitle")}
         </p>
         <Link
           href="/shop"
           className="mt-6 inline-block font-semibold text-brand-600 hover:text-brand-700"
         >
-          Aller à la boutique →
+          {t("cart.empty.cta")}
         </Link>
       </div>
     );
   }
 
   const inputBase =
-    "h-12 w-full rounded-xl border bg-white pl-11 pr-4 text-sm outline-none transition-all focus:ring-4 focus:ring-brand-100";
+    "h-12 w-full rounded-xl border bg-white ps-11 pe-4 text-sm outline-none transition-all focus:ring-4 focus:ring-brand-100";
 
   return (
     <div className="container-page py-10">
       <h1 className="font-display text-3xl font-bold text-ink">
-        Finaliser la commande
+        {t("checkout.title")}
       </h1>
       <p className="mt-2 text-ink-soft">
-        Remplissez vos coordonnées. Notre équipe vous appellera pour confirmer.
+        {t("checkout.subtitle")}
       </p>
 
       <form
@@ -119,21 +121,21 @@ export default function CheckoutPage() {
             <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-500 text-sm text-white">
               1
             </span>
-            Vos coordonnées
+            {t("checkout.contact.title")}
           </h2>
 
           <div className="mt-6 space-y-5">
             {/* Name */}
             <div>
               <label className="mb-1.5 block text-sm font-semibold text-ink">
-                Nom complet
+                {t("checkout.field.name")}
               </label>
               <div className="relative">
-                <User className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-soft" />
+                <User className="absolute start-4 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-soft" />
                 <input
                   value={form.name}
                   onChange={(e) => set("name", e.target.value)}
-                  placeholder="Ex : Mohamed Alaoui"
+                  placeholder={t("checkout.field.name.placeholder")}
                   className={`${inputBase} ${errors.name ? "border-rose-400" : "border-brand-100 focus:border-brand-300"}`}
                 />
               </div>
@@ -143,10 +145,10 @@ export default function CheckoutPage() {
             {/* Phone */}
             <div>
               <label className="mb-1.5 block text-sm font-semibold text-ink">
-                Téléphone
+                {t("checkout.field.phone")}
               </label>
               <div className="relative">
-                <Phone className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-soft" />
+                <Phone className="absolute start-4 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-soft" />
                 <input
                   value={form.phone}
                   onChange={(e) => set("phone", e.target.value)}
@@ -159,7 +161,7 @@ export default function CheckoutPage() {
                 <p className="mt-1 text-xs text-rose-500">{errors.phone}</p>
               ) : (
                 <p className="mt-1 text-xs text-ink-soft">
-                  Nous vous appellerons sur ce numéro pour confirmer.
+                  {t("checkout.field.phone.helper")}
                 </p>
               )}
             </div>
@@ -167,16 +169,16 @@ export default function CheckoutPage() {
             {/* City */}
             <div>
               <label className="mb-1.5 block text-sm font-semibold text-ink">
-                Ville
+                {t("checkout.field.city")}
               </label>
               <div className="relative">
-                <MapPin className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-soft" />
+                <MapPin className="absolute start-4 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-soft" />
                 <select
                   value={form.city}
                   onChange={(e) => set("city", e.target.value)}
                   className={`${inputBase} appearance-none ${errors.city ? "border-rose-400" : "border-brand-100 focus:border-brand-300"}`}
                 >
-                  <option value="">Choisissez votre ville</option>
+                  <option value="">{t("checkout.field.city.placeholder")}</option>
                   {MOROCCAN_CITIES.map((c) => (
                     <option key={c} value={c}>{c}</option>
                   ))}
@@ -188,16 +190,16 @@ export default function CheckoutPage() {
             {/* Address */}
             <div>
               <label className="mb-1.5 block text-sm font-semibold text-ink">
-                Adresse complète
+                {t("checkout.field.address")}
               </label>
               <div className="relative">
-                <Home className="absolute left-4 top-4 h-4 w-4 text-ink-soft" />
+                <Home className="absolute start-4 top-4 h-4 w-4 text-ink-soft" />
                 <textarea
                   value={form.address}
                   onChange={(e) => set("address", e.target.value)}
                   rows={3}
-                  placeholder="Quartier, rue, numéro, étage..."
-                  className={`w-full rounded-xl border bg-white py-3 pl-11 pr-4 text-sm outline-none transition-all focus:ring-4 focus:ring-brand-100 ${errors.address ? "border-rose-400" : "border-brand-100 focus:border-brand-300"}`}
+                  placeholder={t("checkout.field.address.placeholder")}
+                  className={`w-full rounded-xl border bg-white py-3 ps-11 pe-4 text-sm outline-none transition-all focus:ring-4 focus:ring-brand-100 ${errors.address ? "border-rose-400" : "border-brand-100 focus:border-brand-300"}`}
                 />
               </div>
               {errors.address && (
@@ -208,16 +210,16 @@ export default function CheckoutPage() {
             {/* Note */}
             <div>
               <label className="mb-1.5 block text-sm font-semibold text-ink">
-                Note (facultatif)
+                {t("checkout.field.note")}
               </label>
               <div className="relative">
-                <StickyNote className="absolute left-4 top-4 h-4 w-4 text-ink-soft" />
+                <StickyNote className="absolute start-4 top-4 h-4 w-4 text-ink-soft" />
                 <textarea
                   value={form.note}
                   onChange={(e) => set("note", e.target.value)}
                   rows={2}
-                  placeholder="Ex : Appeler après 18h"
-                  className="w-full rounded-xl border border-brand-100 bg-white py-3 pl-11 pr-4 text-sm outline-none transition-all focus:border-brand-300 focus:ring-4 focus:ring-brand-100"
+                  placeholder={t("checkout.field.note.placeholder")}
+                  className="w-full rounded-xl border border-brand-100 bg-white py-3 ps-11 pe-4 text-sm outline-none transition-all focus:border-brand-300 focus:ring-4 focus:ring-brand-100"
                 />
               </div>
             </div>
@@ -228,14 +230,14 @@ export default function CheckoutPage() {
             <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-500 text-sm text-white">
               2
             </span>
-            Mode de paiement
+            {t("checkout.payment.title")}
           </h2>
           <div className="mt-4 flex items-center gap-3 rounded-2xl border-2 border-brand-500 bg-brand-50 p-4">
             <Banknote className="h-6 w-6 text-brand-600" />
             <div>
-              <p className="font-semibold text-ink">Paiement à la livraison (COD)</p>
+              <p className="font-semibold text-ink">{t("checkout.payment.cod.title")}</p>
               <p className="text-sm text-ink-soft">
-                Payez en espèces quand vous recevez votre commande.
+                {t("checkout.payment.cod.text")}
               </p>
             </div>
           </div>
@@ -245,7 +247,7 @@ export default function CheckoutPage() {
         <aside className="lg:sticky lg:top-28 lg:self-start">
           <div className="rounded-card border border-brand-100 bg-white p-6 shadow-soft">
             <h2 className="font-display text-lg font-bold text-ink">
-              Votre commande
+              {t("checkout.summary.title")}
             </h2>
 
             <div className="mt-4 space-y-3">
@@ -264,7 +266,7 @@ export default function CheckoutPage() {
                         className="p-1"
                       />
                     </div>
-                    <span className="absolute -right-1.5 -top-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-brand-700 px-1 text-xs font-bold text-white">
+                    <span className="absolute -end-1.5 -top-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-brand-700 px-1 text-xs font-bold text-white">
                       {item.qty}
                     </span>
                   </div>
@@ -283,17 +285,17 @@ export default function CheckoutPage() {
 
             <dl className="mt-5 space-y-2.5 border-t border-brand-100 pt-4 text-sm">
               <div className="flex justify-between">
-                <dt className="text-ink-soft">Sous-total</dt>
+                <dt className="text-ink-soft">{t("common.subtotal")}</dt>
                 <dd className="font-semibold text-ink">{formatMAD(subtotal)}</dd>
               </div>
               <div className="flex justify-between">
-                <dt className="text-ink-soft">Livraison</dt>
+                <dt className="text-ink-soft">{t("common.delivery")}</dt>
                 <dd className="font-semibold text-ink">
-                  {delivery === 0 ? "Gratuite" : formatMAD(delivery)}
+                  {delivery === 0 ? t("common.free") : formatMAD(delivery)}
                 </dd>
               </div>
               <div className="flex justify-between border-t border-brand-100 pt-3">
-                <dt className="font-bold text-ink">Total à payer</dt>
+                <dt className="font-bold text-ink">{t("checkout.summary.totalToPay")}</dt>
                 <dd className="font-display text-xl font-extrabold text-brand-700">
                   {formatMAD(total)}
                 </dd>
@@ -305,18 +307,18 @@ export default function CheckoutPage() {
               disabled={submitting}
               className="mt-6 flex h-14 w-full items-center justify-center gap-2 rounded-full bg-brand-500 px-6 font-semibold text-white shadow-[var(--shadow-glow)] transition-all hover:-translate-y-0.5 hover:bg-brand-600 disabled:opacity-60"
             >
-              {submitting ? "Traitement…" : "Confirmer la commande"}
+              {submitting ? t("checkout.submit.processing") : t("checkout.submit.confirm")}
             </button>
 
             <div className="mt-4 space-y-2 text-xs text-ink-soft">
               <p className="flex items-center gap-2">
-                <Truck className="h-4 w-4 text-brand-500" /> Livraison partout au Maroc
+                <Truck className="h-4 w-4 text-brand-500" /> {t("checkout.trust.delivery")}
               </p>
               <p className="flex items-center gap-2">
-                <ShieldCheck className="h-4 w-4 text-brand-500" /> Garantie & retour 48h
+                <ShieldCheck className="h-4 w-4 text-brand-500" /> {t("checkout.trust.warranty")}
               </p>
               <p className="flex items-center gap-2">
-                <Lock className="h-4 w-4 text-brand-500" /> Vos données restent confidentielles
+                <Lock className="h-4 w-4 text-brand-500" /> {t("checkout.trust.privacy")}
               </p>
             </div>
           </div>

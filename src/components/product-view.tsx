@@ -20,10 +20,13 @@ import { Badge, toneForBadge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { useCart } from "@/context/cart-context";
 import { formatMAD, discountPercent, cn } from "@/lib/utils";
+import { useI18n } from "@/i18n/i18n-context";
+import { translateBadge } from "@/i18n/dictionary";
 
 export function ProductView({ product }: { product: Product }) {
   const router = useRouter();
   const { addItem } = useCart();
+  const { t, locale } = useI18n();
   const [activeImg, setActiveImg] = useState(0);
   const [qty, setQty] = useState(1);
   const [variant, setVariant] = useState(product.variants?.[0]);
@@ -103,12 +106,12 @@ export function ProductView({ product }: { product: Product }) {
       <div>
         <div className="flex flex-wrap gap-2">
           {product.badges.map((b) => (
-            <Badge key={b} tone={toneForBadge(b)}>{b}</Badge>
+            <Badge key={b} tone={toneForBadge(b)}>{translateBadge(locale, b)}</Badge>
           ))}
           {product.inStock ? (
-            <Badge tone="success"><CircleCheck className="h-3 w-3" /> En stock</Badge>
+            <Badge tone="success"><CircleCheck className="h-3 w-3" /> {t("common.inStock")}</Badge>
           ) : (
-            <Badge tone="neutral">Rupture</Badge>
+            <Badge tone="neutral">{t("common.outOfStock")}</Badge>
           )}
         </div>
 
@@ -122,7 +125,7 @@ export function ProductView({ product }: { product: Product }) {
         <div className="mt-3 flex items-center gap-2">
           <StarRating value={product.rating} size={18} />
           <span className="font-semibold text-ink">{product.rating}</span>
-          <span className="text-ink-soft">· {product.reviewCount} avis</span>
+          <span className="text-ink-soft">· {product.reviewCount} {t("common.reviews")}</span>
         </div>
 
         <p dir="auto" className="mt-4 text-ink-soft">
@@ -147,7 +150,7 @@ export function ProductView({ product }: { product: Product }) {
           <div className="mt-5 flex flex-wrap gap-2">
             {product.stages && (
               <span className="rounded-full bg-brand-50 px-3 py-1.5 text-sm font-medium text-brand-700">
-                {product.stages} étapes
+                {product.stages} {t("common.stages")}
               </span>
             )}
             {product.capacity && (
@@ -157,7 +160,7 @@ export function ProductView({ product }: { product: Product }) {
             )}
             {product.warranty && product.warranty !== "—" && (
               <span className="rounded-full bg-brand-50 px-3 py-1.5 text-sm font-medium text-brand-700">
-                Garantie {product.warranty}
+                {t("common.warranty")} {product.warranty}
               </span>
             )}
           </div>
@@ -166,7 +169,7 @@ export function ProductView({ product }: { product: Product }) {
         {/* Variants */}
         {product.variants && product.variants.length > 0 && (
           <div className="mt-6">
-            <p className="mb-2 text-sm font-semibold text-ink">Option</p>
+            <p className="mb-2 text-sm font-semibold text-ink">{t("product.optionLabel")}</p>
             <div className="flex flex-wrap gap-2">
               {product.variants.map((v) => (
                 <button
@@ -181,7 +184,7 @@ export function ProductView({ product }: { product: Product }) {
                 >
                   {v.label}
                   {v.priceDelta > 0 && (
-                    <span className="ml-1 text-xs text-ink-soft">
+                    <span className="ms-1 text-xs text-ink-soft">
                       +{formatMAD(v.priceDelta)}
                     </span>
                   )}
@@ -197,7 +200,7 @@ export function ProductView({ product }: { product: Product }) {
             <button
               onClick={() => setQty((q) => Math.max(1, q - 1))}
               className="flex h-12 w-12 items-center justify-center rounded-full text-brand-700 hover:bg-brand-50"
-              aria-label="Diminuer"
+              aria-label={t("product.qtyDecrease")}
             >
               <Minus className="h-4 w-4" />
             </button>
@@ -205,7 +208,7 @@ export function ProductView({ product }: { product: Product }) {
             <button
               onClick={() => setQty((q) => q + 1)}
               className="flex h-12 w-12 items-center justify-center rounded-full text-brand-700 hover:bg-brand-50"
-              aria-label="Augmenter"
+              aria-label={t("product.qtyIncrease")}
             >
               <Plus className="h-4 w-4" />
             </button>
@@ -219,26 +222,26 @@ export function ProductView({ product }: { product: Product }) {
             )}
           >
             {added ? (
-              <><Check className="h-5 w-5" /> Ajouté au panier</>
+              <><Check className="h-5 w-5" /> {t("common.added")}</>
             ) : (
-              <><ShoppingCart className="h-5 w-5" /> Ajouter au panier</>
+              <><ShoppingCart className="h-5 w-5" /> {t("common.addToCart")}</>
             )}
           </button>
         </div>
 
         <div className="mt-3 flex flex-wrap gap-3">
           <Button onClick={handleBuyNow} variant="dark" size="lg" className="flex-1">
-            <Banknote className="h-5 w-5" /> Commander (paiement à la livraison)
+            <Banknote className="h-5 w-5" /> {t("common.orderCod")}
           </Button>
           <a
             href={`https://wa.me/212634585463?text=${encodeURIComponent(
-              `Bonjour, je veux commander : ${product.name}`,
+              `${t("product.whatsappMessage")} ${product.name}`,
             )}`}
             target="_blank"
             rel="noopener noreferrer"
             className="flex h-14 items-center justify-center gap-2 rounded-full bg-[#25D366] px-6 font-semibold text-white transition hover:brightness-105"
           >
-            <MessageCircle className="h-5 w-5" /> WhatsApp
+            <MessageCircle className="h-5 w-5" /> {t("common.whatsapp")}
           </a>
         </div>
 
@@ -246,15 +249,15 @@ export function ProductView({ product }: { product: Product }) {
         <div className="mt-7 grid grid-cols-1 gap-3 rounded-card bg-brand-50/70 p-4 sm:grid-cols-3">
           <div className="flex items-center gap-2 text-sm">
             <Truck className="h-5 w-5 text-brand-500" />
-            <span className="text-ink-soft">Livraison rapide partout au Maroc</span>
+            <span className="text-ink-soft">{t("product.trust.delivery")}</span>
           </div>
           <div className="flex items-center gap-2 text-sm">
             <Banknote className="h-5 w-5 text-brand-500" />
-            <span className="text-ink-soft">Payez à la livraison</span>
+            <span className="text-ink-soft">{t("product.trust.cod")}</span>
           </div>
           <div className="flex items-center gap-2 text-sm">
             <ShieldCheck className="h-5 w-5 text-brand-500" />
-            <span className="text-ink-soft">Garantie & support</span>
+            <span className="text-ink-soft">{t("product.trust.warranty")}</span>
           </div>
         </div>
 

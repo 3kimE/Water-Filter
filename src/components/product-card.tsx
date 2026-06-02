@@ -9,8 +9,11 @@ import { Badge, toneForBadge } from "./ui/badge";
 import { StarRating } from "./star-rating";
 import { useCart } from "@/context/cart-context";
 import { cn, formatMAD, discountPercent } from "@/lib/utils";
+import { useI18n } from "@/i18n/i18n-context";
+import { translateBadge } from "@/i18n/dictionary";
 
 export function ProductCard({ product }: { product: Product }) {
+  const { t, locale } = useI18n();
   const { addItem } = useCart();
   const [added, setAdded] = useState(false);
   const off = discountPercent(product.price, product.oldPrice);
@@ -43,10 +46,10 @@ export function ProductCard({ product }: { product: Product }) {
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
           className="p-3 transition-transform duration-500 group-hover:scale-105"
         />
-        <div className="absolute left-3 top-3 z-10 flex flex-col gap-1.5">
+        <div className="absolute start-3 top-3 z-10 flex flex-col gap-1.5">
           {product.badges.map((b) => (
             <Badge key={b} tone={toneForBadge(b)}>
-              {b}
+              {translateBadge(locale, b)}
             </Badge>
           ))}
           {off && <Badge tone="sale">-{off}%</Badge>}
@@ -56,7 +59,7 @@ export function ProductCard({ product }: { product: Product }) {
       <div className="flex flex-1 flex-col p-4">
         {product.stages && (
           <span className="mb-1 text-xs font-semibold uppercase tracking-wide text-brand-400">
-            {product.stages} étapes
+            {t("product.stagesShort", { n: product.stages })}
             {product.capacity ? ` · ${product.capacity}` : ""}
           </span>
         )}
@@ -86,7 +89,7 @@ export function ProductCard({ product }: { product: Product }) {
 
           <button
             onClick={handleAdd}
-            aria-label="Ajouter au panier"
+            aria-label={t("common.addToCart")}
             className={cn(
               "flex h-11 w-11 items-center justify-center rounded-full text-white shadow-md transition-all active:scale-90",
               added ? "bg-emerald-500" : "bg-brand-500 hover:bg-brand-600",
