@@ -16,6 +16,7 @@ import { CategoryIcon } from "@/components/category-icon";
 import { StarRating } from "@/components/star-rating";
 import { Badge } from "@/components/ui/badge";
 import { CATEGORIES, getBestSellers } from "@/lib/mock-data";
+import { HeroGlass } from "@/components/hero-glass";
 import { getT } from "@/i18n/server";
 
 export default async function HomePage() {
@@ -120,11 +121,7 @@ export default async function HomePage() {
           <div className="relative mx-auto w-full max-w-md">
             <div className="relative aspect-square rounded-[2.5rem] bg-gradient-to-br from-brand-400 via-brand-500 to-brand-800 shadow-[var(--shadow-glow)]">
               <div className="absolute inset-0 flex items-center justify-center">
-                <Droplet
-                  className="h-44 w-44 animate-float text-white/90"
-                  strokeWidth={1.2}
-                  fill="rgba(255,255,255,0.18)"
-                />
+                <HeroGlass className="h-72 w-64 drop-shadow-xl" />
               </div>
               {/* floating cards */}
               <div className="absolute -start-4 top-10 flex items-center gap-2 rounded-2xl bg-white px-4 py-3 shadow-soft">
