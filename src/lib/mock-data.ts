@@ -74,15 +74,7 @@ export const PRODUCTS: Product[] = [
     "stock": 56,
     "bestSeller": true,
     "hue": 205,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/80_de592cd1-ea1e-4c92-8cea-f14b4064d6a0.jpg?v=1778416140",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/80.jpg?v=1778416140",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/80_fc6166de-0d4f-490d-a184-d073c31efc4b.jpg?v=1778416139",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/80_2d2c0a23-1db7-416c-9ce1-e727352db0f3.jpg?v=1778416140",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/80_3072995e-8886-44b2-8b8d-8e1a3f91c025.jpg?v=1778416140",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/80_17be5f8a-ace2-4bab-bfd5-4d7076e3e95b.jpg?v=1778416139",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/80_25aa9c83-d311-4155-8c49-b9c3520896f9.jpg?v=1778416140"
-    ],
+    "images": [],
     "features": [
       "الجهاز كاملاً مع سبعة فلاتر مثبتة وجاهزة للتركيب",
       "مضخة ألومنيوم عالية الأداء بسعة 80 غالون يومياً",
@@ -125,15 +117,7 @@ export const PRODUCTS: Product[] = [
     "stock": 13,
     "bestSeller": true,
     "hue": 205,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/100_FiltreaeauSafiPureOpenCase100GPD7.jpg?v=1778410649",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/Les7etapesdefiltrationSafiPuredufiltreasedimentsjusqu_aufiltrealcalin_2.jpg?v=1778410649",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/Les7etapesdefiltrationSafiPuredufiltreasedimentsjusqu_aufiltrealcalin.jpg?v=1778410649",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/100_FiltreaeauSafiPureOpenCase100GPDvuedefaceavecles7filtresapparents.jpg?v=1778410650",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/CotegauchedufiltreSafiPureOpenCasemontrantlesfiltressuperieursetlapompe_2.jpg?v=1778410649",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/CotegauchedufiltreSafiPureOpenCasemontrantlesfiltressuperieursetlapompe.jpg?v=1778410649",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/CotedroitdufiltreSafiPureOpenCaseaveclefiltreasedimentstransparentetlapompe.jpg?v=1778410650"
-    ],
+    "images": [],
     "features": [
       "الجهاز كاملاً مع سبعة فلاتر مثبتة",
       "مضخة ألومنيوم عالية الأداء بسعة 100 غالون يومياً",
@@ -176,13 +160,7 @@ export const PRODUCTS: Product[] = [
     "stock": 63,
     "bestSeller": true,
     "hue": 205,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/DSC06738.jpg?v=1770719683",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/2_66418433-2256-4dd2-8824-1044bdca0188.png?v=1770720033",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/3_9bdaf7ec-daaf-4074-a604-3724e41dad34.png?v=1770720033",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/4_beb88885-a041-4316-93a7-e35c7156ca9e.png?v=1770720032",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/1_9b569214-d808-4e49-8ed6-ef5183793567.png?v=1770720032"
-    ],
+    "images": [],
     "features": [
       "يوفّر تدفقًا سريعًا للماء النقي.",
       "مناسب للاستعمال اليومي للشرب، الطهي، القهوة، والشاي.",
@@ -222,9 +200,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 54,
     "hue": 205,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/kaq-u65-051_png.webp?v=1756084678"
-    ],
+    "images": [],
     "features": [
       "🔟 نظام تصفية فعال بـ10 مراحل للحصول على ماء نقي وخالٍ من أي شوائب أو ملوثات.",
       "🧠 شاشة رقمية تعرض نسبة TDS، حالة الفلاتر، وعدد اللترات المستهلكة.",
@@ -267,14 +243,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 14,
     "hue": 205,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/kaq-u05pro-021_png.webp?v=1756084453",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/kaq-u05pro-041_png.webp?v=1756084453",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/kaq-u05pro-051_png.webp?v=1756084453",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/kaq-u05pro-061_png.webp?v=1756084453",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/kaq-u05pro-daidien1_png.webp?v=1756084453",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/u05-pro_png.webp?v=1756084453"
-    ],
+    "images": [],
     "features": [
       "🔟 نظام تصفية بـ10 مراحل لإزالة الرواسب، الكلور، الأملاح، المعادن الثقيلة، والجراثيم.",
       "🛢️ خزان داخلي بسعة 4 غالون (حوالي 15 لتر) يضمن توفر الماء حتى عند انقطاع الكهرباء.",
@@ -314,11 +283,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 57,
     "hue": 205,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/1_c193a3c2-ad35-4c67-a7e6-cd8da1d622ce.png?v=1756048353",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/2_bd3af05c-9dac-4fc2-8fe1-08196f9f2ade.png?v=1756048353",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/3_f1c93ccb-ef6e-41a6-a862-a1347c5d3a39.png?v=1756048353"
-    ],
+    "images": [],
     "features": [
       "نظام تصفية متكامل بـ10 مراحل بتقنية SMAX الحديثة.",
       "خزان داخلي بسعة 4 غالون (حوالي 15 لتر) لضمان توفر الماء النقي دائمًا.",
@@ -361,12 +326,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 49,
     "hue": 205,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/3_14ccf9d0-c4a5-453e-b41d-466c554b73f9.png?v=1748642101",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/4_90b1db87-da4b-49fc-951f-45c6088814f7.png?v=1748642101",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/5_2448c9f5-f47a-4a80-8385-0825d7940018.png?v=1748642101",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/6_8b921b75-eaac-46db-b2bb-0a956364e3cf.png?v=1748642101"
-    ],
+    "images": [],
     "features": [
       "هيكل معدني وقاعدة نانومترية قوية وثابتة",
       "3 مراحل تمهيدية 10”: رواسب + كربون GAC + كربون CTO",
@@ -409,14 +369,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 18,
     "hue": 188,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/FILTREEAUosmoseur_15.png?v=1746800332",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/63_40ef173e-a3e2-4806-8e56-71cd7d4b5c6f.png?v=1746800349",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/64_f4a7ca4c-6db1-403f-b0af-728387123a6e.png?v=1746800349",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/65_b64c4e4a-6d13-4d9b-8e95-6acf9de2ffa5.png?v=1746800349",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/66_50b0c3a2-c36c-4614-af9c-8457ababd92b.png?v=1746800349",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/67_77449cf7-4ddb-461d-a959-87737abf29ff.png?v=1746800349"
-    ],
+    "images": [],
     "features": [
       "6 × فلتر PP 5 ميكرون (المرحلة 1): لإزالة الشوائب، الرمل، الطين، والصدأ – تغيير كل 3 أشهر",
       "1 × فلتر GAC (المرحلة 2): فحم نشط حبيبي لإزالة الكلور والطعم والرائحة – تغيير كل 6 أشهر",
@@ -456,12 +409,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 37,
     "hue": 188,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/87.png?v=1746798520",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/88.png?v=1746798520",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/89.png?v=1746798520",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/90.png?v=1746798520"
-    ],
+    "images": [],
     "features": [
       "فلتر PP 5 ميكرون – لإزالة الشوائب (المرحلة 1)",
       "فلتر GAC (فحم نشط حبيبي) – لامتصاص الكلور والروائح (المرحلة 2)",
@@ -504,10 +452,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 12,
     "hue": 218,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/FILTREEAUosmoseur_12.png?v=1746753345",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/323bcffd-73d5-45ee-8141-aad91b273d35.png?v=1746752894"
-    ],
+    "images": [],
     "features": [
       "فلتر ماء Micro بـ 6 مراحل (RO + إعادة معادن)",
       "صنبور أنيق + خزان ضغط",
@@ -550,10 +495,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 44,
     "hue": 205,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/2_f4ab49ba-af46-4924-8f9e-023c73574c10.png?v=1746748595",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/3_90a52341-5471-4d7a-a041-e2d7dbb1fe23.png?v=1746748595"
-    ],
+    "images": [],
     "features": [
       "فلتر Maestro بـ 6 مراحل فعّالة لتنقية المياه",
       "2 باك KIT 3 مراحل (PP + GAC + CTO) كهدية، تكفيك لأكثر من 12 شهر من الاستخدام المنتظم",
@@ -594,10 +536,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 17,
     "hue": 212,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/29_ae5d6956-58b3-4de7-9446-681fc1bd3f86.png?v=1744469217",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/30_bbf6379d-2895-4e20-9de8-404d955a9d94.png?v=1744469217"
-    ],
+    "images": [],
     "features": [
       "نظام تنقية بـ 5 مراحل فعالة",
       "هياكل (housing) مزدوجة بخاتم مانع للتسرب (Double O-ring)",
@@ -644,10 +583,7 @@ export const PRODUCTS: Product[] = [
     "stock": 19,
     "bestSeller": true,
     "hue": 195,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/57_36d882f3-f6e8-475b-8b8d-12916910556f.png?v=1744466881",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/58_f7fd2ed9-b36e-4dc8-81a6-41a47317e5fb.png?v=1744466881"
-    ],
+    "images": [],
     "features": [
       "يعتمد على 4 مراحل فعالة لتنقية الماء من الرواسب، الكلور، البكتيريا، والمعادن الثقيلة.",
       "سعة: 1 لتر",
@@ -688,10 +624,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 43,
     "hue": 195,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/58_12bca201-d51f-4a73-80da-b20b5925f9b4.png?v=1744466533",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/59_9c618af4-4703-45c3-9fca-f030c726aa8f.png?v=1744466533"
-    ],
+    "images": [],
     "features": [
       "3 فلاتر أولية SMAX عالية الكفاءة لإزالة الرواسب، الكلور، والطعم الغير مرغوب فيه",
       "غشاء RO احترافي 100 GPD لإزالة الأملاح، المعادن الثقيلة، والميكروبات بنسبة تفوق 99%",
@@ -735,11 +668,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 41,
     "hue": 195,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/57_3c7a6d21-82de-4e6e-bd5a-fc7d3efd7731.png?v=1744465953",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/58_fdeee6ed-7bef-4d74-b35c-702904056e3a.png?v=1744465953",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/59_957abd44-deae-48c5-a628-b681d8ccd5c6.png?v=1744465953"
-    ],
+    "images": [],
     "features": [
       "خزان بسعة 1 لتر",
       "درجة حرارة تتراوح بين 85 و95 درجة مئوية",
@@ -781,12 +710,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 41,
     "hue": 195,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/57_32cdfede-9460-4147-ae20-faec7537c005.png?v=1744465509",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/58_70b55f4a-1c27-48d7-ac02-887b1c7139f8.png?v=1744465509",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/59_3738ef4e-7da0-400b-b299-e2882a9202eb.png?v=1744465509",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/60_cfdab721-97f8-4f87-a922-58a214a8a651.png?v=1744465509"
-    ],
+    "images": [],
     "features": [
       "💧 3 صنابير مستقلة للماء الساخن، البارد، والعادي",
       "🔥 نظام تسخين قوي بدرجة حرارة تصل إلى 95°C",
@@ -822,10 +746,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 45,
     "hue": 188,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/57_f2d50900-d25c-4bf0-9c75-d187b2cb9fa9.png?v=1744464783",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/58_99ed947d-2e3f-4e2b-aedd-f86a72f5e61e.png?v=1744464782"
-    ],
+    "images": [],
     "features": [
       "فلتر GAC-T33: لتحسين الطعم والرائحة.",
       "فلتر المعادن (Mineral): يضيف الكالسيوم والمغنزيوم للماء.",
@@ -864,10 +785,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 61,
     "hue": 188,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/57_675fc1fa-87df-4ffc-a1e3-7965655868a7.png?v=1744463760",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/58_215032dc-f5b7-4318-b6ed-f0b4d96ff17f.png?v=1744463760"
-    ],
+    "images": [],
     "features": [
       "تحسين طعم الماء بعد التصفية",
       "إزالة الروائح الغير مرغوب فيها",
@@ -902,10 +820,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 61,
     "hue": 188,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/65_28a781af-fdb8-43b2-92df-43a9bd6bbe16.png?v=1744426695",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/66_e97aad8a-9998-446d-b2d2-8afaefcfb4c3.png?v=1744426696"
-    ],
+    "images": [],
     "features": [
       "رفع درجة قلوية الماء (pH)",
       "إضافة معادن ضرورية لصحة الجسم",
@@ -940,10 +855,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 35,
     "hue": 188,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/65_cd775a14-aeae-4d89-8130-a8f5db233b8d.png?v=1744426525",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/66_f66b450c-02af-4b62-b586-83f897fe12a5.png?v=1744426525"
-    ],
+    "images": [],
     "features": [
       "تنقية أولية للماء من الرواسب والمواد العالقة",
       "حماية غشاء الممبران والفلاتر التالية",
@@ -979,10 +891,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 48,
     "hue": 188,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/65_98946e05-1c9b-4ce3-be78-cc4d70fbbb81.png?v=1744426233",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/66_e418737e-8c15-47e6-a5b2-fd88952bcf72.png?v=1744426233"
-    ],
+    "images": [],
     "features": [
       "تصفية دقيقة جداً للماء على المستوى الجزيئي",
       "إزالة الشوائب والأملاح الزائدة والمواد الضارة",
@@ -1022,10 +931,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 17,
     "hue": 188,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/65_68e0aa8c-eff3-42e3-8119-bc2569a928d4.png?v=1744426025",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/66_7fd3d167-2a6d-4ea8-b96e-6066018a353b.png?v=1744426025"
-    ],
+    "images": [],
     "features": [
       "إزالة الأملاح الزائدة، المعادن الثقيلة، المواد الكيميائية، والبكتيريا",
       "يُستخدم في المرحلة الرابعة كنواة التصفية الدقيقة في الجهاز",
@@ -1065,12 +971,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 13,
     "hue": 188,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/65_b4ebf7ed-d33f-4f43-be4b-18aa4366b080.png?v=1744425792",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/66_7bf0d009-9dd4-40ba-8749-4e0be0bff083.png?v=1744425792",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/67_42abf12f-27b9-4c13-9285-88477365b8e2.png?v=1744425792",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/68_3bdfbdc8-04da-4254-9828-3b825587618e.png?v=1744425792"
-    ],
+    "images": [],
     "features": [
       "تصميم JF Inline سهل التركيب والتبديل بدون أدوات",
       "مثالي لأجهزة الأوسموزور ذات التصميم العصري أو المدمج",
@@ -1108,10 +1009,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 36,
     "hue": 188,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/65_7546df26-2f78-4514-9215-df6ccb3b9b21.png?v=1744425111",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/66_656bd4a4-b071-4a33-b930-16bbc78517c7.png?v=1744425111"
-    ],
+    "images": [],
     "features": [
       "إزالة عالية للأملاح والملوثات (أكثر من 95%)",
       "تنقية دقيقة باستخدام تكنولوجيا RO",
@@ -1151,10 +1049,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 19,
     "hue": 188,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/64_84dc6d93-2ed3-45cc-8230-99d9372531cb.png?v=1744424894",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/65_5bb7bb67-58f0-445a-8cba-8c38f623892a.png?v=1744424894"
-    ],
+    "images": [],
     "features": [
       "تصفية دقيقة للماء على المستوى الجزيئي",
       "إزالة الأملاح والملوثات بنسبة عالية",
@@ -1194,10 +1089,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 19,
     "hue": 188,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/64_e425d582-cb5b-43e1-a975-c6c8e430e3ea.png?v=1744424518",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/65_0dd099b0-7c51-44df-a53a-7bbc372d7f80.png?v=1744424518"
-    ],
+    "images": [],
     "features": [
       "إزالة أكثر من 95% من الأملاح والملوثات الدقيقة",
       "تصفية دقيقة بجودة احترافية (Reverse Osmosis)",
@@ -1236,10 +1128,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 39,
     "hue": 188,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/59_26acea59-e13d-4331-9470-b0f1a57e8102.png?v=1744424297",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/60_23ecdb81-1c34-45fc-8abd-c354a235b99a.png?v=1744424297"
-    ],
+    "images": [],
     "features": [
       "رفع درجة قلوية الماء (pH)",
       "تقوية الجسم بمعادن مفيدة بعد التصفية القوية",
@@ -1274,10 +1163,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 45,
     "hue": 188,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/59_7d599e60-7a7d-49a3-8890-9d78b479f824.png?v=1744416566",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/60_c9736be0-4ce0-4dce-8abc-e0efecb2d200.png?v=1744416566"
-    ],
+    "images": [],
     "features": [
       "يضيف معادن طبيعية وصحية للماء",
       "يُوازن الحموضة (pH) ويُحسّن جودة الماء للشرب",
@@ -1312,10 +1198,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 54,
     "hue": 188,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/60_ce3f2426-f4c9-4d29-9f2a-fce289214374.png?v=1744415485",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/59_978652af-4b6f-4cb2-b8f7-f346838e1591.png?v=1744415485"
-    ],
+    "images": [],
     "features": [
       "إزالة أي طعم أو رائحة غير مرغوبة بعد التصفية",
       "يُركب بعد الخزان، قبل خروج الماء من الحنفية",
@@ -1350,11 +1233,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 42,
     "hue": 188,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/69_f11f8abc-5c7a-4555-9de6-50e682165471.png?v=1743990876",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/70_5ac0f0cd-e693-4ca5-b56f-d81b893a106f.png?v=1743990876",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/68_e7f5b37b-be9b-4e7d-b1aa-9bba8d64ec61.png?v=1743990876"
-    ],
+    "images": [],
     "features": [
       "مقاس عالمي (10 إنش) – متوافق مع أغلب الهياكل المفتوحة.",
       "مناسب للاستعمال المنزلي اليومي.",
@@ -1388,12 +1267,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 22,
     "hue": 188,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/78_45c27919-b059-415a-8c8e-ac42fd728a5d.png?v=1743989468",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/79_4c07f2e0-3b39-4e39-975d-c2f10b9b74c6.png?v=1743989468",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/80_0927c98d-0e02-412a-9230-828fe5b0b050.png?v=1743989468",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/81.png?v=1743989468"
-    ],
+    "images": [],
     "features": [
       "مناسب لأجهزة تصفية الماء المنزلية (أنكاستري / أوسموزور)",
       "سهل التركيب ولا يحتاج إلى تدخل تقني",
@@ -1433,11 +1307,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 11,
     "hue": 205,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/77_ca98260e-52c0-4ccb-98f8-df5f47de7273.png?v=1743988631",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/78_dd32a366-77d6-46a6-835d-7ad762fe234f.png?v=1743988631",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/FILTRE_EAU_osmoseur_3.png?v=1743988849"
-    ],
+    "images": [],
     "features": [
       "فلتر الكربون الحبيبي (GAC):يمتص الكلور والروائح غير المرغوبة والمواد الكيميائية الكبيرة، مما يعمل على تحسين نكهة الماء.",
       "غشاء التناضح العكسي (RO):يفصل الأملاح والمعادن الثقيلة والبكتيريا والفيروسات عن الماء، مما ينتج ماءً نقيًا بنسبة عالية.",
@@ -1481,10 +1351,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 39,
     "hue": 205,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/79.png?v=1743985838",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/80.png?v=1743985838"
-    ],
+    "images": [],
     "features": [
       "فلتر الرواسب:يزيل الجسيمات الكبيرة مثل الرمل والغبار والمواد الصلبة العالقة، مما يُحسن جودة الماء للمراحل التالية.",
       "غشاء التناضح العكسي (RO):يفصل الأملاح والمعادن الثقيلة والبكتيريا والفيروسات عن الماء، ليُنتج ماءً نقيًا بنسبة عالية.",
@@ -1528,10 +1395,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 61,
     "hue": 205,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/77.png?v=1743975330",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/78.png?v=1743975330"
-    ],
+    "images": [],
     "features": [
       "تنقية شاملة: يزيل النظام الشوائب والملوثات الكيميائية والبيولوجية لضمان ماء شرب نقي وصحي.",
       "تحسين الطعم: يعمل على تحسين نكهة الماء وإزالة الكلور والروائح غير المرغوبة.",
@@ -1571,9 +1435,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 8,
     "hue": 205,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/FILTREEAUosmoseur.png?v=1743917817"
-    ],
+    "images": [],
     "features": [
       "فلتر الكربون المضغوط (CTO):يُزيل الملوثات العضوية والمواد الكيميائية الدقيقة المتبقية بعد إزالة الرواسب والكلور.",
       "غشاء التناضح العكسي (RO):يعمل على إزالة الأملاح والمعادن الثقيلة والبكتيريا والفيروسات، ليُنتج ماءً نقيًا بنسبة عالية.",
@@ -1617,11 +1479,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 21,
     "hue": 205,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/70_71713a60-35f1-437e-bcc5-46edd70b3a9e.png?v=1743915369",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/72.png?v=1743915369",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/71.png?v=1743915369"
-    ],
+    "images": [],
     "features": [
       "المرحلة النهائية (قد تكون تعقيم إضافي أو تعديل إضافي للماء):",
       "تقنية التناضح العكسي عالية الكفاءة: يُزيل الملوثات بدقة، بما في ذلك الأملاح والمعادن الثقيلة والجراثيم.",
@@ -1666,12 +1524,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 49,
     "hue": 205,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/OSMOSEUR-KAROFI-10-ETAPE--1320x1320.png?v=1756032921",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/67.png?v=1756032921",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/Untitled_design_-_2025-08-24T111354.763.png?v=1756032921",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/68_3be480f6-1baa-44e8-8620-7f8378449518.png?v=1756032921"
-    ],
+    "images": [],
     "features": [
       "فلتر الرواسب:يُزيل الجسيمات الكبيرة مثل الرمل والغبار والمواد الصلبة العالقة، مما يُحسّن جودة الماء للمراحل التالية.",
       "فلتر الكربون الحبيبي (GAC):يمتص الكلور والروائح غير المرغوبة والمواد الكيميائية الكبيرة، مما يُحسن من نكهة الماء.",
@@ -1718,9 +1571,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 64,
     "hue": 205,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/38.png?v=1743913905"
-    ],
+    "images": [],
     "features": [
       "فلتر الكربون المضغوط (CTO):يُزيل الملوثات العضوية والمواد الكيميائية الدقيقة التي قد تبقى بعد إزالة الرواسب والكلور.",
       "فلتر تحسين الطعم (Post Carbon):يُحسن من الطعم النهائي للماء بعد التناضح العكسي ويُزيل أي بقايا طعم غير مرغوب فيه.",
@@ -1763,11 +1614,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 13,
     "hue": 205,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/69.png?v=1756034556",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/68.png?v=1756034556",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/70.png?v=1743913461"
-    ],
+    "images": [],
     "features": [
       "فلتر الرواسب:يُزيل الجسيمات الكبيرة مثل الرمل والغبار والمواد العالقة لتحسين جودة الماء.",
       "فلتر الكربون الحبيبي (GAC):يمتص الكلور والروائح غير المرغوبة والمواد الكيميائية الكبيرة، مما يُحسن من طعم الماء.",
@@ -1806,11 +1653,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 8,
     "hue": 205,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/65_80713664-74f0-4d5f-bf3a-ccef0f0c1fff.png?v=1743911971",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/64_c43ec269-5780-4fdc-aaf6-4c1774008bb7.png?v=1743911971",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/66.png?v=1743911971"
-    ],
+    "images": [],
     "features": [
       "ماء نقي وصحي: إزالة فعّالة للملوثات والأملاح والمعادن الثقيلة.",
       "تحسين الطعم: نظام متكامل يعمل على تحسين نكهة الماء ليصبح طعمه طبيعيًا ومنعشًا.",
@@ -1847,11 +1690,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 52,
     "hue": 205,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/63.png?v=1743911351",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/64.png?v=1743911351",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/65.png?v=1743911351"
-    ],
+    "images": [],
     "features": [
       "فلتر الكربون المضغوط (CTO):يُزيل الملوثات العضوية والمواد الكيميائية الدقيقة المتبقية، مما يضمن نقاءً إضافيًا للماء.",
       "تنقية شاملة: يزيل النظام الشوائب والملوثات الكيميائية والبيولوجية، مما يوفر ماءً نقيًا وصحيًا.",
@@ -1894,12 +1733,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 42,
     "hue": 205,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/59.png?v=1743909694",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/60.png?v=1743909694",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/61.png?v=1743909694",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/62.png?v=1743909694"
-    ],
+    "images": [],
     "features": [
       "فلتر الكربون الحبيبي:يمتص الكلور والروائح غير المرغوبة، ويعمل على تحسين نكهة الماء وتقليل المواد الكيميائية الضارة.",
       "غشاء التناضح العكسي (RO):يفصل الأملاح والمعادن الثقيلة والبكتيريا والفيروسات عن الماء، فيُنتج ماءً نقيًا بنسبة عالية.",
@@ -1939,10 +1773,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 48,
     "hue": 205,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/57_60c54171-cf60-4247-97c9-c27af6992f73.png?v=1743908620",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/56_0a7235f7-9607-4a17-85b4-9143825c9869.png?v=1743908619"
-    ],
+    "images": [],
     "features": [
       "فلتر الكربون الحبيبي:يمتص الكلور والروائح غير المرغوبة، مما يُحسّن من نكهة الماء ويقلل من الملوثات الكيميائية.",
       "فلتر تحسين الطعم:يُحسّن نكهة الماء النهائية بعد عملية التناضح العكسي، مما يجعله منعشًا وطبيعي الطعم.",
@@ -1987,11 +1818,7 @@ export const PRODUCTS: Product[] = [
     "stock": 33,
     "bestSeller": true,
     "hue": 205,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/53_ab489fc9-4def-48ee-b757-15ce34c0f40f.png?v=1743907250",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/55_1cf21202-9583-4c6f-be73-48c6a4527151.png?v=1743907251",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/54_27b5a5b5-eeea-4579-91a7-a91817c8666c.png?v=1743907251"
-    ],
+    "images": [],
     "features": [
       "فلتر الرواسب:يُزيل الجسيمات الكبيرة مثل الرمل والغبار والمواد الصلبة العالقة، مما يُحسّن جودة الماء للمراحل التالية.",
       "فلتر الكربون الحبيبي (GAC):يمتص الكلور والروائح غير المرغوبة، مما يُحسن من طعم الماء ويقلل من المواد الكيميائية الضارة.",
@@ -2034,13 +1861,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 65,
     "hue": 205,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/55_2be54860-ebe8-476b-b076-bb0c4d165b2f.png?v=1743906428",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/57.png?v=1743906429",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/54_5a8a1eb2-f38e-4918-8b56-511fb426873e.png?v=1743906429",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/56.png?v=1743906429",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/58.png?v=1743906429"
-    ],
+    "images": [],
     "features": [
       "فلتر الرواسب: يقوم بإزالة الشوائب الكبيرة مثل الرمل والغبار والمواد العالقة لتحضير الماء للمراحل التالية.",
       "فلتر الكربون الحبيبي: يمتص الكلور والروائح غير المرغوبة، مما يحسن من نكهة الماء.",
@@ -2083,11 +1904,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 42,
     "hue": 205,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/54.png?v=1743894701",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/53.png?v=1743894701",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/55.png?v=1743894637"
-    ],
+    "images": [],
     "features": [
       "فلتر الرواسب (PP 5 µm):يُزيل الأتربة والرمل والمواد الصلبة العالقة لتحسين جودة الماء قبل المراحل التالية.",
       "فلتر الكربون الحبيبي (GAC):يمتص الكلور والروائح غير المرغوبة، مما يُحسّن من نكهة الماء.",
@@ -2130,11 +1947,7 @@ export const PRODUCTS: Product[] = [
     "stock": 23,
     "bestSeller": true,
     "hue": 205,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/50_32d7361a-ae1e-46b9-9025-438303d72b5a.png?v=1743893531",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/51_6ce4996c-2f39-4713-b24b-6f995725bf6c.png?v=1743893531",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/52.png?v=1743893531"
-    ],
+    "images": [],
     "features": [
       "فلتر الرواسب (PP 5 ميكرون):يُزيل الشوائب الكبيرة مثل الرمل والغبار والمواد العالقة.",
       "فلتر الكربون الحبيبي (GAC):يمتص الكلور والروائح غير المرغوبة، مما يُحسّن من نكهة الماء.",
@@ -2177,11 +1990,7 @@ export const PRODUCTS: Product[] = [
     "stock": 63,
     "bestSeller": true,
     "hue": 205,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/49.png?v=1743890017",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/50.png?v=1743890017",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/51.png?v=1743890017"
-    ],
+    "images": [],
     "features": [
       "فلتر الكربون المضغوط (CTO):يُزيل الملوثات العضوية والمواد الكيميائية الدقيقة التي قد تبقى بعد المراحل السابقة.",
       "فلتر تحسين الطعم (Post Carbon):يُحسن من نكهة الماء بعد عملية التنقية العميقة، مما يجعل الماء منعشاً وصالحاً للشرب.",
@@ -2224,10 +2033,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 10,
     "hue": 205,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/47.png?v=1743888474",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/48.png?v=1743888474"
-    ],
+    "images": [],
     "features": [
       "فلتر الرواسب (5 ميكرون):يزيل الشوائب مثل الرمل، الطين، والصدأ.",
       "فلتر الكربون الحبيبي (GAC):يمتص الكلور والطعم والرائحة الكريهة.",
@@ -2267,13 +2073,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 63,
     "hue": 205,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/14_a299b427-d24b-40db-9ec5-e3ceea0fd569.png?v=1743887372",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/11_9f836974-748f-47f9-91a1-13ca9f25a657.png?v=1743887372",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/13_28d13748-c95f-418d-9d7d-bb2a22163c31.png?v=1743887373",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/15_75dc2309-f6b5-4738-9f7f-8b5fd6dff8db.png?v=1743887373",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/12_f02ed32e-bba8-4c18-8ec7-3d30e6266c2c.png?v=1743887372"
-    ],
+    "images": [],
     "features": [
       "فلتر الرواسب (PP 5 ميكرون – 12\"): يزيل الرمل، الأتربة، والمواد العالقة",
       "فلتر الكربون الحبيبي (GAC – 12\"): لامتصاص الكلور والرائحة الكريهة",
@@ -2316,11 +2116,7 @@ export const PRODUCTS: Product[] = [
     "stock": 42,
     "bestSeller": true,
     "hue": 205,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/3_88d1c800-d065-4c50-bf78-47d8295ffe17.png?v=1743886481",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/4_772021df-58ac-443e-8189-d51ac1f8a56d.png?v=1743886481",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/5_9b5e3842-53c5-4569-9bbe-4fd44ed3a117.png?v=1743886481"
-    ],
+    "images": [],
     "features": [
       "فلتر الرواسب 5 ميكرون – 12\": لإزالة الشوائب مثل الرمل والغبار",
       "فلتر الكربون الحبيبي (GAC) – 12\": لإزالة الكلور والطعم والرائحة",
@@ -2363,9 +2159,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 33,
     "hue": 205,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/37.png?v=1743884623"
-    ],
+    "images": [],
     "features": [
       "فلتر الشوائب (5 ميكرون): لإزالة الرمل، الغبار، والمواد العالقة",
       "فلتر الكربون الحبيبي: يمتص الكلور والطعم والرائحة الكريهة",
@@ -2405,12 +2199,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 44,
     "hue": 205,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/42_1a563454-d054-4c69-bda4-b819b0ed4c95.png?v=1743882572",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/41_dead80eb-9344-4c6d-9cb6-fe812554d8e0.png?v=1743882572",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/43_02557e3b-5d9f-4a59-8c3f-81baa5cb1a7f.png?v=1743882572",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/44.png?v=1743882572"
-    ],
+    "images": [],
     "features": [
       "فلتر الرواسب الدقيقة (5 ميكرون): لإزالة الرمل، الصدأ، والغبار",
       "فلتر الكربون الحبيبي: يمتص الكلور والطعم والرائحة غير المرغوب فيها",
@@ -2450,12 +2239,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 34,
     "hue": 205,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/40.png?v=1743881482",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/42.png?v=1743881482",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/43.png?v=1743881482",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/41.png?v=1743881482"
-    ],
+    "images": [],
     "features": [
       "فلتر الشوائب: لإزالة الأتربة، الرمل، والمواد العالقة",
       "فلتر الكربون الحبيبي: لامتصاص الكلور والطعم غير الطبيعي",
@@ -2498,10 +2282,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 8,
     "hue": 205,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/12_6574fd58-f6b7-4d51-bc38-c355a468624f.png?v=1743880248",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/13_d3708601-7c6d-4b44-afc3-22f426713910.png?v=1743880248"
-    ],
+    "images": [],
     "features": [
       "فلتر الشوائب: يزيل الأتربة، الرمل، والمواد العالقة",
       "فلتر كربوني حبيبي: يمتص الكلور والطعم غير الطبيعي",
@@ -2544,11 +2325,7 @@ export const PRODUCTS: Product[] = [
     "stock": 49,
     "bestSeller": true,
     "hue": 205,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/9_4bfb72cb-8be9-43ab-bc09-d9ca89791f98.png?v=1743804194",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/11_9c1bc113-ee69-4152-9d5a-da24156bb330.png?v=1743804680",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/10_0becaa6d-2b99-47dd-bf5d-9f0770b6e8b6.png?v=1743804680"
-    ],
+    "images": [],
     "features": [
       "إزالة الشوائب: فلتر أولي يُزيل الأتربة والرمال والمواد العالقة",
       "إزالة الكلور والرائحة: فلتر كربوني حبيبي يمتص الكلور والطعم غير المرغوب فيه",
@@ -2587,9 +2364,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 12,
     "hue": 218,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/34.png?v=1743801404"
-    ],
+    "images": [],
     "features": [
       "يُوفر ماء نقي بكميات كبيرة دون الحاجة للتصفية الفورية",
       "يُقلل من استهلاك المضخة (pompe) ويرفع عمرها الافتراضي",
@@ -2624,9 +2399,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 37,
     "hue": 218,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/33.png?v=1743800953"
-    ],
+    "images": [],
     "features": [
       "يُوفر كمية ماء كافية لعائلة كبيرة أو مكان عمل",
       "يُقلل من عدد مرات تشغيل المضخة ويحافظ على عمرها",
@@ -2661,9 +2434,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 24,
     "hue": 218,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/32.png?v=1743800806"
-    ],
+    "images": [],
     "features": [
       "تخزين أكبر لماء الشرب مقارنة بالخزانات الصغيرة",
       "تصميم بلاستيكي خفيف وسهل النقل والتركيب",
@@ -2698,9 +2469,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 35,
     "hue": 218,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/31.png?v=1743800572"
-    ],
+    "images": [],
     "features": [
       "يُخزن كمية أكبر من الماء النقي للاستخدام المتكرر",
       "يُوفر ضغط مستقر حتى مع أكثر من نقطة توزيع",
@@ -2735,9 +2504,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 24,
     "hue": 218,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/30.png?v=1743796964"
-    ],
+    "images": [],
     "features": [
       "يُوفر الماء مباشرة دون الحاجة لانتظار التصفية",
       "يُحافظ على ضغط مستقر داخل النظام",
@@ -2772,9 +2539,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 22,
     "hue": 218,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/29.png?v=1743796005"
-    ],
+    "images": [],
     "features": [
       "يُظهر نقاء أو تلوّث الماء خلال ثوانٍ قليلة",
       "لا يحتاج إلى خبرة – يُستعمل بسهولة حتى في المنزل",
@@ -2809,9 +2574,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 66,
     "hue": 218,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/28.png?v=1743795784"
-    ],
+    "images": [],
     "features": [
       "يُمكنك من مراقبة أداء الفلتر أو الممبرين بدقة",
       "يكشف بسرعة إذا كان الماء صالح للشرب أو يحتاج صيانة",
@@ -2847,9 +2610,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 54,
     "hue": 218,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/27.png?v=1743795196"
-    ],
+    "images": [],
     "features": [
       "يُركب بسهولة مع الممبرين القياسي 1812",
       "يضمن عزل محكم لمنع تسرب الماء",
@@ -2888,9 +2649,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 42,
     "hue": 218,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/26.png?v=1743795046"
-    ],
+    "images": [],
     "features": [
       "يُركب بسهولة في أنظمة الفلترة المنزلية",
       "مقاوم للتآكل والرطوبة – مثالي للمطابخ المغربية",
@@ -2925,9 +2684,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 17,
     "hue": 218,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/25.png?v=1743794884"
-    ],
+    "images": [],
     "features": [
       "يُمكنك من رؤية حالة الفلتر الداخلي بكل سهولة",
       "يُساعد على تغيير الفلتر في الوقت المناسب",
@@ -2963,9 +2720,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 67,
     "hue": 218,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/24.png?v=1743794577"
-    ],
+    "images": [],
     "features": [
       "يُوقف المضخة تلقائيًا عند امتلاء الخزان",
       "يمنع الضغط الزائد والتلف المبكر للمضخة",
@@ -3005,9 +2760,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 44,
     "hue": 218,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/23.png?v=1743794418"
-    ],
+    "images": [],
     "features": [
       "تحسين جودة التصفية وإنتاج ماء نقي أكثر",
       "الحفاظ على ضغط مثالي للممبرين",
@@ -3046,9 +2799,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 15,
     "hue": 218,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/22.png?v=1743793670"
-    ],
+    "images": [],
     "features": [
       "يُتيح فتح أو غلق تدفّق الماء بسرعة",
       "يُستخدم عند الصيانة أو إفراغ النظام",
@@ -3083,9 +2834,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 12,
     "hue": 218,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/21.png?v=1743793520"
-    ],
+    "images": [],
     "features": [
       "يسمح بالتحكم اليدوي في الماء الخارج من الخزان",
       "يُركب بسهولة على الخزانات المعدنية القياسية",
@@ -3120,9 +2869,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 56,
     "hue": 218,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/20.png?v=1743793353"
-    ],
+    "images": [],
     "features": [
       "يمنع رجوع الماء من الخزان نحو الممبرين",
       "يُساعد في الحفاظ على تدفق مستقر وآمن",
@@ -3157,9 +2904,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 11,
     "hue": 218,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/19.png?v=1743793201"
-    ],
+    "images": [],
     "features": [
       "تركب بسهولة مع جميع أنواع فلاتر الماء",
       "تُوفر تحكم كامل في إدخال الماء للنظام",
@@ -3194,10 +2939,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 36,
     "hue": 218,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/17.png?v=1743793010",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/18.png?v=1743793017"
-    ],
+    "images": [],
     "features": [
       "يسهل تركيب الأنابيب في الأماكن الضيقة أو الزوايا",
       "يمنع انثناء أو التواء الأنابيب",
@@ -3232,9 +2974,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 55,
     "hue": 218,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/16.png?v=1743792776"
-    ],
+    "images": [],
     "features": [
       "تضمن ربط آمن ومستقر بين مصدر الماء والنظام",
       "تحكم كامل في فتح أو غلق الماء عند الحاجة",
@@ -3268,9 +3008,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 46,
     "hue": 218,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/15.png?v=1743792604"
-    ],
+    "images": [],
     "features": [
       "يُمكّنك من توصيل خط ماء واحد إلى جهازين مختلفين",
       "يُستخدم بكثرة في ربط الفلتر مع صنبور ماء نقي وآلة القهوة أو الثلاجة",
@@ -3305,9 +3043,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 59,
     "hue": 218,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/14.png?v=1743792415"
-    ],
+    "images": [],
     "features": [
       "يمنع رجوع الماء من الخزان نحو الممبرين",
       "يحمي النظام من التلف الناتج عن الضغط العكسي",
@@ -3342,9 +3078,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 19,
     "hue": 218,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/13.png?v=1743792182"
-    ],
+    "images": [],
     "features": [
       "تُستخدم لتقسيم خط الماء بسهولة وفعالية",
       "يُمكنك بها ربط ثلاث مكونات في نظام واحد (مثلاً: فلتر + صنبور + آلة قهوة)",
@@ -3379,10 +3113,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 38,
     "hue": 218,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/11.png?v=1743791840",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/12.png?v=1743791850"
-    ],
+    "images": [],
     "features": [
       "تقسيم خط ماء واحد إلى اتجاهين",
       "ربط ثلاث أجهزة معاً (مثلاً: فلتر + صنبور + ثلاجة)",
@@ -3418,9 +3149,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 22,
     "hue": 218,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/10.png?v=1743791557"
-    ],
+    "images": [],
     "features": [
       "يمنع رجوع الماء نحو الممبرين",
       "يُحافظ على الاتجاه الصحيح لتدفق الماء",
@@ -3459,9 +3188,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 61,
     "hue": 218,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/9.png?v=1743791355"
-    ],
+    "images": [],
     "features": [
       "رفع كفاءة الفلتر",
       "إطالة عمر الممبرين",
@@ -3496,9 +3223,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 55,
     "hue": 218,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/8.png?v=1743790558"
-    ],
+    "images": [],
     "features": [
       "النوع: أنبوب توصيل مرن – tuyau flexible pour filtre eau",
       "الطول: 5 متر",
@@ -3533,9 +3258,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 49,
     "hue": 218,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/7.png?v=1743787451"
-    ],
+    "images": [],
     "features": [
       "النوع: حساس ضغط مرتفع – Pressostat haute pression",
       "التركيب: Quick Connect 1/4\" – سهل التركيب بدون أدوات",
@@ -3570,9 +3293,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 51,
     "hue": 218,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/6.png?v=1743786922"
-    ],
+    "images": [],
     "features": [
       "النوع: حساس ضغط منخفض – Pressostat basse pression",
       "نظام التركيب: Quick Connect 1/4\" – سهل التركيب بدون أدوات",
@@ -3607,9 +3328,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 15,
     "hue": 218,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/5.png?v=1743786542"
-    ],
+    "images": [],
     "features": [
       "النوع: صمّام إغلاق تلقائي – Shut-Off Valve",
       "التوصيل: 4 منافذ (مدخل ومخرج للماء النقي + مدخل ومخرج للماء المغذي)",
@@ -3645,9 +3364,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 53,
     "hue": 218,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/4.png?v=1743785872"
-    ],
+    "images": [],
     "features": [
       "النوع: صمّام كهربائي – Electrovanne / Solenoid Valve",
       "الجهد الكهربائي: 24V DC",
@@ -3686,11 +3403,7 @@ export const PRODUCTS: Product[] = [
     "inStock": true,
     "stock": 16,
     "hue": 218,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/1.png?v=1743783554",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/2.png?v=1743784922",
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/3.png?v=1743784922"
-    ],
+    "images": [],
     "features": [],
     "specs": [
       {
@@ -3722,9 +3435,7 @@ export const PRODUCTS: Product[] = [
     "stock": 50,
     "bestSeller": true,
     "hue": 205,
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0737/8508/2069/files/Untitleddesign_93.png?v=1743648478"
-    ],
+    "images": [],
     "features": [
       "مرحلة الشوائب: لإزالة الأتربة والرمال والمواد العالقة",
       "مرحلة الكربون الحبيبي: لامتصاص الكلور والروائح الكريهة",
