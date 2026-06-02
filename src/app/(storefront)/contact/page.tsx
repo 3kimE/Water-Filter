@@ -10,6 +10,7 @@ import {
   Clock,
   Send,
   CheckCircle2,
+  Navigation,
 } from "lucide-react";
 
 const CONTACTS = [
@@ -33,7 +34,7 @@ const CONTACTS = [
 ];
 
 export default function ContactPage() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const [sent, setSent] = useState(false);
   const [form, setForm] = useState({ name: "", phone: "", message: "" });
 
@@ -172,6 +173,38 @@ export default function ContactPage() {
           )}
         </div>
       </div>
+
+      {/* Location / map */}
+      <section className="container-page pb-16">
+        <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <h2 className="font-display text-2xl font-bold text-ink">
+              {t("contact.location.title")}
+            </h2>
+            <p className="mt-1 flex items-center gap-2 text-ink-soft">
+              <MapPin className="h-4 w-4 text-brand-500" />
+              {t("contact.location.address")}
+            </p>
+          </div>
+          <a
+            href="https://www.google.com/maps/dir/?api=1&destination=30.4144656,-9.5671467"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-full bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700"
+          >
+            <Navigation className="h-4 w-4" /> {t("contact.location.directions")}
+          </a>
+        </div>
+        <div className="overflow-hidden rounded-card border border-line shadow-soft">
+          <iframe
+            title="Filtre Maroc — Agadir"
+            src={`https://www.google.com/maps?q=30.4144656,-9.5671467&z=15&hl=${locale}&output=embed`}
+            className="h-[380px] w-full border-0"
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+        </div>
+      </section>
     </>
   );
 }
