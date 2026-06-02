@@ -187,7 +187,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p4",
-    "slug": "فلتر-الماء-karofi-kaq-u65",
+    "slug": "fltr-alma-karofi-kaq-u65",
     "name": "فلتر الماء Karofi KAQ-U65",
     "categorySlug": "cuisine",
     "shortDescription": "فلتر Karofi KAQ-U65 هو اختيار مثالي للعائلات الباحثة عن ماء نقي وآمن 100%. يجمع بين تكنولوجيا التصفية الدقيقة بتقنية RO من 10 مراحل، وخزان داخلي بسعة…",
@@ -227,7 +227,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p5",
-    "slug": "فلتر-الماء-karofi-kaq-u05-pro",
+    "slug": "fltr-alma-karofi-kaq-u05-pro",
     "name": "فلتر الماء Karofi KAQ-U05 Pro",
     "categorySlug": "cuisine",
     "shortDescription": "جهاز Karofi KAQ-U05 Pro هو حل ذكي وفعال لتنقية مياه الشرب في المنزل. يتميز بتصميم مدمج يناسب الخزائن الصغيرة، مع خزان سعة 4 غالون لضمان توفر الماء…",
@@ -270,7 +270,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p6",
-    "slug": "جهاز-تنقية-الماء-karofi-kaq-u98-نقاء-مضمون-وحنفية-led-ذكية",
+    "slug": "jhaz-tnqya-alma-karofi-kaq-u98-nqa-mdmwn-whnfya-led",
     "name": "جهاز تنقية الماء Karofi KAQ-U98 - نقاء مضمون وحنفية LED ذكية",
     "categorySlug": "cuisine",
     "shortDescription": "💧 فلتر الماء Karofi KAQ-U98 – تنقية ذكية بـ10 مراحل، خزان 4G، وحنفية مضيئة LED إذا كنت تبحث عن جهاز قوي لتنقية مياه الشرب داخل منزلك، فإن فلتر…",
@@ -310,7 +310,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p7",
-    "slug": "فلتر-eco-agua-premium-نظام-تنقية-ماء-بـ-7-مراحل-بجودة-احترافية",
+    "slug": "fltr-eco-agua-premium-nzam-tnqya-ma-b-7-mrahl-bjwda",
     "name": "فلتر ECO-AGUA Premium – نظام تنقية ماء بـ 7 مراحل بجودة احترافية",
     "categorySlug": "cuisine",
     "shortDescription": "فلتر Eco‑Agua Premium هو اختيار العائلات المغربية الباحثة عن ماء نقي وآمن مباشرة من الروبيني. يعمل بتقنية RO – الأوسموز العكسي ويعتمد على 7 مراحل…",
@@ -353,7 +353,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p8",
-    "slug": "باك-صيانة-شامل-7-مراحل-ماء-نقي-لمدة-سنتين",
+    "slug": "bak-syana-shaml-7-mrahl-ma-nqy-lmda-sntyn",
     "name": "باك صيانة شامل 7 مراحل – ماء نقي لمدة سنتين",
     "categorySlug": "filtres-rechange",
     "shortDescription": "باك صيانة متكامل ومُخصص لأجهزة تنقية المياه بتقنية الأوسموز العكسي (RO)، مصمم ليمنحك راحة البال وصيانة مضمونة تصل حتى سنتين. يحتوي على جميع مراحل…",
@@ -396,7 +396,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p9",
-    "slug": "باك-vital-smart-3-مراحل-أولى-لتنقية-فعالة-وشاملة",
+    "slug": "bak-vital-smart-3-mrahl-awla-ltnqya-faala-wshamla",
     "name": "باك Vital Smart – 3 مراحل أولى لتنقية فعالة وشاملة",
     "categorySlug": "filtres-rechange",
     "shortDescription": "مجموعة Vital Smart Kit3 تحتوي على 3 فلاتر تمهيدية (PP – GAC – CTO) مع هياكل تثبيت مزدوجة الحماية، مخصصة لتجديد المراحل الأولى في أجهزة تنقية المياه…",
@@ -436,7 +436,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p10",
-    "slug": "فلتر-micro-6-مراحل-جهاز-tds-مجاني",
+    "slug": "fltr-micro-6-mrahl-jhaz-tds-mjany",
     "name": "فلتر Micro 6 مراحل + جهاز TDS مجاني",
     "categorySlug": "pieces",
     "shortDescription": "احصل على نقاء المياه المنزلي بمعايير عالية مع فلتر Micro 6 étapes، الذي يعمل بتقنية التناضح العكسي (RO) عبر 6 مراحل فعّالة لتنقية الماء من الشوائب،…",
@@ -479,7 +479,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p11",
-    "slug": "فلتر-maestro-بـ-6-مراحل-2-باك-فلاتر-تغيير-هدية",
+    "slug": "fltr-maestro-b-6-mrahl-2-bak-flatr-tghyyr-hdya",
     "name": "فلتر MAESTRO بـ 6 مراحل + 2 باك فلاتر تغيير (هدية)",
     "categorySlug": "cuisine",
     "shortDescription": "نظام متكامل لتنقية المياه المنزلية، يجمع بين الأداء العالي والجودة مع عرض توفير ذكي! ماذا ستحصل عليه؟ فلتر Maestro بـ 6 مراحل فعّالة لتنقية المياه 2…",
@@ -522,7 +522,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p12",
-    "slug": "فلتر-ماء-احترافي-400-gpd-مثالي-للمقاهي-والمطاعم",
+    "slug": "fltr-ma-ahtrafy-400-gpd-mthaly-llmqahy-walmtaam",
     "name": "فلتر ماء احترافي 400 GPD – مثالي للمقاهي والمطاعم",
     "categorySlug": "semi-industriel",
     "shortDescription": "جهاز HFM VERA DYNAMIC 400 GPD هو نظام تنقية مياه شبه صناعي يعمل بتقنية الأوسموز العكسي (RO) ويقدّم أداءً قوياً بفضل تصميمه المتين وسعته الإنتاجية…",
@@ -567,7 +567,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p13",
-    "slug": "جهاز-صغير-لتصفية-الماء-مع-توزيع-بارد-وساخن-مثالي-للمكاتب-والمنازل",
+    "slug": "jhaz-sghyr-ltsfya-alma-ma-twzya-bard-wsakhn-mthaly",
     "name": "جهاز صغير لتصفية الماء مع توزيع بارد وساخن – مثالي للمكاتب والمنازل",
     "categorySlug": "fontaines",
     "shortDescription": "جهاز ميني موزع ماء مفلتر هو حل ذكي ومضغوط لتوفير ماء نقي بدرجتي حرارة مختلفة (بارد وساخن)، بفضل نظام تنقية داخلي يعمل بتقنية الأوسموز العكسي 4 مراحل.…",
@@ -610,7 +610,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p14",
-    "slug": "جهاز-تنقية-الماء-10-مراحل-تصميم-عصري-وأداء-فائق",
+    "slug": "jhaz-tnqya-alma-10-mrahl-tsmym-asry-wada-fayq",
     "name": "جهاز تنقية الماء 10 مراحل – تصميم عصري وأداء فائق",
     "categorySlug": "fontaines",
     "shortDescription": "جهاز KAQ-X16 هو نظام تنقية ماء متطور يعمل بتقنية التناضح العكسي (RO) ويحتوي على 10 مراحل تصفية ذكية، ليمنحك ماءً نقياً، صحياً، وغنياً بالمعادن…",
@@ -655,7 +655,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p15",
-    "slug": "جهاز-ماء-بارد-وساخن-مع-فلتر-ro-راحة-ونقاء-في-جهاز-واحد",
+    "slug": "jhaz-ma-bard-wsakhn-ma-fltr-ro-raha-wnqa-fy-jhaz-wahd",
     "name": "جهاز ماء بارد وساخن مع فلتر RO – راحة ونقاء في جهاز واحد",
     "categorySlug": "fontaines",
     "shortDescription": "هذا الجهاز هو موزع ماء عملي وعصري يجمع بين وظيفة تسخين وتبريد الماء مع نظام تنقية داخلي متطور. يوفّر لك ماءً نقياً بثلاث درجات حرارة (بارد، ساخن،…",
@@ -695,7 +695,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p16",
-    "slug": "جهاز-تصفية-وتسخين-وتبريد-الماء-karofi-hcv208ro-بتقنية-smax",
+    "slug": "jhaz-tsfya-wtskhyn-wtbryd-alma-karofi-hcv208ro-btqnya",
     "name": "جهاز تصفية وتسخين وتبريد الماء – Karofi HCV208RO بتقنية SMAX",
     "categorySlug": "fontaines",
     "shortDescription": "جهاز Karofi HCV208RO هو موزع ماء عصري يجمع بين وظيفة التبريد والتسخين ونظام تنقية مياه متطور بتقنية SMAX RO، ما يجعله الحل المثالي لتوفير ماء صحي،…",
@@ -733,7 +733,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p17",
-    "slug": "فلاتر-karofi-smax-6-2-قوة-التنقية-وتوازن-المعادن-في-جهاز-واحد",
+    "slug": "flatr-karofi-smax-6-2-qwa-altnqya-wtwazn-almaadn-fy",
     "name": "فلاتر Karofi SMAX 6.2 – قوة التنقية وتوازن المعادن في جهاز واحد",
     "categorySlug": "filtres-rechange",
     "shortDescription": "مجموعة Karofi HP 6.2 هي باك فلاتر متطور مكوّن من 6 مراحل بتقنية SMAX عالية الأداء، صُممت لتحسين جودة الماء من خلال تنقية متقدمة، وتعزيز خواصه الصحية…",
@@ -773,7 +773,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p18",
-    "slug": "فلتر-t33-من-karofi-لتحسين-طعم-ورائحة-الماء-post-carbon",
+    "slug": "fltr-t33-mn-karofi-lthsyn-tam-wrayha-alma-post-carbon",
     "name": "فلتر T33 من Karofi – لتحسين طعم ورائحة الماء (Post Carbon)",
     "categorySlug": "filtres-rechange",
     "shortDescription": "فلتر T33 Karofi يُركب في المرحلة الخامسة من جهاز الأوسموزور، ويحتوي على فحم نشط من جوز الهند الطبيعي. دوره الأساسي هو إزالة أي طعم أو رائحة متبقية في…",
@@ -808,7 +808,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p19",
-    "slug": "فلتر-قاعدي-alkaline-من-karofi-لماء-صحي-وقلوي-أكثر",
+    "slug": "fltr-qaady-alkaline-mn-karofi-lma-shy-wqlwy-akthr",
     "name": "فلتر قاعدي Alkaline من Karofi – لماء صحي وقلوي أكثر",
     "categorySlug": "filtres-rechange",
     "shortDescription": "فلتر Alkaline Karofi هو مرحلة متقدمة تُركب بعد الممبران (RO)، ومهمتها رفع قلوية الماء (pH) وإضافة المعادن المفيدة مثل الكالسيوم، المغنزيوم، الصوديوم…",
@@ -843,7 +843,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p20",
-    "slug": "المرحلة-الأولى-فلتر-pp-من-karofi-لإزالة-الشوائب-والرواسب",
+    "slug": "almrhla-alawla-fltr-pp-mn-karofi-lizala-alshwayb",
     "name": "المرحلة الأولى – فلتر PP من Karofi لإزالة الشوائب والرواسب",
     "categorySlug": "filtres-rechange",
     "shortDescription": "فلتر PP 5 ميكرون من Karofi هو أول مرحلة في نظام تنقية الماء، يُصنع من مادة البولي بروبلين النقي، ويعمل على إزالة الشوائب الكبيرة مثل الرمل، الصدأ،…",
@@ -878,7 +878,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p21",
-    "slug": "المرحلة-الرابعة-غشاء-pallas-500-gpd-لتنقية-قوية-جداً-وماء-نقي-دائم",
+    "slug": "almrhla-alrabaa-ghsha-pallas-500-gpd-ltnqya-qwya-jda",
     "name": "المرحلة الرابعة – غشاء PALLAS 500 GPD لتنقية قوية جداً وماء نقي دائم",
     "categorySlug": "filtres-rechange",
     "shortDescription": "غشاء PALLAS 500 GPD هو عنصر التنقية الأساسي في الأجهزة المتطورة التي تحتاج لإنتاج كميات كبيرة من الماء النقي يومياً. يعمل بتقنية الأوسموز العكسي (RO)…",
@@ -918,7 +918,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p22",
-    "slug": "المرحلة-الرابعة-غشاء-pallas-400-gpd-لتصفية-قوية-وسريعة",
+    "slug": "almrhla-alrabaa-ghsha-pallas-400-gpd-ltsfya-qwya-wsryaa",
     "name": "المرحلة الرابعة – غشاء PALLAS 400 GPD لتصفية قوية وسريعة",
     "categorySlug": "filtres-rechange",
     "shortDescription": "غشاء PALLAS 400 GPD هو فلتر الأوسموز العكسي المخصص للأنظمة القوية، سواء للاستعمال المنزلي المكثف أو للمقاهي، المطاعم، والمكاتب. يتميز بقدرته العالية…",
@@ -958,7 +958,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p23",
-    "slug": "باك-3-فلاتر-jf-inline-أداء-متكامل-لتصفية-الماء",
+    "slug": "bak-3-flatr-jf-inline-ada-mtkaml-ltsfya-alma",
     "name": "باك 3 فلاتر JF Inline – أداء متكامل لتصفية الماء",
     "categorySlug": "filtres-rechange",
     "shortDescription": "تتكوّن هذه المجموعة من 3 فلاتر أنبوبية بتقنية JF Inline، وتُعد مثالية لأجهزة الأوسموزور الحديثة أو الأنظمة المدمجة. كل فلتر يؤدي دوراً حيوياً في…",
@@ -996,7 +996,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p24",
-    "slug": "المرحلة-الرابعة-غشاء-techflow-80-gpd-لتنقية-فعالة-واقتصادية",
+    "slug": "almrhla-alrabaa-ghsha-techflow-80-gpd-ltnqya-faala",
     "name": "المرحلة الرابعة – غشاء TECHFLOW 80 GPD لتنقية فعالة واقتصادية",
     "categorySlug": "filtres-rechange",
     "shortDescription": "غشاء TECHFLOW 80 GPD يُعد من الفلاتر الأساسية في أنظمة الأوسموز العكسي، ويعمل على تنقية المياه من الشوائب الدقيقة، الأملاح، المعادن الثقيلة،…",
@@ -1036,7 +1036,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p25",
-    "slug": "المرحلة-الرابعة-غشاء-kuno-80-gpd-صناعة-lg-chem-لتنقية-عالية-الجودة",
+    "slug": "almrhla-alrabaa-ghsha-kuno-80-gpd-snaaa-lg-chem-ltnqya",
     "name": "المرحلة الرابعة – غشاء KUNO 80 GPD (صناعة LG Chem) لتنقية عالية الجودة",
     "categorySlug": "filtres-rechange",
     "shortDescription": "غشاء التصفية KUNO 80 GPD من إنتاج شركة LG Chem الكورية يُعتبر من أقوى أنواع الفلاتر في أنظمة الأوسموز العكسي. قدرته العالية على تنقية الماء تجعله…",
@@ -1076,7 +1076,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p26",
-    "slug": "المرحلة-الرابعة-غشاء-ro-jf-80-gpd-لتصفية-عالية-الدقة",
+    "slug": "almrhla-alrabaa-ghsha-ro-jf-80-gpd-ltsfya-aalya-aldqa",
     "name": "المرحلة الرابعة – غشاء RO JF 80 GPD لتصفية عالية الدقة",
     "categorySlug": "filtres-rechange",
     "shortDescription": "غشاء JF 80 GPD هو فلتر الأوسموز العكسي الأساسي في المرحلة الرابعة. قدرته العالية على تصفية المياه تجعله مسؤولاً عن إزالة أدق الملوثات، مثل الأملاح…",
@@ -1116,7 +1116,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p27",
-    "slug": "المرحلة-السابعة-فلتر-ph-10-إنش-لرفع-قلوية-الماء",
+    "slug": "almrhla-alsabaa-fltr-ph-10-insh-lrfa-qlwya-alma",
     "name": "المرحلة السابعة – فلتر PH+ 10 إنش لرفع قلوية الماء",
     "categorySlug": "filtres-rechange",
     "shortDescription": "فلتر PH+ بقياس 10 إنش يُستخدم في أنظمة تصفية الماء المتقدمة، خاصة كمرحلة إضافية بعد الأوسموز العكسي. وظيفته هي رفع مستوى القلوية في الماء، وإضافة…",
@@ -1151,7 +1151,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p28",
-    "slug": "المرحلة-السادسة-فلتر-mineral-gold-لإضافة-المعادن",
+    "slug": "almrhla-alsadsa-fltr-mineral-gold-lidafa-almaadn",
     "name": "المرحلة السادسة – فلتر MINÉRAL GOLD لإضافة المعادن",
     "categorySlug": "filtres-rechange",
     "shortDescription": "فلتر MINÉRAL GOLD هو المرحلة السادسة في نظام الأوسموز العكسي، يُستخدم بعد التصفية الكاملة للماء، حيث يعمل على إعادة توازن المعادن الأساسية مثل…",
@@ -1186,7 +1186,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p29",
-    "slug": "المرحلة-الخامسة-فلتر-t33-لتحسين-الطعم-والرائحة",
+    "slug": "almrhla-alkhamsa-fltr-t33-lthsyn-altam-walrayha",
     "name": "المرحلة الخامسة – فلتر T33 لتحسين الطعم والرائحة",
     "categorySlug": "filtres-rechange",
     "shortDescription": "فلتر T33 يُمثّل المرحلة الخامسة في أنظمة تنقية الماء بالأوسموز العكسي (Osmoseur). بعد أن يمر الماء بكل مراحل التصفية، يجي دور هاد الفلتر لتحسين الطعم…",
@@ -1221,7 +1221,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p30",
-    "slug": "باك-3-فلاتر-لأجهزة-الأوسموزور-حماية-وتنقية-متكاملة",
+    "slug": "bak-3-flatr-lajhza-alawsmwzwr-hmaya-wtnqya-mtkamla",
     "name": "باك 3 فلاتر لأجهزة الأوسموزور – حماية وتنقية متكاملة",
     "categorySlug": "filtres-rechange",
     "shortDescription": "تتكوّن هذه المجموعة من 3 فلاتر كلاسيكية بطول 10 إنش، مخصصة لأجهزة تصفية الماء ذات الهيكل المفتوح (open case). تصميمها العالمي يجعلها متوافقة مع أغلب…",
@@ -1254,7 +1254,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p31",
-    "slug": "مجموعة-فلاتر-التبديل-لأجهزة-تصفية-الماء-أنكاستري-أوسموزور",
+    "slug": "mjmwaa-flatr-altbdyl-lajhza-tsfya-alma-ankastry",
     "name": "مجموعة فلاتر التبديل لأجهزة تصفية الماء (أنكاستري / أوسموزور)",
     "categorySlug": "filtres-rechange",
     "shortDescription": "تتكوّن هذه المجموعة من 3 مراحل من الفلاتر المصممة خصيصاً لأجهزة تصفية الماء المنزلية من نوع أنكاستري أو أوسموزور. كل فلتر يلعب دوراً مهماً في تنقية…",
@@ -1291,7 +1291,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p32",
-    "slug": "le-filtre-dolphin-5-etapes-portable-فلتر-دلفين-5-مراحل-متنقل-نظام-تنقية-مياه-محمول",
+    "slug": "le-filtre-dolphin-5-etapes-portable-fltr-dlfyn-5-mrahl",
     "name": "Le Filtre Dolphin 5 Étapes Portable -  فلتر دلفين 5 مراحل متنقل – نظام تنقية مياه محمول",
     "categorySlug": "cuisine",
     "shortDescription": "فلتر Dolphin 5 مراحل Portable هو نظام تنقية مياه محمول مصمم لتوفير ماء شرب نقي وصحي في أي مكان. يعتمد النظام على تقنية التناضح العكسي (RO) ويعمل بخمس…",
@@ -1334,7 +1334,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p33",
-    "slug": "le-filtre-jf-80-gpd-osmoseur-6-etapes-slim-فلتر-جي-إف-80-جالون",
+    "slug": "le-filtre-jf-80-gpd-osmoseur-6-etapes-slim-fltr-jy-if",
     "name": "Le Filtre JF 80 GPD Osmoseur 6 Étapes Slim -  فلتر جي إف 80 جالون",
     "categorySlug": "cuisine",
     "shortDescription": "فلتر JF 80 GPD Osmoseur 6 مراحل Slim هو نظام تنقية مياه منزلي متكامل يعتمد على تقنية التناضح العكسي (RO) ويعمل بست مراحل فلترة متتالية لإنتاج ماء شرب…",
@@ -1382,7 +1382,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p34",
-    "slug": "فلتر-micro-6-مراحل-إنكاستر-_-systeme-de-filtration-micro-6-etapes-encastre",
+    "slug": "fltr-micro-6-mrahl-inkastr-systeme-de-filtration-micro",
     "name": "فلتر Micro 6 مراحل إنكاستر _  Système de filtration Micro 6 Étapes Encastré",
     "categorySlug": "cuisine",
     "shortDescription": "فلتر Micro 6 مراحل إنكاستر هو نظام تنقية مياه منزلي متكامل يعتمد على تقنية التناضح العكسي (RO) ويعمل بست مراحل متتالية لضمان إزالة الشوائب والملوثات…",
@@ -1422,7 +1422,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p35",
-    "slug": "le-filtre-tiger-classique-6-etapes-encastre-فلتر-tiger-classique-6-مراحل-إنكاستر",
+    "slug": "le-filtre-tiger-classique-6-etapes-encastre-fltr-tiger",
     "name": "Le Filtre Tiger Classique 6 Étapes Encastré -  فلتر Tiger Classique 6 مراحل إنكاستر",
     "categorySlug": "cuisine",
     "shortDescription": "يُعد فلتر Tiger Classique 6 مراحل إنكاستر نظام تنقية مياه منزلي متكامل يعتمد على تقنية التناضح العكسي (RO) لإزالة الشوائب والملوثات من ماء الشرب…",
@@ -1462,7 +1462,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p36",
-    "slug": "فلتر-فاسا-ديجيتال-ووتر-80-gpd-نظام-تنقية-مياه-منزلي-بخمس-مراحل-le-vassa-digital-water-filter-80-gpd",
+    "slug": "fltr-fasa-dyjytal-wwtr-80-gpd-nzam-tnqya-myah-mnzly",
     "name": "فلتر فاسا ديجيتال ووتر 80 GPD – نظام تنقية مياه منزلي بخمس مراحل - Le VASSA Digital Water Filter 80 GPD",
     "categorySlug": "cuisine",
     "shortDescription": "Digital Water Filter 80 GPD حلاً متكاملاً لتنقية مياه الشرب، يجمع بين تقنية التناضح العكسي (Osmose Inverse) ونظام رقمي يتيح مراقبة الأداء بسهولة.…",
@@ -1510,7 +1510,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p37",
-    "slug": "فلتر-كاروفي-10-مراحل-filtre-karofi-100-gpd",
+    "slug": "fltr-karwfy-10-mrahl-filtre-karofi-100-gpd",
     "name": "فلتر كاروفي 10 مراحل –  Filtre Karofi 100 GPD",
     "categorySlug": "cuisine",
     "shortDescription": "فلتر كاروفي 10 مراحل مفتوح – نظام تنقية مياه منزلي متكامل (100 GPD) يُقدم فلتر كاروفي 10 مراحل مفتوح حلاً متكاملاً لتنقية مياه الشرب في المنازل…",
@@ -1555,7 +1555,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p38",
-    "slug": "le-filtre-iconic-6-etapes-encastre-فلتر-أيكونيك-6-مراحل-إنكاستر",
+    "slug": "le-filtre-iconic-6-etapes-encastre-fltr-aykwnyk-6",
     "name": "Le Filtre Iconic 6 Étapes Encastré -  فلتر أيكونيك 6 مراحل إنكاستر",
     "categorySlug": "cuisine",
     "shortDescription": "فلتر أيكونيك 6 مراحل إنكاستر هو نظام تنقية مياه منزلي متكامل يعتمد على تقنية التناضح العكسي (RO) ويعمل بست مراحل متتالية لإزالة الشوائب والملوثات…",
@@ -1598,7 +1598,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p39",
-    "slug": "فلتر-تيكومن-7-مراحل-le-filtre-tecomen-7-etapes",
+    "slug": "fltr-tykwmn-7-mrahl-le-filtre-tecomen-7-etapes",
     "name": "فلتر تيكومن 7 مراحل – Le Filtre Tecomen 7 Étapes",
     "categorySlug": "cuisine",
     "shortDescription": "فلتر Tecomen 7 مراحل هو نظام تنقية مياه منزلي متكامل يعتمد على تقنيات متقدمة لإزالة الشوائب والملوثات من الماء. يُمرر الماء عبر سبع مراحل متتالية…",
@@ -1641,7 +1641,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p40",
-    "slug": "aquabo-tiger-noir-premium-فلتر-أكوابو-تايغر-نوار-بريميوم",
+    "slug": "aquabo-tiger-noir-premium-fltr-akwabw-tayghr-nwar",
     "name": "AQUABO TIGER NOIR PREMIUM – فلتر أكوابو تايغر نوار بريميوم",
     "categorySlug": "cuisine",
     "shortDescription": "فلتر أكوابو تايغر نوار بريميوم هو نظام تنقية مياه منزلي عالي الجودة يعتمد على تقنية التناضح العكسي (RO) لتوفير ماء شرب نقي وصحي. يعمل النظام عبر ست…",
@@ -1674,7 +1674,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p41",
-    "slug": "فلتر-glasse-pro-6-مراحل-إنكاستر-filtre-glasse-pro-6-etapes-encastre",
+    "slug": "fltr-glasse-pro-6-mrahl-inkastr-filtre-glasse-pro-6",
     "name": "فلتر Glasse Pro 6 مراحل إنكاستر - Filtre Glasse Pro 6 Étapes Encastré",
     "categorySlug": "cuisine",
     "shortDescription": "فلتر Glasse Pro 6 مراحل إنكاستر هو نظام تنقية مياه منزلي متكامل يعتمد على تقنية التناضح العكسي (RO) ويعمل بست مراحل فعّالة لإزالة الشوائب والملوثات…",
@@ -1717,7 +1717,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p42",
-    "slug": "la-mia-acqua-7-st-نظام-تنقية-مياه-منزلي-بـ-7-مراحل-بتقنية-التناضح-العكسي",
+    "slug": "la-mia-acqua-7-st-nzam-tnqya-myah-mnzly-b-7-mrahl",
     "name": "LA MIA ACQUA 7-ST – نظام تنقية مياه منزلي بـ 7 مراحل (بتقنية التناضح العكسي)",
     "categorySlug": "cuisine",
     "shortDescription": "LA MIA ACQUA 7-ST هو نظام متكامل لتنقية مياه الشرب في المنزل يعمل بتقنية التناضح العكسي. يعتمد النظام على 7 مراحل متتالية تضمن إزالة الشوائب…",
@@ -1760,7 +1760,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p43",
-    "slug": "فلتر-مايستو-5-مراحل-نظام-تنقية-مياه-منزلي-متكامل-filtre-maiestro-5-etapes-systeme-de-purification-deau",
+    "slug": "fltr-maystw-5-mrahl-nzam-tnqya-myah-mnzly-mtkaml",
     "name": "فلتر مايستو 5 مراحل نظام تنقية مياه منزلي متكامل - Filtre Maiestro 5 Étapes – Système de purification d'eau",
     "categorySlug": "cuisine",
     "shortDescription": "فلتر أسموزور 6 مراحل هو نظام متكامل لتنقية مياه الشرب يعتمد على تقنية التناضح العكسي (RO)، ويعمل بست مراحل متتالية لإزالة الشوائب والملوثات وتحسين…",
@@ -1800,7 +1800,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p44",
-    "slug": "فلتر-أكوا-مارينا-5-مراحل-نظام-تنقية-مياه-منزلي-متكامل-filtre-aqua-marina-5-etapes",
+    "slug": "fltr-akwa-maryna-5-mrahl-nzam-tnqya-myah-mnzly-mtkaml",
     "name": "فلتر أكوا مارينا 5 مراحل – نظام تنقية مياه منزلي متكامل - Filtre Aqua Marina 5 Étapes",
     "categorySlug": "cuisine",
     "shortDescription": "يُقدم فلتر Aqua Marina 5 مراحل نظامًا متكاملًا لتنقية مياه الشرب باستخدام تقنية التناضح العكسي (RO). يعتمد النظام على خمس مراحل متتالية لإزالة…",
@@ -1845,7 +1845,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p45",
-    "slug": "filtre-prestige-6-etapes-encastre-فلتر-بريستيج-6-مراحل-مدمج",
+    "slug": "filtre-prestige-6-etapes-encastre-fltr-brystyj-6-mrahl",
     "name": "Filtre Prestige 6 étapes encastré - فلتر بريستيج 6 مراحل مدمج",
     "categorySlug": "cuisine",
     "shortDescription": "نظام تنقية مياه منزلي متكامل بست مراحل يُقدم فلتر بريستيج 6 مراحل مدمج نظام تنقية مياه متكامل يُستخدم في المنازل لتنقية مياه الشرب باستخدام تقنية…",
@@ -1888,7 +1888,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p46",
-    "slug": "vital-smart-6-etapes-open-case-فلتر-نظام-تنقية-مياه-مفتوح-بـ-6-مراحل",
+    "slug": "vital-smart-6-etapes-open-case-fltr-nzam-tnqya-myah",
     "name": "Vital Smart 6 étapes Open Case – فلتر نظام تنقية مياه مفتوح بـ 6 مراحل",
     "categorySlug": "cuisine",
     "shortDescription": "يُقدم فلتر Vital Smart 6 étapes Open Case نظام تنقية مياه منزلي متكامل يعمل بتقنية التناضح العكسي (RO)، ويعتمد على 6 مراحل فلترة متتالية لإنتاج ماء…",
@@ -1931,7 +1931,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p47",
-    "slug": "فلتر-glasse-pluse-6-etapes-نظام-تنقية-مياه-منزلي-بـ-6-مراحل",
+    "slug": "fltr-glasse-pluse-6-etapes-nzam-tnqya-myah-mnzly-b-6",
     "name": "فلتر Glasse Pluse 6 étapes – نظام تنقية مياه منزلي بـ 6 مراحل",
     "categorySlug": "cuisine",
     "shortDescription": "يُقدم فلتر Glasse Pluse 6 étapes نظام تنقية مياه متكامل يعمل بتقنية التناضح العكسي (RO)، حيث يعتمد على 6 مراحل فعّالة لإزالة الشوائب وتحسين جودة…",
@@ -1974,7 +1974,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p48",
-    "slug": "فلتر-فيتال-سمارة-برو-6-مراحل-مدمج-systeme-de-purification-d-eau-vital-smart-pro-6-etapes-encastre",
+    "slug": "fltr-fytal-smara-brw-6-mrahl-mdmj-systeme-de",
     "name": "فلتر فيتال سمارة برو 6 مراحل مدمج – Système de purification d’eau Vital Smart Pro 6 Étapes Encastré",
     "categorySlug": "cuisine",
     "shortDescription": "فلتر فيتال سمارة برو 6 مراحل مدمج هو نظام تنقية مياه منزلي متكامل يعمل بتقنية التناضح العكسي (RO)، ويأتي بتصميم مدمج (encastré) يُركب بسهولة تحت…",
@@ -2017,7 +2017,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p49",
-    "slug": "optimax-open-case-فلتر-ماء-منزلي-مفتوح-بـ-7-مراحل-لتنقية",
+    "slug": "optimax-open-case-fltr-ma-mnzly-mftwh-b-7-mrahl-ltnqya",
     "name": "OPTIMAX Open Case – فلتر ماء منزلي مفتوح بـ 7 مراحل لتنقية",
     "categorySlug": "cuisine",
     "shortDescription": "OPTIMAX Open Case هو نظام تنقية مياه عالي الأداء، يعمل بتقنية التناضح العكسي (RO)، ويتكوّن من 7 مراحل فلترة متكاملة. يتميز بتصميم مفتوح (Open Case)…",
@@ -2060,7 +2060,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p50",
-    "slug": "ocean-classique-فلتر-ماء-منزلي-مغلق-بـ-6-مراحل-بتقنية-التناضح-العكسي",
+    "slug": "ocean-classique-fltr-ma-mnzly-mghlq-b-6-mrahl-btqnya",
     "name": "O'CÉAN Classique – فلتر ماء منزلي مغلق بـ 6 مراحل بتقنية التناضح العكسي",
     "categorySlug": "cuisine",
     "shortDescription": "O'CÉAN Classique هو نظام تنقية مياه عالي الجودة، يعمل بـ تقنية التناضح العكسي (RO) ويتكوّن من 6 مراحل فلترة دقيقة، مدمجة داخل كابينة مغلقة وعصرية…",
@@ -2100,7 +2100,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p51",
-    "slug": "o-cean-6-st-special-فلتر-ماء-مدمج-بـ-6-مراحل-بتقنية-التناضح-العكسي",
+    "slug": "o-cean-6-st-special-fltr-ma-mdmj-b-6-mrahl-btqnya",
     "name": "O’CÉAN 6-ST Spécial – فلتر ماء مدمج بـ 6 مراحل بتقنية التناضح العكسي",
     "categorySlug": "cuisine",
     "shortDescription": "فلتر O’CÉAN 6-ST Spécial هو نظام متكامل لتنقية المياه يعمل بتقنية التناضح العكسي ويحتوي على 6 مراحل فعّالة، يأتي بتصميم مدمج ومغلق بالكامل، مثالي…",
@@ -2143,7 +2143,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p52",
-    "slug": "فلتر-tecomen-نظام-تنقية-مياه-بـ-6-مراحل",
+    "slug": "fltr-tecomen-nzam-tnqya-myah-b-6-mrahl",
     "name": "فلتر Tecomen – نظام تنقية مياه بـ 6 مراحل",
     "categorySlug": "cuisine",
     "shortDescription": "فلتر Tecomen هو نظام فعّال لتنقية مياه الشرب، يعمل بتقنية التناضح العكسي (RO) ويحتوي على 6 مراحل متكاملة، تضمن لك الحصول على ماء نقي، صحي، وخالٍ من…",
@@ -2186,7 +2186,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p53",
-    "slug": "vital-smart-6-etapes-plus-فلتر-ماء-مدمج-بتقنية-متطورة-من-6-مراحل",
+    "slug": "vital-smart-6-etapes-plus-fltr-ma-mdmj-btqnya-mttwra",
     "name": "Vital Smart 6 Étapes Plus – فلتر ماء مدمج بتقنية متطورة من 6 مراحل",
     "categorySlug": "cuisine",
     "shortDescription": "Vital Smart 6 Étapes Plus هو نظام تنقية مياه منزلي عصري، مخصص للتركيب المدمج (encastré) داخل خزانة المطبخ أو تحت الحوض.يعمل هذا الفلتر بتقنية التناضح…",
@@ -2226,7 +2226,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p54",
-    "slug": "karofi-kaq-u05-نظام-تنقية-ماء-منزلي-بـ-10-مراحل-متقدمة",
+    "slug": "karofi-kaq-u05-nzam-tnqya-ma-mnzly-b-10-mrahl-mtqdma",
     "name": "KAROFI KAQ-U05 – نظام تنقية ماء منزلي بـ 10 مراحل متقدمة",
     "categorySlug": "cuisine",
     "shortDescription": "يُعد KAROFI KAQ-U05 من أفضل أنظمة تنقية المياه المنزلية، حيث يجمع بين تقنية التناضح العكسي (RO) ومراحل وظيفية متقدمة لتحسين جودة المياه بشكل شامل.تم…",
@@ -2266,7 +2266,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p55",
-    "slug": "open-case-6-st-aquabo-classique-فلتر-ماء-منزلي-بـ-6-مراحل-تصميم-مفتوح",
+    "slug": "open-case-6-st-aquabo-classique-fltr-ma-mnzly-b-6",
     "name": "OPEN CASE 6-ST (AQUABO Classique) – فلتر ماء منزلي بـ 6 مراحل تصميم مفتوح",
     "categorySlug": "cuisine",
     "shortDescription": "OPEN CASE 6-ST من AQUABO (النموذج الكلاسيكي) هو نظام تنقية ماء منزلي عالي الجودة يعمل بتقنية التناضح العكسي ويحتوي على 6 مراحل فعالة لتنقية مياه…",
@@ -2309,7 +2309,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p56",
-    "slug": "aquabo-open-case-premium-نظام-فلترة-ماء-بـ-6-مراحل-بالتناضح-العكسي",
+    "slug": "aquabo-open-case-premium-nzam-fltra-ma-b-6-mrahl",
     "name": "( AQUABO ) نظام فلترة ماء بـ 6 مراحل بالتناضح العكسي",
     "categorySlug": "cuisine",
     "shortDescription": "جهاز AQUABO Open Case Premium هو نظام فلترة منزلي عالي الجودة، يعمل بتقنية التناضح العكسي ويحتوي على 6 مراحل فعالة لتنقية مياه الشرب.يأتي بتصميم…",
@@ -2352,7 +2352,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p57",
-    "slug": "reservoir-a-pression-tae-20-gallons-خزان-ضغط-عالي-السعة-لأنظمة-التناضح-العكسي-ro",
+    "slug": "reservoir-a-pression-tae-20-gallons-khzan-dght-aaly",
     "name": "Réservoir à pression TAE 20 Gallons – خزان ضغط عالي السعة لأنظمة التناضح العكسي (RO)",
     "categorySlug": "pieces",
     "shortDescription": "خزان TAE بسعة 20 Gallons (حوالي 75 لتراً) هو réservoir à pression كبير الحجم، مخصص لتخزين كميات كبيرة من الماء النقي في أنظمة filtration par osmose…",
@@ -2387,7 +2387,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p58",
-    "slug": "reservoir-a-pression-tae-6-5-gallons-خزان-ضغط-كبير-لأنظمة-التناضح-العكسي-ro",
+    "slug": "reservoir-a-pression-tae-6-5-gallons-khzan-dght-kbyr",
     "name": "Réservoir à pression TAE 6,5 Gallons – خزان ضغط كبير لأنظمة التناضح العكسي RO",
     "categorySlug": "pieces",
     "shortDescription": "خزان TAE بسعة 6,5 Gallons (ما يعادل حوالي 24,5 لتر) هو réservoir à pression عالي السعة، يُستخدم في أنظمة filtration par osmose inverse لتخزين كمية…",
@@ -2422,7 +2422,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p59",
-    "slug": "reservoir-a-pression-en-plastique-tae-4-gallons-خزان-ضغط-بلاستيكي-لأنظمة-ro",
+    "slug": "reservoir-a-pression-en-plastique-tae-4-gallons-khzan",
     "name": "Réservoir à pression en plastique TAE 4 Gallons – خزان ضغط بلاستيكي لأنظمة RO",
     "categorySlug": "pieces",
     "shortDescription": "خزان TAE بسعة 4 Gallons (حوالي 15 لتر) هو réservoir à pression en plastique، يُستعمل في أنظمة تصفية الماء بالتناضح العكسي (osmose inverse) لتخزين…",
@@ -2457,7 +2457,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p60",
-    "slug": "reservoir-a-pression-tae-3-2-gallons-خزان-ضغط-كبير-لأنظمة-فلتر-الماء-بالتناضح-العكسي-ro",
+    "slug": "reservoir-a-pression-tae-3-2-gallons-khzan-dght-kbyr",
     "name": "Réservoir à pression TAE 3,2 Gallons – خزان ضغط كبير لأنظمة فلتر الماء بالتناضح العكسي (RO)",
     "categorySlug": "pieces",
     "shortDescription": "خزان TAE بسعة 3,2 Gallons (ما يعادل تقريباً 12 لتر) هو réservoir à pression يُستخدم في أنظمة filtration par osmose inverse، كيخزن الماء المصفى تحت…",
@@ -2492,7 +2492,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p61",
-    "slug": "reservoir-a-pression-tae-2-2-gallons-خزان-ضغط-لنظام-فلتر-الماء-بالتناضح-العكسي",
+    "slug": "reservoir-a-pression-tae-2-2-gallons-khzan-dght-lnzam",
     "name": "Réservoir à pression TAE 2,2 Gallons – خزان ضغط لنظام فلتر الماء بالتناضح العكسي",
     "categorySlug": "pieces",
     "shortDescription": "خزان TAE بسعة 2,2 Gallons (ما يعادل تقريباً 8,3 لتر) هو خزان ضغط يُستخدم في أنظمة تصفية المياه بالتناضح العكسي (osmose inverse).كيُخزن الماء المصفى…",
@@ -2527,7 +2527,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p62",
-    "slug": "electrolysis-water-tester-جهاز-التحليل-الكهربائي-لماء-الشرب",
+    "slug": "electrolysis-water-tester-jhaz-althlyl-alkhrbayy-lma",
     "name": "Electrolysis Water Tester – جهاز التحليل الكهربائي لماء الشرب",
     "categorySlug": "pieces",
     "shortDescription": "Electrolysis Water Tester هو جهاز بسيط وفعّال يُستخدم للكشف عن نسبة الشوائب والمعادن الثقيلة الموجودة في الماء بطريقة كهربائية مرئية.كيُظهر لك الفرق…",
@@ -2562,7 +2562,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p63",
-    "slug": "tds-meter-جهاز-قياس-نسبة-الأملاح-في-الماء-لأنظمة-الفلتر-ro",
+    "slug": "tds-meter-jhaz-qyas-nsba-alamlah-fy-alma-lanzma-alfltr",
     "name": "TDS Meter – جهاز قياس نسبة الأملاح في الماء لأنظمة الفلتر RO",
     "categorySlug": "pieces",
     "shortDescription": "TDS Meter هو جهاز رقمي محمول يُستخدم لقياس نسبة الأملاح الذائبة الكلية (TDS: Total Dissolved Solids) في الماء، وكيعطيك فكرة واضحة على جودة الماء اللي…",
@@ -2597,7 +2597,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p64",
-    "slug": "membrane-housing-quick-وعاء-ممبرين-سريع-لأنظمة-ro",
+    "slug": "membrane-housing-quick-waa-mmbryn-srya-lanzma-ro",
     "name": "Membrane Housing Quick – وعاء ممبرين سريع لأنظمة RO",
     "categorySlug": "pieces",
     "shortDescription": "Membrane Housing Quick هو غلاف خاص بوحدة الممبرين، يُستخدم في أنظمة فلتر الماء بالتناضح العكسي (RO) لتركيب الممبرين 1812 (المعيار الشائع مثل 50، 75،…",
@@ -2637,7 +2637,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p65",
-    "slug": "10-mat-white-housing-وعاء-فلتر-أبيض-مطفي-10-بوصات-لأنظمة-تنقية-المياه",
+    "slug": "10-mat-white-housing-waa-fltr-abyd-mtfy-10-bwsat",
     "name": "10” Mat White Housing – وعاء فلتر أبيض مطفي 10 بوصات لأنظمة تنقية المياه",
     "categorySlug": "pieces",
     "shortDescription": "10” Mat White Housing هو وعاء فلتر ماء عالي الجودة، مصنوع من بلاستيك غذائي متين بلمسة نهائية بيضاء مطفية (Mat Finish)، يُستخدم في أنظمة تنقية المياه…",
@@ -2672,7 +2672,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p66",
-    "slug": "10-transparent-housing-وعاء-شفاف-10-بوصات-لفلاتر-الماء",
+    "slug": "10-transparent-housing-waa-shfaf-10-bwsat-lflatr-alma",
     "name": "10” Transparent Housing – وعاء شفاف 10 بوصات لفلاتر الماء",
     "categorySlug": "pieces",
     "shortDescription": "10” Transparent Housing هو وعاء شفاف مصنوع من البلاستيك الغذائي المقوّى، يُستخدم لتركيب شمعة التصفية (cartridge) داخل أنظمة فلتر الماء المنزلية،…",
@@ -2707,7 +2707,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p67",
-    "slug": "lf-30l-حساس-ضغط-عالي-high-pressure-switch-لأنظمة-ro",
+    "slug": "lf-30l-hsas-dght-aaly-high-pressure-switch-lanzma-ro",
     "name": "LF-30L – حساس ضغط عالي (High Pressure Switch) لأنظمة RO",
     "categorySlug": "pieces",
     "shortDescription": "LF-30L هو حساس ضغط عالي يُستخدم في أنظمة فلتر الماء بالتناضح العكسي (RO)، دوره الأساسي هو إيقاف تشغيل المضخة تلقائيًا عند امتلاء الخزان، مما يحمي…",
@@ -2747,7 +2747,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p68",
-    "slug": "optimum-pump-75-100-gpd-مضخة-ضغط-عالي-لأنظمة-فلتر-الماء-ro",
+    "slug": "optimum-pump-75-100-gpd-mdkha-dght-aaly-lanzma-fltr",
     "name": "OPTIMUM PUMP 75 / 100 GPD – مضخة ضغط عالي لأنظمة فلتر الماء RO",
     "categorySlug": "pieces",
     "shortDescription": "OPTIMUM PUMP هي مضخة ضغط عالي (Booster Pump) مخصصة لأنظمة فلتر الماء بالتناضح العكسي (RO) بقدرة 75 إلى 100 GPD.كتساعد هاد المضخة على رفع ضغط الماء…",
@@ -2787,7 +2787,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p69",
-    "slug": "metal-ball-valve-صمّام-كروي-معدني-للتحكم-في-تدفّق-الماء",
+    "slug": "metal-ball-valve-sm-am-krwy-madny-llthkm-fy-tdf-q-alma",
     "name": "Metal Ball Valve – صمّام كروي معدني للتحكم في تدفّق الماء",
     "categorySlug": "pieces",
     "shortDescription": "Metal Ball Valve هو صمّام كروي (مفتاح ربع دورة) مصنوع من المعدن المقاوم للتآكل، يُستخدم للتحكم اليدوي في فتح أو إغلاق تدفّق الماء في أنظمة فلتر الماء…",
@@ -2822,7 +2822,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p70",
-    "slug": "quick-metal-storage-tank-plastic-valve-صمّام-بلاستيكي-سريع-لخزان-ro-المعدني",
+    "slug": "quick-metal-storage-tank-plastic-valve-sm-am-blastyky",
     "name": "QUICK METAL STORAGE TANK PLASTIC VALVE – صمّام بلاستيكي سريع لخزان RO المعدني",
     "categorySlug": "pieces",
     "shortDescription": "QUICK METAL STORAGE TANK PLASTIC VALVE هو صمّام تحكم بلاستيكي يُستعمل لربط الخزان المعدني الخاص بأنظمة فلتر الماء بالتناضح العكسي (RO) بخط الماء…",
@@ -2857,7 +2857,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p71",
-    "slug": "pipe-type-check-valve-صمّام-عدم-الرجوع-أنبوبي-لأنظمة-فلتر-الماء-ro",
+    "slug": "pipe-type-check-valve-sm-am-adm-alrjwa-anbwby-lanzma",
     "name": "Pipe Type Check Valve – صمّام عدم الرجوع أنبوبي لأنظمة فلتر الماء RO",
     "categorySlug": "pieces",
     "shortDescription": "Pipe Type Check Valve هو صمّام عدم رجوع (Clapet Anti-retour) مدمج داخل أنبوب صغير، كيتركب مباشرة في خط الماء داخل نظام فلتر الماء بالتناضح العكسي…",
@@ -2892,7 +2892,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p72",
-    "slug": "feeding-water-connection-equipment-معدات-توصيل-ماء-الدخول-لأنظمة-فلتر-الماء-1",
+    "slug": "feeding-water-connection-equipment-madat-twsyl-ma",
     "name": "Feeding Water Connection Equipment – معدات توصيل ماء الدخول لأنظمة فلتر الماء",
     "categorySlug": "pieces",
     "shortDescription": "Feeding Water Connection Equipment هي مجموعة من القطع الأساسية اللي كتستعمل لربط نظام فلتر الماء مع مصدر الماء الرئيسي (عادة صنبور الماء البارد).هاد…",
@@ -2927,7 +2927,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p73",
-    "slug": "quick-4044-elbow-وصلة-زاوية-l-سريعة-1-4-لأنظمة-فلتر-الماء",
+    "slug": "quick-4044-elbow-wsla-zawya-l-sryaa-1-4-lanzma-fltr",
     "name": "QUICK 4044 ELBOW – وصلة زاوية (L) سريعة 1/4\" لأنظمة فلتر الماء",
     "categorySlug": "pieces",
     "shortDescription": "QUICK 4044 FITTINGS ELBOW هي وصلة بزاوية 90 درجة (L-shaped) بتقنية Quick Connect، مخصصة لربط أنابيب الماء في الأماكن الضيقة أو الزوايا داخل أنظمة…",
@@ -2962,7 +2962,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p74",
-    "slug": "feeding-water-connection-equipment-معدات-توصيل-ماء-الدخول-لأنظمة-فلتر-الماء",
+    "slug": "feeding-water-connection-equipment-madat-twsyl-ma-2",
     "name": "Feeding Water Connection Equipment – معدات توصيل ماء الدخول لأنظمة فلتر الماء",
     "categorySlug": "pieces",
     "shortDescription": "Feeding Water Connection Equipment هي مجموعة من الملحقات والتوصيلات المصممة خصيصًا لربط نظام فلتر الماء مع مصدر الماء الرئيسي (الماء البارد).هاد…",
@@ -2996,7 +2996,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p75",
-    "slug": "quick-two-way-divider-موزّع-ماء-ثنائي-سريع-لأنظمة-فلتر-الماء",
+    "slug": "quick-two-way-divider-mwz-a-ma-thnayy-srya-lanzma-fltr",
     "name": "QUICK TWO WAY DIVIDER – موزّع ماء ثنائي سريع لأنظمة فلتر الماء",
     "categorySlug": "pieces",
     "shortDescription": "QUICK TWO WAY DIVIDER هو موزّع على شكل Y يُستخدم لتقسيم خط ماء واحد إلى مسارين بشكل سريع وآمن.كيعتمد على نظام Quick Connect 1/4\"، مما يسهّل عملية…",
@@ -3031,7 +3031,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p76",
-    "slug": "quick-5044-check-valve-صمّام-عدم-الرجوع-سريع-1-4-لأنظمة-فلتر-الماء-ro",
+    "slug": "quick-5044-check-valve-sm-am-adm-alrjwa-srya-1-4",
     "name": "QUICK 5044 CHECK VALVE – صمّام عدم الرجوع سريع 1/4\" لأنظمة فلتر الماء RO",
     "categorySlug": "pieces",
     "shortDescription": "QUICK 5044 CHECK VALVE هو صمّام عدم الرجوع (Clapet anti-retour) بتقنية Quick Connect، يُستخدم في أنظمة فلتر الماء بالتناضح العكسي (RO) لمنع رجوع…",
@@ -3066,7 +3066,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p77",
-    "slug": "quick-6044-tee-union-وصلة-t-ثلاثية-سريعة-1-4-لأنظمة-فلتر-الماء",
+    "slug": "quick-6044-tee-union-wsla-t-thlathya-sryaa-1-4-lanzma",
     "name": "QUICK 6044 TEE UNION – وصلة T ثلاثية سريعة 1/4\" لأنظمة فلتر الماء",
     "categorySlug": "pieces",
     "shortDescription": "QUICK 6044 TEE UNION هي وصلة T سريعة التركيب (Quick Connect)، مصممة لربط ثلاث أنابيب بنفس القطر (1/4\") داخل أنظمة فلتر الماء المنزلية، وخصوصًا أنظمة…",
@@ -3101,7 +3101,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p78",
-    "slug": "quick-5044-وصلة-t-سريعة-1-4-1-4-1-4-لتوصيلات-فلاتر-الماء",
+    "slug": "quick-5044-wsla-t-sryaa-1-4-1-4-1-4-ltwsylat-flatr-alma",
     "name": "QUICK 5044 – وصلة T سريعة 1/4\" × 1/4\" × 1/4\" لتوصيلات فلاتر الماء",
     "categorySlug": "pieces",
     "shortDescription": "QUICK 5044 FITTINGS هي وصلة على شكل T بتركيب سريع (Quick Connect) وبمقاس 1/4 بوصة في جميع الاتجاهات، مخصصة لربط ثلاث أنابيب داخل أنظمة فلتر الماء…",
@@ -3136,7 +3136,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p79",
-    "slug": "check-valve-quick-صمّام-عدم-الرجوع-سريع-لأنظمة-فلتر-الماء-ro",
+    "slug": "check-valve-quick-sm-am-adm-alrjwa-srya-lanzma-fltr",
     "name": "Check Valve Quick – صمّام عدم الرجوع سريع لأنظمة فلتر الماء RO",
     "categorySlug": "pieces",
     "shortDescription": "Check Valve Quick هو صمّام عدم الرجوع (Clapet Anti-retour) مخصص لأنظمة فلتر الماء بالتناضح العكسي (RO)، كيتثبت مباشرة بعد الممبرين (membrane)، ودوره…",
@@ -3176,7 +3176,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p80",
-    "slug": "flow-restrictor-300cc-منظم-تدفق-لنظام-فلتر-الماء-بالتناضح-العكسي-ro",
+    "slug": "flow-restrictor-300cc-mnzm-tdfq-lnzam-fltr-alma",
     "name": "Flow Restrictor 300cc – منظم تدفق لنظام فلتر الماء بالتناضح العكسي (RO)",
     "categorySlug": "pieces",
     "shortDescription": "Flow Restrictor 300cc هو منظم تدفّق (régulateur de débit) خاص بأنظمة فلتر الماء بالتناضح العكسي (Osmose Inverse)، كيتثبّت مباشرة بعد الممبرين، وكيخدم…",
@@ -3211,7 +3211,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p81",
-    "slug": "optimum-tubes-أنبوب-فلتر-ماء-5-متر-6-مم-10-مم-لتوصيلات-تحت-الحوض",
+    "slug": "optimum-tubes-anbwb-fltr-ma-5-mtr-6-mm-10-mm-ltwsylat",
     "name": "OPTIMUM TUBES – أنبوب فلتر ماء 5 متر (6 مم / 10 مم) لتوصيلات تحت الحوض",
     "categorySlug": "pieces",
     "shortDescription": "أنبوب OPTIMUM TUBES هو أنبوب توصيل بجودة عالية مخصص لأنظمة فلتر الماء تحت الحوض. متوفر بطول 5 أمتار، وقياسات 6 مم (1/4\") أو 10 مم (3/8\")، ومصنوع من…",
@@ -3246,7 +3246,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p82",
-    "slug": "high-pressure-switch-1-4-quick-حساس-ضغط-مرتفع-سريع-لأنظمة-فلتر-الماء",
+    "slug": "high-pressure-switch-1-4-quick-hsas-dght-mrtfa-srya",
     "name": "High Pressure Switch 1/4\" Quick – حساس ضغط مرتفع سريع لأنظمة فلتر الماء",
     "categorySlug": "pieces",
     "shortDescription": "High Pressure Switch 1/4\" Quick هو حساس ضغط مرتفع يُستعمل في أنظمة فلتر الماء بالتناضح العكسي (Osmose Inverse – RO)، ويُركّب بسهولة عبر نظام Quick…",
@@ -3281,7 +3281,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p83",
-    "slug": "low-pressure-switch-1-4-quick-حساس-ضغط-منخفض-سريع-لأنظمة-فلتر-الماء",
+    "slug": "low-pressure-switch-1-4-quick-hsas-dght-mnkhfd-srya",
     "name": "Low Pressure Switch 1/4\" Quick – حساس ضغط منخفض سريع لأنظمة فلتر الماء",
     "categorySlug": "pieces",
     "shortDescription": "Low Pressure Switch 1/4\" Quick هو حساس ضغط منخفض بتقنية Quick Connect، مصمم خصيصًا لأنظمة فلتر الماء بالتناضح العكسي (Osmose Inverse - RO).هاد القطعة…",
@@ -3316,7 +3316,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p84",
-    "slug": "shut-off-valve-صمّام-الإغلاق-التلقائي-لأنظمة-فلتر-الماء",
+    "slug": "shut-off-valve-sm-am-alighlaq-altlqayy-lanzma-fltr-alma",
     "name": "Shut-Off Valve – صمّام الإغلاق التلقائي لأنظمة فلتر الماء",
     "categorySlug": "pieces",
     "shortDescription": "Shut-Off Valve أو ما يُعرف بـ صمّام الإغلاق التلقائي هو قطعة مهمة وأساسية في أنظمة فلتر التناضح العكسي (Osmose Inverse). دوره الرئيسي هو إيقاف تدفّق…",
@@ -3351,7 +3351,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p85",
-    "slug": "صمّام-كهربائي-24v-solenoid-valve-75-100-gpd-لأنظمة-تنقية-المياه",
+    "slug": "sm-am-khrbayy-24v-solenoid-valve-75-100-gpd-lanzma",
     "name": "صمّام كهربائي 24V – Solenoid Valve (75/100 GPD) لأنظمة تنقية المياه",
     "categorySlug": "pieces",
     "shortDescription": "الصمّام الكهربائي 24V (Solenoid Valve) هو قطعة أساسية فأنظمة التناضح العكسي (Osmose Inverse)، خصوصاً في الأجهزة اللي كتشتغل بقدرة 75 أو 100 GPD…",
@@ -3391,7 +3391,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     "id": "p86",
-    "slug": "quick-7044-tee-union-وصلة-t-سريعة-لتوصيل-أنابيب-تصفية-الماء",
+    "slug": "quick-7044-tee-union-wsla-t-sryaa-ltwsyl-anabyb-tsfya",
     "name": "QUICK 7044 TEE UNION – وصلة T سريعة لتوصيل أنابيب تصفية الماء",
     "categorySlug": "pieces",
     "shortDescription": "QUICK 7044 TEE UNION هي وصلة ثلاثية (raccord en T) بتقنية Quick Connect، مصممة خصيصًا لأنظمة تصفية المياه المنزلية، خصوصًا فـ فلاتر التناضح العكسي…",
