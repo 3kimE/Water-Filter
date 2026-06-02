@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
   Phone,
   Mail,
@@ -14,7 +15,6 @@ import {
   InstagramIcon,
   TiktokIcon,
 } from "@/components/social-icons";
-import { BrandLogo } from "@/components/brand-logo";
 import { getT } from "@/i18n/server";
 
 const TRUST = [
@@ -49,7 +49,13 @@ export async function SiteFooter() {
       <div className="container-page grid gap-10 py-14 md:grid-cols-2 lg:grid-cols-4">
         <div>
           <div className="flex items-center gap-2.5">
-            <BrandLogo className="h-11 w-11" />
+            <Image
+              src="/logo.jpeg"
+              alt="Filtre Maroc"
+              width={44}
+              height={44}
+              className="h-11 w-11 rounded-full object-cover"
+            />
             <span className="font-display text-lg font-extrabold text-white">
               Filtre<span className="text-aqua-400">Maroc</span>
             </span>

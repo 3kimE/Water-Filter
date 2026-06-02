@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import {
@@ -14,7 +15,6 @@ import {
   Bell,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { BrandLogo } from "@/components/brand-logo";
 
 const NAV = [
   { label: "Tableau de bord", href: "/admin", icon: LayoutDashboard, exact: true },
@@ -35,7 +35,13 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
   const SidebarContent = (
     <div className="flex h-full flex-col">
       <Link href="/admin" className="flex items-center gap-2.5 px-5 py-5">
-        <BrandLogo className="h-10 w-10" />
+        <Image
+          src="/logo.jpeg"
+          alt="Filtre Maroc"
+          width={40}
+          height={40}
+          className="h-10 w-10 rounded-full object-cover"
+        />
         <div className="leading-tight">
           <p className="font-display font-extrabold text-white">Filtre Maroc</p>
           <p className="text-xs text-brand-300">Espace Admin</p>
