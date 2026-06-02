@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useState } from "react";
 import {
   ShoppingCart,
@@ -42,17 +41,9 @@ export function SiteHeader() {
       {/* Main bar */}
       <div className="glass border-b border-brand-100">
         <div className="container-page flex h-18 items-center gap-4 py-3">
-          {/* Logo */}
-          <Link href="/" className="flex shrink-0 items-center gap-2.5">
-            <Image
-              src="/logo.jpeg"
-              alt="Filtre Maroc"
-              width={48}
-              height={48}
-              className="h-12 w-12 rounded-full object-cover ring-1 ring-brand-100"
-              priority
-            />
-            <span className="hidden font-display text-xl font-extrabold leading-none text-brand-800 sm:block">
+          {/* Logo (text only) */}
+          <Link href="/" className="flex shrink-0 items-center">
+            <span className="font-display text-2xl font-extrabold leading-none text-brand-800">
               Filtre<span className="text-aqua-500">Maroc</span>
             </span>
           </Link>
