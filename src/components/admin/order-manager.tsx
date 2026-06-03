@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -18,6 +18,7 @@ import {
 import type { Order, OrderStatus } from "@/lib/types";
 import { StatusBadge } from "./status-badge";
 import { formatMAD, formatDate } from "@/lib/utils";
+import { updateOrderStatusAction } from "@/lib/order-actions";
 
 const ACTIONS: {
   status: OrderStatus;
@@ -36,10 +37,21 @@ export function OrderManager({ order }: { order: Order }) {
   const [status, setStatus] = useState<OrderStatus>(order.status);
   const [note, setNote] = useState(order.confirmationNote ?? "");
   const [touched, setTouched] = useState(false);
+  const [pending, startTransition] = useTransition();
 
   function changeStatus(s: OrderStatus) {
     setStatus(s);
     setTouched(true);
+    startTransition(async () => {
+      await updateOrderStatusAction(order.id, s, note);
+    });
+  }
+
+  function saveNote() {
+    setTouched(true);
+    startTransition(async () => {
+      await updateOrderStatusAction(order.id, status, note);
+    });
   }
 
   return (
@@ -68,7 +80,7 @@ export function OrderManager({ order }: { order: Order }) {
       {touched && (
         <div className="mb-6 flex items-center gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm font-medium text-emerald-700">
           <Check className="h-5 w-5" />
-          Statut mis à jour (démo — sera enregistré avec le backend)
+          {pending ? "Enregistrement…" : "Modifications enregistrées ✓"}
         </div>
       )}
 
@@ -129,6 +141,14 @@ export function OrderManager({ order }: { order: Order }) {
               placeholder="Ex : Client confirmé par téléphone, livraison demain matin."
               className="mt-3 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none focus:border-brand-300 focus:ring-4 focus:ring-brand-100"
             />
+            <button
+              type="button"
+              onClick={saveNote}
+              disabled={pending}
+              className="mt-3 rounded-full bg-brand-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-700 disabled:opacity-60"
+            >
+              {pending ? "Enregistrement…" : "Enregistrer la note"}
+            </button>
           </section>
         </div>
 

@@ -1,0 +1,41 @@
+import { createClient } from "@supabase/supabase-js";
+
+const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+
+/** Server-side Supabase client with full access (NEVER expose to the browser). */
+export const supabaseAdmin = createClient(url, serviceKey, {
+  auth: { persistSession: false },
+});
+
+const BUCKET = "products";
+
+let bucketReady: Promise<void> | null = null;
+async function ensureBucket() {
+  if (!bucketReady) {
+    bucketReady = (async () => {
+      const { error } = await supabaseAdmin.storage.createBucket(BUCKET, {
+        public: true,
+      });
+      if (error && !/exist/i.test(error.message)) throw error;
+    })().catch((e) => {
+      bucketReady = null;
+      throw e;
+    });
+  }
+  return bucketReady;
+}
+
+/** Upload one image file to Supabase Storage and return its public URL. */
+export async function uploadProductImage(file: File): Promise<string> {
+  await ensureBucket();
+  const ext = (file.name.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "");
+  const key = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext || "jpg"}`;
+  const bytes = new Uint8Array(await file.arrayBuffer());
+  const { error } = await supabaseAdmin.storage.from(BUCKET).upload(key, bytes, {
+    contentType: file.type || "image/jpeg",
+    upsert: false,
+  });
+  if (error) throw error;
+  return supabaseAdmin.storage.from(BUCKET).getPublicUrl(key).data.publicUrl;
+}

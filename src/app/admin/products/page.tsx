@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Plus, Search, Pencil, Trash2 } from "lucide-react";
 import { getCategoryBySlug } from "@/lib/mock-data";
 import { getProducts } from "@/lib/data";
+import { deleteProductAction } from "@/lib/product-actions";
 import { ProductPhoto } from "@/components/product-photo";
 import { formatMAD } from "@/lib/utils";
 
@@ -114,18 +115,21 @@ export default async function AdminProductsPage() {
                     <td className="px-5 py-3">
                       <div className="flex items-center justify-end gap-1">
                         <Link
-                          href="/admin/products/new"
+                          href={`/admin/products/${p.id}/edit`}
                           className="flex h-9 w-9 items-center justify-center rounded-lg text-ink-soft transition-colors hover:bg-brand-50 hover:text-brand-600"
                           aria-label="Modifier"
                         >
                           <Pencil className="h-4 w-4" />
                         </Link>
-                        <button
-                          className="flex h-9 w-9 items-center justify-center rounded-lg text-ink-soft transition-colors hover:bg-rose-50 hover:text-rose-500"
-                          aria-label="Supprimer"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </button>
+                        <form action={deleteProductAction.bind(null, p.id)}>
+                          <button
+                            type="submit"
+                            className="flex h-9 w-9 items-center justify-center rounded-lg text-ink-soft transition-colors hover:bg-rose-50 hover:text-rose-500"
+                            aria-label="Supprimer"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </button>
+                        </form>
                       </div>
                     </td>
                   </tr>
@@ -134,6 +138,12 @@ export default async function AdminProductsPage() {
             </tbody>
           </table>
         </div>
+        {products.length === 0 && (
+          <div className="py-16 text-center text-sm text-ink-soft">
+            Aucun produit pour le moment. Cliquez sur « Ajouter un produit » pour
+            commencer.
+          </div>
+        )}
       </div>
     </div>
   );

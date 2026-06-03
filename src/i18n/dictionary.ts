@@ -255,6 +255,8 @@ export const DICT: Record<string, Record<Locale, string>> = {
   "contact.success.text": { fr: "Merci {name}, nous vous répondrons très vite.", ar: "شكراً {name}، سنرد عليك في أقرب وقت.", en: "Thank you {name}, we will get back to you very soon." },
   "contact.success.button": { fr: "Envoyer un autre message", ar: "إرسال رسالة أخرى", en: "Send another message" },
 
+  "checkout.error.generic": { fr: "Une erreur est survenue. Veuillez réessayer.", ar: "حدث خطأ. يرجى المحاولة مرة أخرى.", en: "Something went wrong. Please try again." },
+
   // ---- contact location / map ----
   "contact.location.title": { fr: "Notre localisation", ar: "موقعنا", en: "Our location" },
   "contact.location.address": { fr: "Agadir, Maroc — livraison dans tout le Maroc", ar: "أكادير، المغرب — توصيل لكل المغرب", en: "Agadir, Morocco — delivery across Morocco" },

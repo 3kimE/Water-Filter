@@ -19,6 +19,7 @@ import { ProductPhoto } from "@/components/product-photo";
 import { MOROCCAN_CITIES } from "@/lib/mock-data";
 import { formatMAD } from "@/lib/utils";
 import { useI18n } from "@/i18n/i18n-context";
+import { createOrderAction } from "@/lib/order-actions";
 
 const FREE_DELIVERY = 1000;
 
@@ -58,22 +59,36 @@ export default function CheckoutPage() {
     return Object.keys(e).length === 0;
   }
 
-  function handleSubmit(ev: React.FormEvent) {
+  async function handleSubmit(ev: React.FormEvent) {
     ev.preventDefault();
     if (!validate()) return;
     setSubmitting(true);
 
-    const order = {
-      id: "FM-" + (1000 + Math.floor(Math.random() * 9000)),
-      ...form,
-      items,
-      delivery,
-      total,
-      createdAt: new Date().toISOString(),
-    };
-    sessionStorage.setItem("fm_last_order", JSON.stringify(order));
-    clear();
-    router.push("/order-confirmation");
+    try {
+      const orderItems = items.map((i) => ({
+        name: i.name,
+        qty: i.qty,
+        price: i.price,
+        variantLabel: i.variantLabel,
+      }));
+      const { id } = await createOrderAction({
+        customerName: form.name,
+        phone: form.phone,
+        city: form.city,
+        address: form.address,
+        note: form.note || undefined,
+        items: orderItems,
+        total,
+      });
+
+      const order = { id, ...form, items, delivery, total };
+      sessionStorage.setItem("fm_last_order", JSON.stringify(order));
+      clear();
+      router.push("/order-confirmation");
+    } catch {
+      setSubmitting(false);
+      setErrors((e) => ({ ...e, address: t("checkout.error.generic") }));
+    }
   }
 
   if (!hydrated) {

@@ -1,20 +1,131 @@
-import { Settings } from "lucide-react";
+import { getSettings } from "@/lib/data";
+import { updateSettingsAction } from "@/lib/settings-actions";
 
-export default function AdminSettingsPage() {
+export const dynamic = "force-dynamic";
+
+const label = "mb-1.5 block text-sm font-semibold text-ink";
+const input =
+  "h-11 w-full rounded-xl border border-line bg-white px-4 text-sm outline-none transition-all focus:border-brand-400 focus:ring-2 focus:ring-brand-100";
+
+export default async function AdminSettingsPage() {
+  const s = await getSettings();
+
   return (
     <div>
-      <h1 className="mb-6 font-display text-2xl font-bold text-ink">Paramètres</h1>
-      <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-white py-24 text-center">
-        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-50 text-brand-500">
-          <Settings className="h-7 w-7" />
-        </div>
-        <p className="mt-4 font-display text-lg font-semibold text-ink">
-          Paramètres de la boutique
-        </p>
-        <p className="mt-1 text-sm text-ink-soft">
-          Bientôt disponible — livraison, frais, comptes et notifications.
+      <div className="mb-6">
+        <h1 className="font-display text-2xl font-bold text-ink">Paramètres</h1>
+        <p className="text-sm text-ink-soft">
+          Informations de la boutique — modifiez-les ici, elles s&apos;appliquent
+          partout sur le site.
         </p>
       </div>
+
+      <form action={updateSettingsAction} className="max-w-3xl space-y-6">
+        {/* Identity */}
+        <section className="rounded-2xl border border-line bg-white p-6 shadow-sm">
+          <h2 className="font-display font-bold text-ink">Identité</h2>
+          <div className="mt-4 grid gap-4 sm:grid-cols-2">
+            <div>
+              <label className={label}>Nom du site</label>
+              <input name="siteName" defaultValue={s.siteName} className={input} />
+            </div>
+            <div>
+              <label className={label}>Logo</label>
+              <div className="flex items-center gap-3">
+                {s.logoUrl && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={s.logoUrl} alt="logo" className="h-11 w-11 rounded-lg border border-line object-contain" />
+                )}
+                <input type="file" name="logo" accept="image/*" className="text-sm" />
+              </div>
+            </div>
+          </div>
+          <div className="mt-4">
+            <label className={label}>Bandeau d&apos;annonce (haut du site)</label>
+            <input name="announcement" defaultValue={s.announcement ?? ""} className={input} placeholder="Ex : Livraison gratuite dès 1 000 MAD" />
+          </div>
+        </section>
+
+        {/* Contact */}
+        <section className="rounded-2xl border border-line bg-white p-6 shadow-sm">
+          <h2 className="font-display font-bold text-ink">Contact</h2>
+          <div className="mt-4 grid gap-4 sm:grid-cols-2">
+            <div>
+              <label className={label}>Téléphone 1</label>
+              <input name="phone1" defaultValue={s.phone1} className={input} />
+            </div>
+            <div>
+              <label className={label}>Téléphone 2</label>
+              <input name="phone2" defaultValue={s.phone2 ?? ""} className={input} />
+            </div>
+            <div>
+              <label className={label}>WhatsApp (format international, ex 212660781919)</label>
+              <input name="whatsapp" defaultValue={s.whatsapp ?? ""} className={input} />
+            </div>
+            <div>
+              <label className={label}>Email</label>
+              <input name="email" type="email" defaultValue={s.email ?? ""} className={input} />
+            </div>
+          </div>
+        </section>
+
+        {/* Location */}
+        <section className="rounded-2xl border border-line bg-white p-6 shadow-sm">
+          <h2 className="font-display font-bold text-ink">Localisation</h2>
+          <div className="mt-4 space-y-4">
+            <div>
+              <label className={label}>Adresse (texte)</label>
+              <input name="addressText" defaultValue={s.addressText ?? ""} className={input} placeholder="Agadir, Maroc" />
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div>
+                <label className={label}>Latitude carte</label>
+                <input name="mapLat" defaultValue={s.mapLat ?? ""} className={input} placeholder="30.4144656" />
+              </div>
+              <div>
+                <label className={label}>Longitude carte</label>
+                <input name="mapLng" defaultValue={s.mapLng ?? ""} className={input} placeholder="-9.5671467" />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Socials */}
+        <section className="rounded-2xl border border-line bg-white p-6 shadow-sm">
+          <h2 className="font-display font-bold text-ink">Réseaux sociaux</h2>
+          <p className="mt-1 text-xs text-ink-soft">Laissez vide pour masquer un réseau.</p>
+          <div className="mt-4 grid gap-4 sm:grid-cols-3">
+            <div>
+              <label className={label}>Facebook</label>
+              <input name="facebook" defaultValue={s.facebook ?? ""} className={input} placeholder="https://facebook.com/..." />
+            </div>
+            <div>
+              <label className={label}>Instagram</label>
+              <input name="instagram" defaultValue={s.instagram ?? ""} className={input} placeholder="https://instagram.com/..." />
+            </div>
+            <div>
+              <label className={label}>TikTok</label>
+              <input name="tiktok" defaultValue={s.tiktok ?? ""} className={input} placeholder="https://tiktok.com/@..." />
+            </div>
+          </div>
+        </section>
+
+        {/* Delivery */}
+        <section className="rounded-2xl border border-line bg-white p-6 shadow-sm">
+          <h2 className="font-display font-bold text-ink">Livraison</h2>
+          <div className="mt-4 max-w-xs">
+            <label className={label}>Livraison gratuite à partir de (MAD)</label>
+            <input name="freeDeliveryThreshold" type="number" defaultValue={s.freeDeliveryThreshold} className={input} />
+          </div>
+        </section>
+
+        <button
+          type="submit"
+          className="rounded-full bg-brand-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-brand-700"
+        >
+          Enregistrer les paramètres
+        </button>
+      </form>
     </div>
   );
 }
