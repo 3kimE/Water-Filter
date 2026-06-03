@@ -13,6 +13,7 @@ import {
   Menu,
   Bell,
   LogOut,
+  MessageSquare,
 } from "lucide-react";
 import { cn, formatMAD } from "@/lib/utils";
 import { logoutAction } from "@/lib/auth-actions";
@@ -23,6 +24,7 @@ const NAV = [
   { label: "Tableau de bord", href: "/admin", icon: LayoutDashboard, exact: true },
   { label: "Produits", href: "/admin/products", icon: Package },
   { label: "Commandes", href: "/admin/orders", icon: ShoppingBag },
+  { label: "Messages", href: "/admin/messages", icon: MessageSquare },
   { label: "Clients", href: "/admin/clients", icon: Users },
   { label: "Paramètres", href: "/admin/settings", icon: Settings },
 ];
@@ -30,8 +32,10 @@ const NAV = [
 const EMPTY: AdminNotifications = {
   pendingCount: 0,
   lowStockCount: 0,
+  unreadMessagesCount: 0,
   pendingOrders: [],
   lowStock: [],
+  messages: [],
 };
 
 export function AdminShell({
@@ -77,7 +81,7 @@ export function AdminShell({
   // Login page renders without the admin shell
   if (pathname === "/admin/login") return <>{children}</>;
 
-  const badge = notifs.pendingCount + notifs.lowStockCount;
+  const badge = notifs.pendingCount + notifs.lowStockCount + notifs.unreadMessagesCount;
 
   const SidebarContent = (
     <div className="flex h-full flex-col">
@@ -110,6 +114,11 @@ export function AdminShell({
               {item.href === "/admin/orders" && notifs.pendingCount > 0 && (
                 <span className="ms-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-amber-100 px-1 text-xs font-bold text-amber-700">
                   {notifs.pendingCount}
+                </span>
+              )}
+              {item.href === "/admin/messages" && notifs.unreadMessagesCount > 0 && (
+                <span className="ms-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-brand-100 px-1 text-xs font-bold text-brand-700">
+                  {notifs.unreadMessagesCount}
                 </span>
               )}
             </Link>
@@ -238,6 +247,30 @@ export function AdminShell({
                             <span className="min-w-0 flex-1 text-sm">
                               <span dir="auto" className="line-clamp-1 font-medium text-ink">{p.name}</span>
                               <span className="block text-xs text-ink-soft">Stock : {p.stock}</span>
+                            </span>
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+
+                    {notifs.messages.length > 0 && (
+                      <div className="border-t border-line py-1">
+                        <p className="px-4 pb-1 pt-2 text-xs font-semibold uppercase tracking-wide text-ink-soft">
+                          Nouveaux messages
+                        </p>
+                        {notifs.messages.map((m) => (
+                          <Link
+                            key={m.id}
+                            href="/admin/messages"
+                            onClick={() => setBellOpen(false)}
+                            className="flex items-center gap-3 px-4 py-2.5 hover:bg-neutral-50"
+                          >
+                            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-600">
+                              <MessageSquare className="h-4 w-4" />
+                            </span>
+                            <span className="min-w-0 flex-1 text-sm">
+                              <span dir="auto" className="font-medium text-ink">{m.name}</span>
+                              <span dir="auto" className="block text-xs text-ink-soft line-clamp-1">{m.message}</span>
                             </span>
                           </Link>
                         ))}

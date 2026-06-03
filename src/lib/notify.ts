@@ -125,3 +125,44 @@ export async function notifyNewOrder(order: Order): Promise<void> {
     /* never block an order on a failed email */
   }
 }
+
+function esc(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+/** Emails the owner when a customer sends the contact form. No-op if unconfigured. */
+export async function notifyNewMessage(msg: {
+  name: string;
+  phone: string;
+  message: string;
+}): Promise<void> {
+  const apiKey = process.env.RESEND_API_KEY;
+  const to = process.env.ORDER_NOTIFY_EMAIL;
+  if (!apiKey || !to) return;
+  const from = process.env.ORDER_FROM_EMAIL || "Filtre Maroc <onboarding@resend.dev>";
+  const appUrl = process.env.APP_URL || "http://localhost:3000";
+
+  const html = `
+    <div style="font-family:Arial,Helvetica,sans-serif;max-width:560px;margin:auto;">
+      <div style="background:#1273b6;color:#fff;padding:18px 22px;border-radius:14px 14px 0 0;font-size:18px;font-weight:bold;">✉️ Nouveau message de contact</div>
+      <div style="border:1px solid #e8ebee;border-top:0;border-radius:0 0 14px 14px;padding:20px 22px;">
+        <p style="margin:0 0 6px;"><b>Nom :</b> ${esc(msg.name)}</p>
+        <p style="margin:0 0 12px;"><b>Téléphone :</b> <a href="tel:${esc(msg.phone)}" style="color:#1273b6;">${esc(msg.phone)}</a></p>
+        <div style="white-space:pre-wrap;background:#f7fafc;border-radius:10px;padding:14px;color:#0a0f16;">${esc(msg.message)}</div>
+        <p style="margin-top:18px;"><a href="${appUrl}/admin/messages" style="background:#1273b6;color:#fff;text-decoration:none;font-weight:bold;padding:10px 22px;border-radius:999px;display:inline-block;">Voir dans l'admin →</a></p>
+      </div>
+    </div>`;
+
+  try {
+    await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ from, to, subject: `✉️ Nouveau message de ${msg.name}`, html }),
+    });
+  } catch {
+    /* never block on a failed email */
+  }
+}

@@ -131,32 +131,72 @@ export async function getDashboardStats() {
   };
 }
 
+/* ---------- contact messages ---------- */
+
+export type ContactMessageDTO = {
+  id: string;
+  name: string;
+  phone: string;
+  message: string;
+  read: boolean;
+  createdAt: string;
+};
+
+export async function createContactMessage(data: {
+  name: string;
+  phone: string;
+  message: string;
+}): Promise<ContactMessageDTO> {
+  const m = await prisma.contactMessage.create({ data });
+  return {
+    id: m.id,
+    name: m.name,
+    phone: m.phone,
+    message: m.message,
+    read: m.read,
+    createdAt: m.createdAt.toISOString(),
+  };
+}
+
+export async function getMessages(): Promise<ContactMessageDTO[]> {
+  const rows = await prisma.contactMessage.findMany({ orderBy: { createdAt: "desc" } });
+  return rows.map((m) => ({
+    id: m.id,
+    name: m.name,
+    phone: m.phone,
+    message: m.message,
+    read: m.read,
+    createdAt: m.createdAt.toISOString(),
+  }));
+}
+
+export async function markMessageRead(id: string) {
+  return prisma.contactMessage.update({ where: { id }, data: { read: true } });
+}
+
 /* ---------- admin notifications ---------- */
 
 export type AdminNotifications = {
   pendingCount: number;
   lowStockCount: number;
+  unreadMessagesCount: number;
   pendingOrders: { id: string; customerName: string; total: number; createdAt: string }[];
   lowStock: { id: string; name: string; stock: number }[];
+  messages: { id: string; name: string; message: string; createdAt: string }[];
 };
 
 export async function getAdminNotifications(): Promise<AdminNotifications> {
-  const [pendingCount, pending, low] = await Promise.all([
+  const [pendingCount, pending, low, unreadMessagesCount, msgs] = await Promise.all([
     prisma.order.count({ where: { status: "pending" } }),
-    prisma.order.findMany({
-      where: { status: "pending" },
-      orderBy: { createdAt: "desc" },
-      take: 8,
-    }),
-    prisma.product.findMany({
-      where: { inStock: true, stock: { lte: 5 } },
-      orderBy: { stock: "asc" },
-      take: 8,
-    }),
+    prisma.order.findMany({ where: { status: "pending" }, orderBy: { createdAt: "desc" }, take: 8 }),
+    prisma.product.findMany({ where: { inStock: true, stock: { lte: 5 } }, orderBy: { stock: "asc" }, take: 8 }),
+    prisma.contactMessage.count({ where: { read: false } }),
+    prisma.contactMessage.findMany({ where: { read: false }, orderBy: { createdAt: "desc" }, take: 8 }),
   ]);
   return {
     pendingCount,
     lowStockCount: low.length,
+    unreadMessagesCount,
     pendingOrders: pending.map((o) => ({
       id: o.id,
       customerName: o.customerName,
@@ -164,6 +204,12 @@ export async function getAdminNotifications(): Promise<AdminNotifications> {
       createdAt: o.createdAt.toISOString(),
     })),
     lowStock: low.map((p) => ({ id: p.id, name: p.name, stock: p.stock })),
+    messages: msgs.map((m) => ({
+      id: m.id,
+      name: m.name,
+      message: m.message,
+      createdAt: m.createdAt.toISOString(),
+    })),
   };
 }
 

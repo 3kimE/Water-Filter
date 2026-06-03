@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useI18n } from "@/i18n/i18n-context";
 import { useSettings } from "@/context/settings-context";
+import { sendContactMessageAction } from "@/lib/contact-actions";
 import {
   Phone,
   Mail,
@@ -18,11 +19,22 @@ export default function ContactPage() {
   const { t, locale } = useI18n();
   const settings = useSettings();
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [form, setForm] = useState({ name: "", phone: "", message: "" });
 
-  function submit(e: React.FormEvent) {
+  async function submit(e: React.FormEvent) {
     e.preventDefault();
-    setSent(true);
+    setSending(true);
+    setError(null);
+    const res = await sendContactMessageAction({
+      name: form.name,
+      phone: form.phone,
+      message: form.message,
+    });
+    setSending(false);
+    if (res.ok) setSent(true);
+    else setError(res.error ?? "Une erreur est survenue.");
   }
 
   const input =
@@ -137,6 +149,11 @@ export default function ContactPage() {
               <h2 className="font-display text-xl font-bold text-ink">
                 {t("contact.form.title")}
               </h2>
+              {error && (
+                <div className="rounded-xl bg-rose-50 px-4 py-2.5 text-sm text-rose-600">
+                  {error}
+                </div>
+              )}
               <div>
                 <label className="mb-1.5 block text-sm font-semibold text-ink">{t("contact.form.name")}</label>
                 <input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className={input} placeholder={t("contact.form.namePlaceholder")} />
@@ -149,8 +166,12 @@ export default function ContactPage() {
                 <label className="mb-1.5 block text-sm font-semibold text-ink">{t("contact.form.message")}</label>
                 <textarea required value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} rows={5} className="w-full rounded-xl border border-line bg-white px-4 py-3 text-sm outline-none transition-all focus:border-brand-300 focus:ring-4 focus:ring-brand-100" placeholder={t("contact.form.messagePlaceholder")} />
               </div>
-              <button type="submit" className="flex h-13 w-full items-center justify-center gap-2 rounded-full bg-brand-600 px-6 py-3.5 font-semibold text-white transition-all hover:bg-brand-700">
-                <Send className="h-5 w-5" /> {t("contact.form.submit")}
+              <button
+                type="submit"
+                disabled={sending}
+                className="flex h-13 w-full items-center justify-center gap-2 rounded-full bg-brand-600 px-6 py-3.5 font-semibold text-white transition-all hover:bg-brand-700 disabled:opacity-60"
+              >
+                <Send className="h-5 w-5" /> {sending ? "Envoi…" : t("contact.form.submit")}
               </button>
             </form>
           )}

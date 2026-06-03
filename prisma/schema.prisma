@@ -63,6 +63,17 @@ model AdminUser {
   createdAt    DateTime @default(now())
 }
 
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  phone     String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([read])
+}
+
 model SiteSettings {
   id                     String   @id @default("main")
   siteName               String   @default("Filtre Maroc")
