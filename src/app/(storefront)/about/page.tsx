@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Image from "next/image";
 import {
   Droplet,
   ShieldCheck,
@@ -8,6 +8,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { getSettings } from "@/lib/data";
 import { getT } from "@/i18n/server";
 
 export const metadata = { title: "À propos" };
@@ -28,6 +29,7 @@ const VALUES = [
 
 export default async function AboutPage() {
   const { t } = await getT();
+  const settings = await getSettings();
   return (
     <>
       <section className="hero-water">
@@ -61,7 +63,13 @@ export default async function AboutPage() {
       <section className="container-page grid items-center gap-10 py-16 lg:grid-cols-2">
         <div className="relative aspect-[4/3] overflow-hidden rounded-card bg-gradient-to-br from-brand-400 to-brand-800 shadow-glow">
           <div className="absolute inset-0 flex items-center justify-center">
-            <Droplet className="h-40 w-40 animate-float text-white/90" strokeWidth={1.2} fill="rgba(255,255,255,0.18)" />
+            <Image
+              src={settings.logoUrl || "/logo.jpeg"}
+              alt={settings.siteName}
+              width={240}
+              height={240}
+              className="h-52 w-52 animate-float rounded-full object-cover shadow-xl ring-4 ring-white/40"
+            />
           </div>
         </div>
         <div>
