@@ -17,12 +17,13 @@ import { StarRating } from "@/components/star-rating";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { CATEGORIES } from "@/lib/mock-data";
-import { getBestSellers } from "@/lib/data";
+import { getBestSellers, getSettings } from "@/lib/data";
 import { getT } from "@/i18n/server";
 
 export default async function HomePage() {
   const { t } = await getT();
   const bestSellers = await getBestSellers();
+  const settings = await getSettings();
 
   const TESTIMONIALS = [
     {
@@ -123,8 +124,8 @@ export default async function HomePage() {
             <div className="relative aspect-square rounded-[2.5rem] bg-gradient-to-br from-brand-400 via-brand-500 to-brand-800 shadow-[var(--shadow-glow)]">
               <div className="absolute inset-0 flex items-center justify-center">
                 <Image
-                  src="/logo.jpeg"
-                  alt="Filtre Maroc"
+                  src={settings.logoUrl || "/logo.jpeg"}
+                  alt={settings.siteName}
                   width={240}
                   height={240}
                   priority

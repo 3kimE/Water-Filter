@@ -15,6 +15,8 @@ import { CATEGORIES } from "@/lib/mock-data";
 import { useCart } from "@/context/cart-context";
 import { useI18n } from "@/i18n/i18n-context";
 import { LanguageSwitcher } from "@/components/language-switcher";
+import { BrandName } from "@/components/brand-name";
+import type { SiteSettings } from "@/lib/data";
 
 const NAV = [
   { key: "nav.home", href: "/" },
@@ -23,7 +25,7 @@ const NAV = [
   { key: "nav.contact", href: "/contact" },
 ];
 
-export function SiteHeader() {
+export function SiteHeader({ settings }: { settings: SiteSettings }) {
   const { count, hydrated } = useCart();
   const { t } = useI18n();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -34,7 +36,9 @@ export function SiteHeader() {
       <div className="bg-ink text-white">
         <div className="container-page flex h-9 items-center justify-center gap-2 text-center text-xs">
           <Truck className="h-3.5 w-3.5 shrink-0 opacity-80" />
-          <span className="font-medium opacity-90">{t("header.announcement")}</span>
+          <span className="font-medium opacity-90">
+            {settings.announcement || t("header.announcement")}
+          </span>
         </div>
       </div>
 
@@ -44,7 +48,7 @@ export function SiteHeader() {
           {/* Logo (text only) */}
           <Link href="/" className="flex shrink-0 items-center">
             <span className="font-display text-2xl font-extrabold leading-none tracking-tight text-ink">
-              Filtre<span className="text-brand-600">Maroc</span>
+              <BrandName name={settings.siteName} />
             </span>
           </Link>
 

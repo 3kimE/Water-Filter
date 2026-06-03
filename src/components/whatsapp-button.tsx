@@ -1,12 +1,14 @@
 import { MessageCircle } from "lucide-react";
 import { getT } from "@/i18n/server";
+import type { SiteSettings } from "@/lib/data";
 
 /** Floating WhatsApp contact button — always visible bottom-right. */
-export async function WhatsappButton() {
+export async function WhatsappButton({ settings }: { settings: SiteSettings }) {
   const { t } = await getT();
+  if (!settings.whatsapp) return null;
   return (
     <a
-      href="https://wa.me/212660781919?text=Bonjour%20Filtre%20Maroc,%20j'ai%20une%20question"
+      href={`https://wa.me/${settings.whatsapp}?text=${encodeURIComponent("Bonjour, j'ai une question")}`}
       target="_blank"
       rel="noopener noreferrer"
       aria-label={t("whatsapp.aria")}
