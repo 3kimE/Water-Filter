@@ -10,8 +10,11 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   images: {
+    // Load images directly (no optimizer proxy) — reliable for Supabase/local
+    // logos and product photos. Avoids optimizer "url not allowed" errors.
+    unoptimized: true,
     remotePatterns: [
-      { protocol: "https", hostname: "*.supabase.co" },
+      { protocol: "https", hostname: "jlqgjthxzhuwsozhagjl.supabase.co" },
       { protocol: "https", hostname: "cdn.shopify.com" },
     ],
   },
