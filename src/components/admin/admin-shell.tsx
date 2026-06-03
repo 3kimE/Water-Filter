@@ -12,8 +12,10 @@ import {
   ExternalLink,
   Menu,
   Bell,
+  LogOut,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { logoutAction } from "@/lib/auth-actions";
 
 const NAV = [
   { label: "Tableau de bord", href: "/admin", icon: LayoutDashboard, exact: true },
@@ -30,6 +32,9 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
   function isActive(href: string, exact?: boolean) {
     return exact ? pathname === href : pathname.startsWith(href);
   }
+
+  // Login page renders without the admin shell
+  if (pathname === "/admin/login") return <>{children}</>;
 
   const SidebarContent = (
     <div className="flex h-full flex-col">
@@ -72,6 +77,15 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
           <ExternalLink className="h-5 w-5" />
           Voir le site
         </Link>
+        <form action={logoutAction}>
+          <button
+            type="submit"
+            className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-ink-soft transition-colors hover:bg-rose-50 hover:text-rose-600"
+          >
+            <LogOut className="h-5 w-5" />
+            Déconnexion
+          </button>
+        </form>
       </div>
     </div>
   );
