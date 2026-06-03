@@ -1,49 +1,125 @@
 import type { Order } from "@/lib/types";
 import { formatMAD } from "@/lib/utils";
+import { getSettings } from "@/lib/data";
+
+const BRAND = "#1273b6";
+const BRAND_DARK = "#0e3c5f";
+const INK = "#0a0f16";
+const MUTED = "#7a8794";
+const LINE = "#eef1f4";
+
+function brandHeader(logoUrl: string | null, siteName: string): string {
+  const useImg = logoUrl && /^https?:\/\//.test(logoUrl);
+  const mark = useImg
+    ? `<img src="${logoUrl}" alt="${siteName}" width="56" height="56" style="border-radius:50%;display:block;margin:0 auto 8px;border:2px solid rgba(255,255,255,.5);" />`
+    : `<div style="font-size:26px;font-weight:800;color:#ffffff;letter-spacing:-.02em;">💧 ${siteName}</div>`;
+  return `
+    <tr><td align="center" style="background:${BRAND};background:linear-gradient(135deg,${BRAND},${BRAND_DARK});padding:26px 28px;">
+      ${mark}
+      <div style="color:#dceefb;font-size:14px;margin-top:6px;">Nouvelle commande reçue 🛒</div>
+    </td></tr>`;
+}
+
+/** Builds the branded order-alert email. Pure (no DB). */
+export function buildOrderEmail(
+  order: Order,
+  opts: { logoUrl: string | null; siteName: string; appUrl: string },
+): { subject: string; html: string } {
+  const subject = `🛒 Nouvelle commande ${order.id} — ${formatMAD(order.total)}`;
+
+  const itemsRows = order.items
+    .map(
+      (i) => `
+        <tr>
+          <td style="padding:10px 0;border-bottom:1px solid ${LINE};font-size:14px;color:${INK};">
+            ${i.name}${i.variantLabel ? ` <span style="color:${MUTED};">(${i.variantLabel})</span>` : ""}
+            <span style="color:${MUTED};">× ${i.qty}</span>
+          </td>
+          <td align="right" style="padding:10px 0;border-bottom:1px solid ${LINE};font-size:14px;font-weight:bold;color:${INK};white-space:nowrap;">
+            ${formatMAD(i.price * i.qty)}
+          </td>
+        </tr>`,
+    )
+    .join("");
+
+  const html = `
+  <div style="background:#f3f5f7;padding:24px 12px;font-family:Arial,Helvetica,sans-serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center">
+      <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;background:#ffffff;border-radius:16px;overflow:hidden;border:1px solid #e8ebee;">
+        ${brandHeader(opts.logoUrl, opts.siteName)}
+
+        <tr><td style="padding:24px 28px 6px;">
+          <table role="presentation" width="100%"><tr>
+            <td style="font-size:20px;font-weight:bold;color:${INK};">Commande ${order.id}</td>
+            <td align="right"><span style="background:#fef3c7;color:#92400e;font-size:11px;font-weight:bold;padding:5px 11px;border-radius:999px;">À CONFIRMER</span></td>
+          </tr></table>
+        </td></tr>
+
+        <tr><td style="padding:8px 28px;">
+          <table role="presentation" width="100%" style="background:#f7fafc;border-radius:12px;">
+            <tr><td style="padding:16px;font-size:14px;color:${INK};line-height:1.9;">
+              👤 <b>${order.customerName}</b><br>
+              📞 <a href="tel:${order.phone}" style="color:${BRAND};text-decoration:none;">${order.phone}</a><br>
+              📍 ${order.address}, ${order.city}${order.note ? `<br>📝 ${order.note}` : ""}
+            </td></tr>
+          </table>
+        </td></tr>
+
+        <tr><td style="padding:10px 28px 0;">
+          <table role="presentation" width="100%" style="border-collapse:collapse;">
+            ${itemsRows}
+            <tr>
+              <td style="padding:16px 0 4px;font-size:16px;font-weight:bold;color:${INK};">Total à encaisser</td>
+              <td align="right" style="padding:16px 0 4px;font-size:22px;font-weight:bold;color:${BRAND_DARK};white-space:nowrap;">${formatMAD(order.total)}</td>
+            </tr>
+          </table>
+          <div style="font-size:12px;color:${MUTED};padding-bottom:4px;">💵 Paiement à la livraison (COD)</div>
+        </td></tr>
+
+        <tr><td align="center" style="padding:22px 28px 28px;">
+          <a href="${opts.appUrl}/admin/orders/${order.id}" style="background:${BRAND};color:#ffffff;text-decoration:none;font-weight:bold;font-size:15px;padding:13px 30px;border-radius:999px;display:inline-block;">Voir la commande →</a>
+        </td></tr>
+
+        <tr><td style="background:#f7fafc;padding:16px 28px;text-align:center;font-size:12px;color:#9aa6b2;">
+          ${opts.siteName} · alerte automatique de commande
+        </td></tr>
+      </table>
+    </td></tr></table>
+  </div>`;
+
+  return { subject, html };
+}
 
 /**
- * Emails the shop owner when a new order arrives (via Resend's HTTP API — no
- * extra dependency). No-ops silently if not configured yet, and never throws,
- * so it can't block an order from being saved.
- *
- * To activate: set RESEND_API_KEY and ORDER_NOTIFY_EMAIL in the environment.
+ * Emails the shop owner when a new order arrives (Resend HTTP API; no dep).
+ * No-ops silently if not configured, and never throws.
+ * Activate by setting RESEND_API_KEY and ORDER_NOTIFY_EMAIL.
  */
 export async function notifyNewOrder(order: Order): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;
   const to = process.env.ORDER_NOTIFY_EMAIL;
-  if (!apiKey || !to) return; // not configured — skip quietly
+  if (!apiKey || !to) return;
 
   const from = process.env.ORDER_FROM_EMAIL || "Filtre Maroc <onboarding@resend.dev>";
-  const lines = order.items
-    .map(
-      (i) =>
-        `${i.name}${i.variantLabel ? ` (${i.variantLabel})` : ""} × ${i.qty} — ${formatMAD(i.price * i.qty)}`,
-    )
-    .join("<br>");
+  const appUrl = process.env.APP_URL || "http://localhost:3000";
 
-  const html = `
-    <h2>🛒 Nouvelle commande ${order.id}</h2>
-    <p><b>Client :</b> ${order.customerName}<br>
-       <b>Téléphone :</b> ${order.phone}<br>
-       <b>Ville :</b> ${order.city}<br>
-       <b>Adresse :</b> ${order.address}${order.note ? `<br><b>Note :</b> ${order.note}` : ""}</p>
-    <p>${lines}</p>
-    <p><b>Total : ${formatMAD(order.total)}</b> — paiement à la livraison</p>
-  `;
+  let logoUrl: string | null = null;
+  let siteName = "Filtre Maroc";
+  try {
+    const s = await getSettings();
+    logoUrl = s.logoUrl;
+    siteName = s.siteName;
+  } catch {
+    /* use defaults */
+  }
+
+  const { subject, html } = buildOrderEmail(order, { logoUrl, siteName, appUrl });
 
   try {
     await fetch("https://api.resend.com/emails", {
       method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        from,
-        to,
-        subject: `🛒 Nouvelle commande ${order.id} — ${formatMAD(order.total)}`,
-        html,
-      }),
+      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ from, to, subject, html }),
     });
   } catch {
     /* never block an order on a failed email */
