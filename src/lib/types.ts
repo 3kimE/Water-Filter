@@ -90,6 +90,7 @@ export type OrderItem = {
   qty: number;
   price: number;
   variantLabel?: string;
+  productId?: string;
 };
 
 export type Order = {

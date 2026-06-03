@@ -74,6 +74,12 @@ export async function saveProductAction(
   const inStock = formData.get("inStock") != null;
   const hue = num(formData.get("hue")) ?? 205;
 
+  // server-side validation
+  if (name.length < 2) throw new Error("Le nom du produit est requis.");
+  if (!Number.isFinite(price) || price <= 0)
+    throw new Error("Le prix doit être un nombre supérieur à 0.");
+  if (stock < 0) throw new Error("Le stock ne peut pas être négatif.");
+
   // images: keep existing (edit) + upload new files
   let images: string[] = [];
   const existing = String(formData.get("existingImages") ?? "");

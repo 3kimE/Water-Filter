@@ -66,22 +66,26 @@ export default function CheckoutPage() {
 
     try {
       const orderItems = items.map((i) => ({
-        name: i.name,
+        productId: i.productId,
         qty: i.qty,
-        price: i.price,
         variantLabel: i.variantLabel,
       }));
-      const { id } = await createOrderAction({
+      const res = await createOrderAction({
         customerName: form.name,
         phone: form.phone,
         city: form.city,
         address: form.address,
         note: form.note || undefined,
         items: orderItems,
-        total,
       });
 
-      const order = { id, ...form, items, delivery, total };
+      const order = {
+        id: res.id,
+        ...form,
+        items: res.items,
+        delivery: res.delivery,
+        total: res.total,
+      };
       sessionStorage.setItem("fm_last_order", JSON.stringify(order));
       clear();
       router.push("/order-confirmation");

@@ -191,30 +191,98 @@ export async function deleteProduct(id: string) {
 
 /* ---------- order writes ---------- */
 
+const DELIVERY_FEE = 40;
+
+function pickVariantDelta(variantsJson: unknown, label?: string): number {
+  if (!label || !variantsJson) return 0;
+  const arr = variantsJson as ProductVariant[];
+  if (!Array.isArray(arr)) return 0;
+  return arr.find((v) => v.label === label)?.priceDelta ?? 0;
+}
+
+/**
+ * Creates an order. Prices, delivery and total are recomputed SERVER-SIDE
+ * from the database — the client's numbers are never trusted. Validates
+ * input, generates a collision-proof id, and decrements stock.
+ */
 export async function createOrder(data: {
   customerName: string;
   phone: string;
   city: string;
   address: string;
   note?: string;
-  items: OrderItem[];
-  total: number;
+  items: { productId: string; qty: number; variantLabel?: string }[];
 }): Promise<Order> {
-  const count = await prisma.order.count();
-  const id = "FM-" + (2001 + count);
+  // validation
+  const name = (data.customerName ?? "").trim();
+  const phone = (data.phone ?? "").replace(/\s/g, "");
+  const city = (data.city ?? "").trim();
+  const address = (data.address ?? "").trim();
+  if (name.length < 3 || name.length > 60) throw new Error("INVALID_NAME");
+  if (!/^0[5-7]\d{8}$/.test(phone)) throw new Error("INVALID_PHONE");
+  if (city.length < 2) throw new Error("INVALID_CITY");
+  if (address.length < 6) throw new Error("INVALID_ADDRESS");
+  if (!Array.isArray(data.items) || data.items.length === 0 || data.items.length > 50)
+    throw new Error("INVALID_ITEMS");
+
+  // recompute from DB (never trust client prices/total)
+  const ids = [...new Set(data.items.map((i) => i.productId))];
+  const products = await prisma.product.findMany({ where: { id: { in: ids } } });
+  const byId = new Map(products.map((p) => [p.id, p]));
+
+  const orderItems: OrderItem[] = [];
+  let subtotal = 0;
+  for (const it of data.items) {
+    const p = byId.get(it.productId);
+    if (!p) throw new Error("PRODUCT_NOT_FOUND");
+    const qty = Math.max(1, Math.min(99, Math.floor(Number(it.qty) || 1)));
+    const unit = p.price + pickVariantDelta(p.variants, it.variantLabel);
+    subtotal += unit * qty;
+    orderItems.push({
+      name: p.name,
+      qty,
+      price: unit,
+      variantLabel: it.variantLabel,
+      productId: p.id,
+    });
+  }
+
+  const settings = await getSettings();
+  const delivery = subtotal >= settings.freeDeliveryThreshold ? 0 : DELIVERY_FEE;
+  const total = subtotal + delivery;
+
+  // collision-proof id via a Postgres sequence
+  await prisma.$executeRawUnsafe(`CREATE SEQUENCE IF NOT EXISTS order_seq START 1`);
+  const seqRows = await prisma.$queryRawUnsafe<{ n: number }[]>(
+    `SELECT nextval('order_seq')::int AS n`,
+  );
+  const id = "FM-" + (2000 + seqRows[0].n);
+
   const row = await prisma.order.create({
     data: {
       id,
-      customerName: data.customerName,
-      phone: data.phone,
-      city: data.city,
-      address: data.address,
-      note: data.note ?? null,
-      items: data.items as unknown as object,
-      total: data.total,
+      customerName: name,
+      phone,
+      city,
+      address,
+      note: data.note?.trim() || null,
+      items: orderItems as unknown as object,
+      total,
       status: "pending",
     },
   });
+
+  // decrement stock (best-effort)
+  await Promise.all(
+    orderItems.map((it) =>
+      it.productId
+        ? prisma.product
+            .update({ where: { id: it.productId }, data: { stock: { decrement: it.qty } } })
+            .catch(() => null)
+        : null,
+    ),
+  );
+
   return toOrder(row);
 }
 

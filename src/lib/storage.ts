@@ -26,8 +26,17 @@ async function ensureBucket() {
   return bucketReady;
 }
 
+const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
+const MAX_BYTES = 5 * 1024 * 1024; // 5 MB
+
 /** Upload one image file to Supabase Storage and return its public URL. */
 export async function uploadProductImage(file: File): Promise<string> {
+  if (!ALLOWED_TYPES.includes(file.type)) {
+    throw new Error("Format d'image non supporté (JPG, PNG ou WebP).");
+  }
+  if (file.size > MAX_BYTES) {
+    throw new Error("Image trop lourde (5 Mo maximum).");
+  }
   await ensureBucket();
   const ext = (file.name.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "");
   const key = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext || "jpg"}`;
