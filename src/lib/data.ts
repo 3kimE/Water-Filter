@@ -251,37 +251,45 @@ export async function createOrder(data: {
   const delivery = subtotal >= settings.freeDeliveryThreshold ? 0 : DELIVERY_FEE;
   const total = subtotal + delivery;
 
-  // collision-proof id via a Postgres sequence
+  // aggregate quantity per product (handles the same product appearing twice)
+  const qtyByProduct = new Map<string, number>();
+  for (const it of orderItems) {
+    if (it.productId)
+      qtyByProduct.set(it.productId, (qtyByProduct.get(it.productId) ?? 0) + it.qty);
+  }
+
+  // ensure the order-number sequence exists (idempotent)
   await prisma.$executeRawUnsafe(`CREATE SEQUENCE IF NOT EXISTS order_seq START 1`);
-  const seqRows = await prisma.$queryRawUnsafe<{ n: number }[]>(
-    `SELECT nextval('order_seq')::int AS n`,
-  );
-  const id = "FM-" + (2000 + seqRows[0].n);
 
-  const row = await prisma.order.create({
-    data: {
-      id,
-      customerName: name,
-      phone,
-      city,
-      address,
-      note: data.note?.trim() || null,
-      items: orderItems as unknown as object,
-      total,
-      status: "pending",
-    },
+  // ATOMIC: guard stock (prevents overselling/negative stock), reserve a
+  // collision-proof id, and create the order — all in one transaction.
+  const row = await prisma.$transaction(async (tx) => {
+    for (const [pid, qty] of qtyByProduct) {
+      const res = await tx.product.updateMany({
+        where: { id: pid, stock: { gte: qty } },
+        data: { stock: { decrement: qty } },
+      });
+      if (res.count !== 1) throw new Error("OUT_OF_STOCK");
+    }
+    const seqRows = await tx.$queryRawUnsafe<{ n: number }[]>(
+      `SELECT nextval('order_seq')::int AS n`,
+    );
+    if (!seqRows?.[0]) throw new Error("ID_GENERATION_FAILED");
+    const id = "FM-" + (2000 + seqRows[0].n);
+    return tx.order.create({
+      data: {
+        id,
+        customerName: name,
+        phone,
+        city,
+        address,
+        note: data.note?.trim() || null,
+        items: orderItems as unknown as object,
+        total,
+        status: "pending",
+      },
+    });
   });
-
-  // decrement stock (best-effort)
-  await Promise.all(
-    orderItems.map((it) =>
-      it.productId
-        ? prisma.product
-            .update({ where: { id: it.productId }, data: { stock: { decrement: it.qty } } })
-            .catch(() => null)
-        : null,
-    ),
-  );
 
   return toOrder(row);
 }

@@ -63,7 +63,7 @@ export async function saveProductAction(
   const stages = num(formData.get("stages"));
   const capacity = String(formData.get("capacity") ?? "").trim() || null;
   const warranty = String(formData.get("warranty") ?? "").trim() || null;
-  const stock = num(formData.get("stock")) ?? 0;
+  const stock = num(formData.get("stock")) ?? 100;
   const shortDescription = String(formData.get("shortDescription") ?? "").trim();
   const description = String(formData.get("description") ?? "").trim();
   const features = String(formData.get("features") ?? "")

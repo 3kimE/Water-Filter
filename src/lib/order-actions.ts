@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { getSession } from "@/lib/auth";
 import { createOrder, updateOrderStatus } from "@/lib/data";
+import { notifyNewOrder } from "@/lib/notify";
 import { rateLimit, ipFrom } from "@/lib/rate-limit";
 import type { OrderItem, OrderStatus } from "@/lib/types";
 
@@ -21,6 +22,7 @@ export async function createOrderAction(payload: {
     throw new Error("RATE_LIMITED");
   }
   const order = await createOrder(payload);
+  await notifyNewOrder(order); // emails the owner if configured; never throws
   revalidatePath("/admin/orders");
   revalidatePath("/admin");
   const subtotal = order.items.reduce((s, i) => s + i.price * i.qty, 0);
