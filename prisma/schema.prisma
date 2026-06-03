@@ -1,0 +1,83 @@
+// Filtre Maroc — database schema (Supabase Postgres via Prisma)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Product {
+  id               String   @id @default(cuid())
+  slug             String   @unique
+  name             String
+  categorySlug     String
+  shortDescription String   @default("")
+  description      String   @default("")
+  price            Int
+  oldPrice         Int?
+  rating           Float    @default(0)
+  reviewCount      Int      @default(0)
+  stages           Int?
+  capacity         String?
+  warranty         String?
+  badges           String[] @default([])
+  inStock          Boolean  @default(true)
+  stock            Int      @default(0)
+  bestSeller       Boolean  @default(false)
+  hue              Int      @default(205)
+  images           String[] @default([])
+  features         String[] @default([])
+  specs            Json     @default("[]")
+  variants         Json?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([categorySlug])
+}
+
+model Order {
+  id               String   @id
+  customerName     String
+  phone            String
+  city             String
+  address          String
+  note             String?
+  items            Json     @default("[]")
+  total            Int
+  status           String   @default("pending")
+  confirmationNote String?
+  createdAt        DateTime @default(now())
+
+  @@index([status])
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String?
+  createdAt    DateTime @default(now())
+}
+
+model SiteSettings {
+  id                     String   @id @default("main")
+  siteName               String   @default("Filtre Maroc")
+  logoUrl                String?
+  phone1                 String   @default("")
+  phone2                 String?
+  email                  String?
+  whatsapp               String?
+  addressText            String?
+  mapLat                 Float?
+  mapLng                 Float?
+  facebook               String?
+  instagram              String?
+  tiktok                 String?
+  announcement           String?
+  freeDeliveryThreshold  Int      @default(1000)
+  updatedAt              DateTime @updatedAt
+}

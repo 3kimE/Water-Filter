@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Phone, Eye } from "lucide-react";
-import { ORDERS } from "@/lib/mock-data";
+import { getOrders } from "@/lib/data";
 import { StatusBadge } from "@/components/admin/status-badge";
 import { formatMAD, formatDate } from "@/lib/utils";
 import type { OrderStatus } from "@/lib/types";
@@ -24,12 +24,13 @@ export default async function AdminOrdersPage({
   const params = await searchParams;
   const status = (Array.isArray(params.status) ? params.status[0] : params.status) ?? "";
 
+  const all = await getOrders();
   const list = status
-    ? ORDERS.filter((o) => o.status === (status as OrderStatus))
-    : ORDERS;
+    ? all.filter((o) => o.status === (status as OrderStatus))
+    : all;
 
   const countFor = (key: string) =>
-    key ? ORDERS.filter((o) => o.status === key).length : ORDERS.length;
+    key ? all.filter((o) => o.status === key).length : all.length;
 
   return (
     <div>

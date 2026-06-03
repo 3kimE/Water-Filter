@@ -16,12 +16,13 @@ import { CategoryIcon } from "@/components/category-icon";
 import { StarRating } from "@/components/star-rating";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
-import { CATEGORIES, getBestSellers } from "@/lib/mock-data";
+import { CATEGORIES } from "@/lib/mock-data";
+import { getBestSellers } from "@/lib/data";
 import { getT } from "@/i18n/server";
 
 export default async function HomePage() {
   const { t } = await getT();
-  const bestSellers = getBestSellers();
+  const bestSellers = await getBestSellers();
 
   const TESTIMONIALS = [
     {

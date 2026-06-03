@@ -1,17 +1,21 @@
 import Link from "next/link";
 import { Plus, Search, Pencil, Trash2 } from "lucide-react";
-import { PRODUCTS, getCategoryBySlug } from "@/lib/mock-data";
+import { getCategoryBySlug } from "@/lib/mock-data";
+import { getProducts } from "@/lib/data";
 import { ProductPhoto } from "@/components/product-photo";
 import { formatMAD } from "@/lib/utils";
 
-export default function AdminProductsPage() {
+export const dynamic = "force-dynamic";
+
+export default async function AdminProductsPage() {
+  const products = await getProducts();
   return (
     <div>
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="font-display text-2xl font-bold text-ink">Produits</h1>
           <p className="text-sm text-ink-soft">
-            {PRODUCTS.length} produits dans votre catalogue
+            {products.length} produits dans votre catalogue
           </p>
         </div>
         <Link
@@ -47,7 +51,7 @@ export default function AdminProductsPage() {
               </tr>
             </thead>
             <tbody>
-              {PRODUCTS.map((p) => {
+              {products.map((p) => {
                 const cat = getCategoryBySlug(p.categorySlug);
                 return (
                   <tr

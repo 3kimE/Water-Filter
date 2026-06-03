@@ -2,7 +2,8 @@ import Link from "next/link";
 import { SlidersHorizontal, PackageSearch } from "lucide-react";
 import { ProductCard } from "@/components/product-card";
 import { CategoryIcon } from "@/components/category-icon";
-import { CATEGORIES, PRODUCTS, getCategoryBySlug } from "@/lib/mock-data";
+import { CATEGORIES, getCategoryBySlug } from "@/lib/mock-data";
+import { getProducts } from "@/lib/data";
 import { getT } from "@/i18n/server";
 import type { Product } from "@/lib/types";
 
@@ -34,7 +35,7 @@ export default async function ShopPage({
 
   const category = cat ? getCategoryBySlug(cat) : undefined;
 
-  let list: Product[] = [...PRODUCTS];
+  let list: Product[] = await getProducts();
   if (cat) list = list.filter((p) => p.categorySlug === cat);
   if (q)
     list = list.filter(

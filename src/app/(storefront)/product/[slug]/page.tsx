@@ -5,18 +5,10 @@ import { CheckCircle2 } from "lucide-react";
 import { ProductView } from "@/components/product-view";
 import { ProductCard } from "@/components/product-card";
 import { StarRating } from "@/components/star-rating";
-import {
-  PRODUCTS,
-  getProductBySlug,
-  getCategoryBySlug,
-  getRelatedProducts,
-} from "@/lib/mock-data";
+import { getCategoryBySlug } from "@/lib/mock-data";
+import { getProductBySlug, getRelatedProducts } from "@/lib/data";
 import { formatDate } from "@/lib/utils";
 import { getT } from "@/i18n/server";
-
-export function generateStaticParams() {
-  return PRODUCTS.map((p) => ({ slug: p.slug }));
-}
 
 export async function generateMetadata({
   params,
@@ -25,7 +17,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const { t } = await getT();
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlug(slug);
   return { title: product ? product.name : t("product.meta.fallback") };
 }
 
@@ -36,11 +28,11 @@ export default async function ProductPage({
 }) {
   const { slug } = await params;
   const { t } = await getT();
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlug(slug);
   if (!product) notFound();
 
   const category = getCategoryBySlug(product.categorySlug);
-  const related = getRelatedProducts(product);
+  const related = await getRelatedProducts(product);
 
   return (
     <div className="container-page py-8">

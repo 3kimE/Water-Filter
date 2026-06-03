@@ -7,16 +7,14 @@ import {
   ArrowUpRight,
   TrendingUp,
 } from "lucide-react";
-import { ORDERS, PRODUCTS } from "@/lib/mock-data";
+import { getDashboardStats, getOrders } from "@/lib/data";
 import { StatusBadge } from "@/components/admin/status-badge";
 import { formatMAD } from "@/lib/utils";
 
-export default function AdminDashboard() {
-  const totalOrders = ORDERS.length;
-  const pending = ORDERS.filter((o) => o.status === "pending").length;
-  const revenue = ORDERS.filter((o) =>
-    ["confirmed", "shipped", "delivered"].includes(o.status),
-  ).reduce((s, o) => s + o.total, 0);
+export const dynamic = "force-dynamic";
+
+export default async function AdminDashboard() {
+  const { total: totalOrders, pending, products, revenue } = await getDashboardStats();
 
   const stats = [
     {
@@ -42,14 +40,14 @@ export default function AdminDashboard() {
     },
     {
       label: "Produits",
-      value: String(PRODUCTS.length),
+      value: String(products),
       icon: Package,
       tone: "bg-indigo-50 text-indigo-600",
       hint: "En catalogue",
     },
   ];
 
-  const recent = [...ORDERS].slice(0, 6);
+  const recent = (await getOrders()).slice(0, 6);
 
   // Mock weekly sales (visual only)
   const week = [
