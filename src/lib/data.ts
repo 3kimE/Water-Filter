@@ -131,6 +131,42 @@ export async function getDashboardStats() {
   };
 }
 
+/* ---------- admin notifications ---------- */
+
+export type AdminNotifications = {
+  pendingCount: number;
+  lowStockCount: number;
+  pendingOrders: { id: string; customerName: string; total: number; createdAt: string }[];
+  lowStock: { id: string; name: string; stock: number }[];
+};
+
+export async function getAdminNotifications(): Promise<AdminNotifications> {
+  const [pendingCount, pending, low] = await Promise.all([
+    prisma.order.count({ where: { status: "pending" } }),
+    prisma.order.findMany({
+      where: { status: "pending" },
+      orderBy: { createdAt: "desc" },
+      take: 8,
+    }),
+    prisma.product.findMany({
+      where: { inStock: true, stock: { lte: 5 } },
+      orderBy: { stock: "asc" },
+      take: 8,
+    }),
+  ]);
+  return {
+    pendingCount,
+    lowStockCount: low.length,
+    pendingOrders: pending.map((o) => ({
+      id: o.id,
+      customerName: o.customerName,
+      total: o.total,
+      createdAt: o.createdAt.toISOString(),
+    })),
+    lowStock: low.map((p) => ({ id: p.id, name: p.name, stock: p.stock })),
+  };
+}
+
 /* ---------- product writes ---------- */
 
 export type ProductInput = {

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   LayoutDashboard,
   Package,
@@ -14,8 +14,10 @@ import {
   Bell,
   LogOut,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, formatMAD } from "@/lib/utils";
 import { logoutAction } from "@/lib/auth-actions";
+import { fetchNotificationsAction } from "@/lib/notifications-actions";
+import type { AdminNotifications } from "@/lib/data";
 
 const NAV = [
   { label: "Tableau de bord", href: "/admin", icon: LayoutDashboard, exact: true },
@@ -25,9 +27,48 @@ const NAV = [
   { label: "Paramètres", href: "/admin/settings", icon: Settings },
 ];
 
-export function AdminShell({ children }: { children: React.ReactNode }) {
+const EMPTY: AdminNotifications = {
+  pendingCount: 0,
+  lowStockCount: 0,
+  pendingOrders: [],
+  lowStock: [],
+};
+
+export function AdminShell({
+  children,
+  notifications,
+}: {
+  children: React.ReactNode;
+  notifications?: AdminNotifications;
+}) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [bellOpen, setBellOpen] = useState(false);
+  const [notifs, setNotifs] = useState<AdminNotifications>(notifications ?? EMPTY);
+  const bellRef = useRef<HTMLDivElement>(null);
+
+  // keep in sync with server-provided data on navigation
+  useEffect(() => {
+    if (notifications) setNotifs(notifications);
+  }, [notifications]);
+
+  // live refresh every 30s
+  useEffect(() => {
+    const id = setInterval(async () => {
+      const n = await fetchNotificationsAction();
+      if (n) setNotifs(n);
+    }, 30000);
+    return () => clearInterval(id);
+  }, []);
+
+  // close the dropdown on outside click
+  useEffect(() => {
+    function onClick(e: MouseEvent) {
+      if (bellRef.current && !bellRef.current.contains(e.target as Node)) setBellOpen(false);
+    }
+    document.addEventListener("mousedown", onClick);
+    return () => document.removeEventListener("mousedown", onClick);
+  }, []);
 
   function isActive(href: string, exact?: boolean) {
     return exact ? pathname === href : pathname.startsWith(href);
@@ -35,6 +76,8 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
 
   // Login page renders without the admin shell
   if (pathname === "/admin/login") return <>{children}</>;
+
+  const badge = notifs.pendingCount + notifs.lowStockCount;
 
   const SidebarContent = (
     <div className="flex h-full flex-col">
@@ -64,6 +107,11 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
             >
               <item.icon className="h-5 w-5" />
               {item.label}
+              {item.href === "/admin/orders" && notifs.pendingCount > 0 && (
+                <span className="ms-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-amber-100 px-1 text-xs font-bold text-amber-700">
+                  {notifs.pendingCount}
+                </span>
+              )}
             </Link>
           );
         })}
@@ -100,10 +148,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       {/* Mobile drawer */}
       {open && (
         <div className="fixed inset-0 z-50 lg:hidden">
-          <div
-            className="absolute inset-0 bg-black/30"
-            onClick={() => setOpen(false)}
-          />
+          <div className="absolute inset-0 bg-black/30" onClick={() => setOpen(false)} />
           <aside className="absolute inset-y-0 left-0 w-64 border-r border-line bg-white">
             {SidebarContent}
           </aside>
@@ -121,11 +166,95 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
           >
             <Menu className="h-5 w-5" />
           </button>
+
           <div className="ml-auto flex items-center gap-3">
-            <button className="relative flex h-10 w-10 items-center justify-center rounded-full text-ink hover:bg-neutral-100">
-              <Bell className="h-5 w-5" />
-              <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-rose-500" />
-            </button>
+            {/* Notification bell */}
+            <div ref={bellRef} className="relative">
+              <button
+                onClick={() => setBellOpen((v) => !v)}
+                className="relative flex h-10 w-10 items-center justify-center rounded-full text-ink hover:bg-neutral-100"
+                aria-label="Notifications"
+              >
+                <Bell className="h-5 w-5" />
+                {badge > 0 && (
+                  <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-rose-500 px-1 text-[10px] font-bold text-white">
+                    {badge > 9 ? "9+" : badge}
+                  </span>
+                )}
+              </button>
+
+              {bellOpen && (
+                <div className="absolute right-0 top-full z-50 mt-2 w-80 overflow-hidden rounded-2xl border border-line bg-white shadow-[var(--shadow-soft)]">
+                  <div className="border-b border-line px-4 py-3 font-display font-semibold text-ink">
+                    Notifications
+                  </div>
+                  <div className="max-h-96 overflow-y-auto">
+                    {badge === 0 && (
+                      <div className="px-4 py-10 text-center text-sm text-ink-soft">
+                        Aucune notification 🎉
+                      </div>
+                    )}
+
+                    {notifs.pendingOrders.length > 0 && (
+                      <div className="py-1">
+                        <p className="px-4 pb-1 pt-2 text-xs font-semibold uppercase tracking-wide text-ink-soft">
+                          Commandes à confirmer
+                        </p>
+                        {notifs.pendingOrders.map((o) => (
+                          <Link
+                            key={o.id}
+                            href={`/admin/orders/${o.id}`}
+                            onClick={() => setBellOpen(false)}
+                            className="flex items-center gap-3 px-4 py-2.5 hover:bg-neutral-50"
+                          >
+                            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-amber-50 text-amber-600">
+                              <ShoppingBag className="h-4 w-4" />
+                            </span>
+                            <span className="min-w-0 flex-1 text-sm">
+                              <span className="font-medium text-ink">{o.id}</span>
+                              <span className="text-ink-soft"> · {o.customerName}</span>
+                              <span className="block text-xs text-ink-soft">{formatMAD(o.total)}</span>
+                            </span>
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+
+                    {notifs.lowStock.length > 0 && (
+                      <div className="border-t border-line py-1">
+                        <p className="px-4 pb-1 pt-2 text-xs font-semibold uppercase tracking-wide text-ink-soft">
+                          Stock faible
+                        </p>
+                        {notifs.lowStock.map((p) => (
+                          <Link
+                            key={p.id}
+                            href={`/admin/products/${p.id}/edit`}
+                            onClick={() => setBellOpen(false)}
+                            className="flex items-center gap-3 px-4 py-2.5 hover:bg-neutral-50"
+                          >
+                            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-rose-50 text-rose-600">
+                              <Package className="h-4 w-4" />
+                            </span>
+                            <span className="min-w-0 flex-1 text-sm">
+                              <span dir="auto" className="line-clamp-1 font-medium text-ink">{p.name}</span>
+                              <span className="block text-xs text-ink-soft">Stock : {p.stock}</span>
+                            </span>
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  <Link
+                    href="/admin/orders"
+                    onClick={() => setBellOpen(false)}
+                    className="block border-t border-line px-4 py-3 text-center text-sm font-semibold text-brand-600 hover:bg-neutral-50"
+                  >
+                    Voir toutes les commandes →
+                  </Link>
+                </div>
+              )}
+            </div>
+
             <div className="flex items-center gap-2.5">
               <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-600 text-sm font-bold text-white">
                 A
