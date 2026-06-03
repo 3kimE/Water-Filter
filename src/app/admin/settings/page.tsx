@@ -1,5 +1,7 @@
 import { getSettings } from "@/lib/data";
 import { updateSettingsAction } from "@/lib/settings-actions";
+import { getSession } from "@/lib/auth";
+import { AdminAccountForm } from "@/components/admin/account-form";
 
 export const dynamic = "force-dynamic";
 
@@ -9,6 +11,7 @@ const input =
 
 export default async function AdminSettingsPage() {
   const s = await getSettings();
+  const session = await getSession();
 
   return (
     <div>
@@ -126,6 +129,10 @@ export default async function AdminSettingsPage() {
           Enregistrer les paramètres
         </button>
       </form>
+
+      <div className="mt-6 max-w-3xl">
+        <AdminAccountForm currentEmail={session?.email ?? ""} />
+      </div>
     </div>
   );
 }
