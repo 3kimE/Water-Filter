@@ -131,6 +131,39 @@ export async function getDashboardStats() {
   };
 }
 
+/* ---------- dashboard cards ---------- */
+
+export type LowStockItem = { id: string; name: string; categorySlug: string; stock: number };
+
+/** Products still on sale whose stock has dropped to/below the threshold. */
+export async function getLowStockProducts(threshold = 5, limit = 6): Promise<LowStockItem[]> {
+  return prisma.product.findMany({
+    where: { inStock: true, stock: { lte: threshold } },
+    orderBy: { stock: "asc" },
+    take: limit,
+    select: { id: true, name: true, categorySlug: true, stock: true },
+  });
+}
+
+export type TopSeller = { name: string; units: number };
+
+/** Best-selling products by units sold, aggregated from real order items. */
+export async function getTopSellers(limit = 5): Promise<TopSeller[]> {
+  const orders = await prisma.order.findMany({ select: { items: true } });
+  const tally = new Map<string, number>();
+  for (const o of orders) {
+    const items = (o.items as unknown as OrderItem[]) ?? [];
+    for (const it of items) {
+      if (!it?.name) continue;
+      tally.set(it.name, (tally.get(it.name) ?? 0) + (it.qty ?? 0));
+    }
+  }
+  return [...tally.entries()]
+    .map(([name, units]) => ({ name, units }))
+    .sort((a, b) => b.units - a.units)
+    .slice(0, limit);
+}
+
 /* ---------- contact messages ---------- */
 
 export type ContactMessageDTO = {

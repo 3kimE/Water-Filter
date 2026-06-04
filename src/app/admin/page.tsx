@@ -7,7 +7,12 @@ import {
   ArrowUpRight,
   TrendingUp,
 } from "lucide-react";
-import { getDashboardStats, getOrders } from "@/lib/data";
+import {
+  getDashboardStats,
+  getOrders,
+  getLowStockProducts,
+  getTopSellers,
+} from "@/lib/data";
 import { StatusBadge } from "@/components/admin/status-badge";
 import { formatMAD } from "@/lib/utils";
 
@@ -15,6 +20,10 @@ export const dynamic = "force-dynamic";
 
 export default async function AdminDashboard() {
   const { total: totalOrders, pending, products, revenue } = await getDashboardStats();
+  const [lowStock, topSellers] = await Promise.all([
+    getLowStockProducts(5, 6),
+    getTopSellers(5),
+  ]);
 
   const stats = [
     {
@@ -164,6 +173,109 @@ export default async function AdminDashboard() {
               </div>
             ))}
           </div>
+        </div>
+      </div>
+
+      {/* Stock faible + Meilleures ventes */}
+      <div className="mt-6 grid gap-6 lg:grid-cols-2">
+        {/* Stock faible */}
+        <div className="rounded-2xl border border-slate-200 bg-white shadow-sm">
+          <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4">
+            <div className="flex items-center gap-2">
+              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-50 text-amber-600">
+                <Package className="h-4 w-4" />
+              </span>
+              <h2 className="font-display font-bold text-ink">Stock faible</h2>
+            </div>
+            <Link
+              href="/admin/products"
+              className="text-sm font-semibold text-brand-600 hover:text-brand-700"
+            >
+              Gérer l&apos;inventaire
+            </Link>
+          </div>
+          {lowStock.length === 0 ? (
+            <p className="px-5 py-12 text-center text-sm text-ink-soft">
+              Tout est bien approvisionné ✅
+            </p>
+          ) : (
+            <div className="divide-y divide-slate-100">
+              {lowStock.map((p) => (
+                <Link
+                  key={p.id}
+                  href={`/admin/products/${p.id}/edit`}
+                  className="flex items-center gap-3 px-5 py-3 transition-colors hover:bg-slate-50"
+                >
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-500">
+                    <Package className="h-4 w-4" />
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <p dir="auto" className="line-clamp-1 text-sm font-medium text-ink">
+                      {p.name}
+                    </p>
+                    <p className="text-xs capitalize text-ink-soft">{p.categorySlug}</p>
+                  </div>
+                  <span
+                    className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-bold ${
+                      p.stock <= 2
+                        ? "bg-rose-50 text-rose-600"
+                        : "bg-amber-50 text-amber-700"
+                    }`}
+                  >
+                    {p.stock} restant{p.stock > 1 ? "s" : ""}
+                  </span>
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Meilleures ventes */}
+        <div className="rounded-2xl border border-slate-200 bg-white shadow-sm">
+          <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4">
+            <div className="flex items-center gap-2">
+              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-50 text-brand-600">
+                <TrendingUp className="h-4 w-4" />
+              </span>
+              <h2 className="font-display font-bold text-ink">Meilleures ventes</h2>
+            </div>
+            <Link
+              href="/admin/products"
+              className="text-sm font-semibold text-brand-600 hover:text-brand-700"
+            >
+              Produits
+            </Link>
+          </div>
+          {topSellers.length === 0 ? (
+            <p className="px-5 py-12 text-center text-sm text-ink-soft">
+              Aucune vente pour l&apos;instant.
+            </p>
+          ) : (
+            <div className="space-y-4 px-5 py-5">
+              {topSellers.map((p, i) => {
+                const max = topSellers[0].units || 1;
+                const pct = Math.max(6, Math.round((p.units / max) * 100));
+                return (
+                  <div key={p.name}>
+                    <div className="mb-1.5 flex items-center justify-between gap-3 text-sm">
+                      <span dir="auto" className="line-clamp-1 font-medium text-ink">
+                        <span className="text-ink-soft">{i + 1}.</span> {p.name}
+                      </span>
+                      <span className="shrink-0 text-xs font-semibold text-ink-soft">
+                        {p.units} unité{p.units > 1 ? "s" : ""}
+                      </span>
+                    </div>
+                    <div className="h-2 w-full overflow-hidden rounded-full bg-slate-100">
+                      <div
+                        className="h-full rounded-full bg-gradient-to-r from-brand-500 to-aqua-400"
+                        style={{ width: `${pct}%` }}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
     </div>
