@@ -10,13 +10,12 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   images: {
-    // Load images directly (no optimizer proxy) — reliable for Supabase/local
-    // logos and product photos. Avoids optimizer "url not allowed" errors.
-    unoptimized: true,
-    remotePatterns: [
-      { protocol: "https", hostname: "jlqgjthxzhuwsozhagjl.supabase.co" },
-      { protocol: "https", hostname: "cdn.shopify.com" },
-    ],
+    // Serve images straight from their source via a custom loader, bypassing
+    // the /_next/image optimizer. The optimizer rejects external Supabase URLs
+    // with HTTP 400 on Vercel (and `unoptimized` is ignored by the Turbopack
+    // production build), which broke product photos once deployed.
+    loader: "custom",
+    loaderFile: "./src/lib/image-loader.ts",
   },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
