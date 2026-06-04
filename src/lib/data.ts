@@ -113,24 +113,67 @@ export async function getOrderById(id: string): Promise<Order | null> {
   return row ? toOrder(row) : null;
 }
 
+const SALE_STATUSES = ["confirmed", "shipped", "delivered"];
+
 export async function getDashboardStats() {
-  const [total, products, paid, grouped] = await Promise.all([
-    prisma.order.count(),
-    prisma.product.count(),
-    prisma.order.findMany({
-      where: { status: { in: ["confirmed", "shipped", "delivered"] } },
-      select: { total: true },
-    }),
-    prisma.order.groupBy({ by: ["status"], _count: { _all: true } }),
-  ]);
+  const now = new Date();
+  const startToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const start7 = new Date(startToday);
+  start7.setDate(start7.getDate() - 6);
+  const startThisMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+  const startLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+
+  const [total, products, paid, grouped, weekOrders, ordersThisMonth, ordersLastMonth] =
+    await Promise.all([
+      prisma.order.count(),
+      prisma.product.count(),
+      prisma.order.findMany({
+        where: { status: { in: SALE_STATUSES } },
+        select: { total: true },
+      }),
+      prisma.order.groupBy({ by: ["status"], _count: { _all: true } }),
+      prisma.order.findMany({
+        where: { createdAt: { gte: start7 }, status: { in: SALE_STATUSES } },
+        select: { createdAt: true, total: true },
+      }),
+      prisma.order.count({ where: { createdAt: { gte: startThisMonth } } }),
+      prisma.order.count({
+        where: { createdAt: { gte: startLastMonth, lt: startThisMonth } },
+      }),
+    ]);
+
   const byStatus: Record<string, number> = {};
   for (const g of grouped) byStatus[g.status] = g._count._all;
+
+  // Real revenue per day for the last 7 days
+  const DAY_LABELS = ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"];
+  const trend7d = Array.from({ length: 7 }, (_, i) => {
+    const d = new Date(start7);
+    d.setDate(d.getDate() + i);
+    return { label: DAY_LABELS[d.getDay()], revenue: 0 };
+  });
+  for (const o of weekOrders) {
+    const d = new Date(o.createdAt);
+    const day0 = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    const idx = Math.round((day0.getTime() - start7.getTime()) / 86_400_000);
+    if (idx >= 0 && idx < 7) trend7d[idx].revenue += o.total;
+  }
+
+  // Real month-over-month change in order count (null when no prior month to compare)
+  const ordersMoMPct =
+    ordersLastMonth > 0
+      ? Math.round(((ordersThisMonth - ordersLastMonth) / ordersLastMonth) * 100)
+      : null;
+
   return {
     total,
     pending: byStatus["pending"] ?? 0,
     products,
     revenue: paid.reduce((s, o) => s + o.total, 0),
     byStatus,
+    trend7d,
+    ordersThisMonth,
+    ordersMoMPct,
   };
 }
 

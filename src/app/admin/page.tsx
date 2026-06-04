@@ -20,8 +20,23 @@ import { formatMAD } from "@/lib/utils";
 export const dynamic = "force-dynamic";
 
 export default async function AdminDashboard() {
-  const { total: totalOrders, pending, products, revenue, byStatus } =
-    await getDashboardStats();
+  const {
+    total: totalOrders,
+    pending,
+    products,
+    revenue,
+    byStatus,
+    trend7d,
+    ordersThisMonth,
+    ordersMoMPct,
+  } = await getDashboardStats();
+
+  const weekTotal = trend7d.reduce((s, d) => s + d.revenue, 0);
+  const maxRev = Math.max(...trend7d.map((d) => d.revenue), 0);
+  const ordersHint =
+    ordersMoMPct !== null
+      ? `${ordersMoMPct >= 0 ? "+" : ""}${ordersMoMPct}% ce mois`
+      : `${ordersThisMonth} ce mois-ci`;
   const [lowStock, topSellers] = await Promise.all([
     getLowStockProducts(5, 6),
     getTopSellers(5),
@@ -33,7 +48,7 @@ export default async function AdminDashboard() {
       value: String(totalOrders),
       icon: ShoppingBag,
       tone: "bg-brand-50 text-brand-600",
-      hint: "+12% ce mois",
+      hint: ordersHint,
     },
     {
       label: "À confirmer",
@@ -59,17 +74,6 @@ export default async function AdminDashboard() {
   ];
 
   const recent = (await getOrders()).slice(0, 6);
-
-  // Mock weekly sales (visual only)
-  const week = [
-    { d: "Lun", v: 60 },
-    { d: "Mar", v: 80 },
-    { d: "Mer", v: 45 },
-    { d: "Jeu", v: 95 },
-    { d: "Ven", v: 70 },
-    { d: "Sam", v: 100 },
-    { d: "Dim", v: 55 },
-  ];
 
   return (
     <div>
@@ -191,25 +195,40 @@ export default async function AdminDashboard() {
           </div>
         </div>
 
-        {/* Weekly sales */}
+        {/* Weekly sales (real data) */}
         <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-          <div className="flex items-center gap-2">
-            <TrendingUp className="h-5 w-5 text-brand-500" />
-            <h2 className="font-display font-bold text-ink">Ventes (7 jours)</h2>
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <TrendingUp className="h-5 w-5 text-brand-500" />
+              <h2 className="font-display font-bold text-ink">Ventes (7 jours)</h2>
+            </div>
+            <span className="font-display text-sm font-bold text-ink">
+              {formatMAD(weekTotal)}
+            </span>
           </div>
-          <div className="mt-6 flex h-44 items-end justify-between gap-2">
-            {week.map((b) => (
-              <div key={b.d} className="flex flex-1 flex-col items-center gap-2">
-                <div className="flex w-full flex-1 items-end">
-                  <div
-                    className="w-full rounded-t-lg bg-gradient-to-t from-brand-500 to-aqua-400"
-                    style={{ height: `${b.v}%` }}
-                  />
-                </div>
-                <span className="text-xs text-ink-soft">{b.d}</span>
-              </div>
-            ))}
-          </div>
+          {weekTotal === 0 ? (
+            <p className="py-16 text-center text-sm text-ink-soft">
+              Aucune vente sur les 7 derniers jours.
+            </p>
+          ) : (
+            <div className="mt-6 flex h-44 items-end justify-between gap-2">
+              {trend7d.map((b, i) => {
+                const pct = maxRev > 0 ? Math.round((b.revenue / maxRev) * 100) : 0;
+                return (
+                  <div key={i} className="flex flex-1 flex-col items-center gap-2">
+                    <div className="flex w-full flex-1 items-end">
+                      <div
+                        className="w-full rounded-t-lg bg-gradient-to-t from-brand-500 to-aqua-400 transition-all"
+                        style={{ height: b.revenue > 0 ? `${Math.max(pct, 4)}%` : "0%" }}
+                        title={formatMAD(b.revenue)}
+                      />
+                    </div>
+                    <span className="text-xs text-ink-soft">{b.label}</span>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
 
