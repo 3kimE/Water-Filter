@@ -33,7 +33,10 @@ export default function RootLayout({
       lang="fr"
       className={`${inter.variable} ${poppins.variable} h-full`}
     >
-      <body className="flex min-h-screen flex-col bg-white text-ink antialiased">
+      <body
+        suppressHydrationWarning
+        className="flex min-h-screen flex-col bg-white text-ink antialiased"
+      >
         <CartProvider>{children}</CartProvider>
       </body>
     </html>
