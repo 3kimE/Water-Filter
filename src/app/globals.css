@@ -60,6 +60,8 @@
 
 html {
   scroll-behavior: smooth;
+  /* Scale the whole UI down to ~90% (everything uses rem, so it scales together) */
+  font-size: 90%;
 }
 
 body {
