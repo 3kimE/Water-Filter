@@ -14,12 +14,14 @@ import {
   getTopSellers,
 } from "@/lib/data";
 import { StatusBadge } from "@/components/admin/status-badge";
+import { STATUS_META, STATUS_ORDER } from "@/lib/order-status";
 import { formatMAD } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminDashboard() {
-  const { total: totalOrders, pending, products, revenue } = await getDashboardStats();
+  const { total: totalOrders, pending, products, revenue, byStatus } =
+    await getDashboardStats();
   const [lowStock, topSellers] = await Promise.all([
     getLowStockProducts(5, 6),
     getTopSellers(5),
@@ -99,6 +101,41 @@ export default async function AdminDashboard() {
             <p className="text-sm text-ink-soft">{s.label}</p>
           </div>
         ))}
+      </div>
+
+      {/* Orders by status */}
+      <div className="mt-6">
+        <div className="mb-3 flex items-center justify-between">
+          <h2 className="font-display font-bold text-ink">Commandes par statut</h2>
+          <Link
+            href="/admin/orders"
+            className="flex items-center gap-1 text-sm font-semibold text-brand-600 hover:text-brand-700"
+          >
+            Tout voir <ArrowUpRight className="h-4 w-4" />
+          </Link>
+        </div>
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-6">
+          {STATUS_ORDER.map((st) => {
+            const meta = STATUS_META[st];
+            return (
+              <Link
+                key={st}
+                href={`/admin/orders?status=${st}`}
+                className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition-colors hover:border-slate-300 hover:bg-slate-50"
+              >
+                <span
+                  className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ${meta.className}`}
+                >
+                  <span className={`h-1.5 w-1.5 rounded-full ${meta.dot}`} />
+                  {meta.label}
+                </span>
+                <p className="mt-3 font-display text-2xl font-extrabold text-ink">
+                  {byStatus[st] ?? 0}
+                </p>
+              </Link>
+            );
+          })}
+        </div>
       </div>
 
       <div className="mt-6 grid gap-6 xl:grid-cols-[1fr_20rem]">

@@ -13,6 +13,7 @@ const TABS: { key: string; label: string }[] = [
   { key: "confirmed", label: "Confirmées" },
   { key: "shipped", label: "Expédiées" },
   { key: "delivered", label: "Livrées" },
+  { key: "returned", label: "Retournées" },
   { key: "cancelled", label: "Annulées" },
 ];
 

@@ -114,20 +114,23 @@ export async function getOrderById(id: string): Promise<Order | null> {
 }
 
 export async function getDashboardStats() {
-  const [total, pending, products, paid] = await Promise.all([
+  const [total, products, paid, grouped] = await Promise.all([
     prisma.order.count(),
-    prisma.order.count({ where: { status: "pending" } }),
     prisma.product.count(),
     prisma.order.findMany({
       where: { status: { in: ["confirmed", "shipped", "delivered"] } },
       select: { total: true },
     }),
+    prisma.order.groupBy({ by: ["status"], _count: { _all: true } }),
   ]);
+  const byStatus: Record<string, number> = {};
+  for (const g of grouped) byStatus[g.status] = g._count._all;
   return {
     total,
-    pending,
+    pending: byStatus["pending"] ?? 0,
     products,
     revenue: paid.reduce((s, o) => s + o.total, 0),
+    byStatus,
   };
 }
 
