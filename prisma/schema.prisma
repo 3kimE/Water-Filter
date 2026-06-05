@@ -40,19 +40,24 @@ model Product {
 }
 
 model Order {
-  id               String   @id
+  id               String    @id
   customerName     String
   phone            String
   city             String
   address          String
   note             String?
-  items            Json     @default("[]")
+  items            Json      @default("[]")
   total            Int
-  status           String   @default("pending")
+  status           String    @default("pending")
   confirmationNote String?
-  createdAt        DateTime @default(now())
+  source           String    @default("web") // "web" | "phone"
+  confirmedAt      DateTime?
+  installDate      DateTime? // scheduled installation date/time
+  assignedTo       String? // plombier email the job is assigned to
+  createdAt        DateTime  @default(now())
 
   @@index([status])
+  @@index([assignedTo])
 }
 
 model AdminUser {
@@ -60,6 +65,7 @@ model AdminUser {
   email        String   @unique
   passwordHash String
   name         String?
+  role         String   @default("admin") // "admin" | "confirmateur" | "plombier"
   createdAt    DateTime @default(now())
 }
 

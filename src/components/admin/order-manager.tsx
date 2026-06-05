@@ -193,6 +193,46 @@ export function OrderManager({ order }: { order: Order }) {
             </div>
           </section>
 
+          {/* Suivi (confirmation + installation) */}
+          {(order.confirmedAt || order.installDate || order.assignedTo || order.source === "phone") && (
+            <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+              <h3 className="font-display font-bold text-ink">Suivi</h3>
+              <dl className="mt-3 space-y-2 text-sm">
+                <div className="flex justify-between gap-3">
+                  <dt className="text-ink-soft">Source</dt>
+                  <dd className="font-medium text-ink">
+                    {order.source === "phone" ? "Téléphone" : "Site web"}
+                  </dd>
+                </div>
+                {order.confirmedAt && (
+                  <div className="flex justify-between gap-3">
+                    <dt className="text-ink-soft">Confirmée le</dt>
+                    <dd className="font-medium text-ink">{formatDate(order.confirmedAt)}</dd>
+                  </div>
+                )}
+                {order.installDate && (
+                  <div className="flex justify-between gap-3">
+                    <dt className="text-ink-soft">Installation prévue</dt>
+                    <dd className="text-end font-medium text-ink">
+                      {new Date(order.installDate).toLocaleString("fr-MA", {
+                        day: "numeric",
+                        month: "short",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </dd>
+                  </div>
+                )}
+                {order.assignedTo && (
+                  <div className="flex justify-between gap-3">
+                    <dt className="text-ink-soft">Plombier</dt>
+                    <dd className="break-all font-medium text-ink">{order.assignedTo}</dd>
+                  </div>
+                )}
+              </dl>
+            </section>
+          )}
+
           {/* Status actions */}
           <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
             <h3 className="font-display font-bold text-ink">Changer le statut</h3>

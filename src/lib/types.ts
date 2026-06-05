@@ -105,4 +105,8 @@ export type Order = {
   status: OrderStatus;
   createdAt: string; // ISO
   confirmationNote?: string;
+  source: "web" | "phone";
+  confirmedAt?: string; // ISO
+  installDate?: string; // ISO — scheduled installation
+  assignedTo?: string; // plombier email
 };

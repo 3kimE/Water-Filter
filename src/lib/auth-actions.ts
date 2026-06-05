@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
-import { verifyCredentials, createSession, destroySession } from "@/lib/auth";
+import { verifyCredentials, createSession, destroySession, roleHome } from "@/lib/auth";
 import { rateLimit, ipFrom } from "@/lib/rate-limit";
 
 export type LoginState = { error: string | null };
@@ -24,8 +24,8 @@ export async function loginAction(
   const user = await verifyCredentials(email, password);
   if (!user) return { error: "Email ou mot de passe incorrect." };
 
-  await createSession(user);
-  redirect("/admin");
+  await createSession({ id: user.id, email: user.email, role: user.role });
+  redirect(roleHome(user.role));
 }
 
 export async function logoutAction() {

@@ -49,7 +49,7 @@ export async function updateAdminAccountAction(
 
   await prisma.adminUser.update({ where: { id: admin.id }, data });
   // refresh the session so the email claim stays in sync
-  await createSession({ id: admin.id, email: data.email ?? admin.email });
+  await createSession({ id: admin.id, email: data.email ?? admin.email, role: admin.role });
 
   return { error: null, ok: true };
 }

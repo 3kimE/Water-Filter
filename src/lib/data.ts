@@ -51,6 +51,10 @@ function toOrder(row: ORow): Order {
     total: row.total,
     status: row.status as OrderStatus,
     confirmationNote: row.confirmationNote ?? undefined,
+    source: (row.source as "web" | "phone") ?? "web",
+    confirmedAt: row.confirmedAt?.toISOString(),
+    installDate: row.installDate?.toISOString(),
+    assignedTo: row.assignedTo ?? undefined,
     createdAt: row.createdAt.toISOString(),
   };
 }
@@ -373,6 +377,7 @@ export async function createOrder(data: {
   address: string;
   note?: string;
   items: { productId: string; qty: number; variantLabel?: string }[];
+  source?: "web" | "phone";
 }): Promise<Order> {
   // validation
   const name = (data.customerName ?? "").trim();
@@ -448,6 +453,7 @@ export async function createOrder(data: {
         items: orderItems as unknown as object,
         total,
         status: "pending",
+        source: data.source === "phone" ? "phone" : "web",
       },
     });
   });
@@ -464,6 +470,77 @@ export async function updateOrderStatus(
     where: { id },
     data: { status, ...(confirmationNote !== undefined ? { confirmationNote } : {}) },
   });
+}
+
+/* ---------- confirmation + installation flow ---------- */
+
+/** Orders awaiting a confirmation call (newest first). */
+export async function getOrdersToConfirm(): Promise<Order[]> {
+  const rows = await prisma.order.findMany({
+    where: { status: "pending" },
+    orderBy: { createdAt: "desc" },
+  });
+  return rows.map(toOrder);
+}
+
+/**
+ * Confirmateur confirms an order: records the call, schedules the install,
+ * and assigns it to the plombier. Returns the updated order.
+ */
+export async function confirmOrder(
+  id: string,
+  data: { installDate: Date; assignedTo: string | null; note?: string },
+): Promise<Order> {
+  const row = await prisma.order.update({
+    where: { id },
+    data: {
+      status: "confirmed",
+      confirmedAt: new Date(),
+      installDate: data.installDate,
+      assignedTo: data.assignedTo,
+      ...(data.note !== undefined ? { confirmationNote: data.note } : {}),
+    },
+  });
+  return toOrder(row);
+}
+
+/** Installations assigned to a given plombier (by email), upcoming first. */
+export async function getPlombierJobs(email: string): Promise<Order[]> {
+  const rows = await prisma.order.findMany({
+    where: { assignedTo: email, status: { in: ["confirmed", "shipped"] } },
+    orderBy: { installDate: "asc" },
+  });
+  return rows.map(toOrder);
+}
+
+/* ---------- staff (admin users) ---------- */
+
+export type StaffUser = {
+  id: string;
+  email: string;
+  name: string | null;
+  role: string;
+  createdAt: string;
+};
+
+export async function getStaffUsers(): Promise<StaffUser[]> {
+  const rows = await prisma.adminUser.findMany({ orderBy: { createdAt: "asc" } });
+  return rows.map((u) => ({
+    id: u.id,
+    email: u.email,
+    name: u.name,
+    role: u.role,
+    createdAt: u.createdAt.toISOString(),
+  }));
+}
+
+/** The single plombier's email, used to auto-assign installations. */
+export async function getPlombierEmail(): Promise<string | null> {
+  const p = await prisma.adminUser.findFirst({
+    where: { role: "plombier" },
+    orderBy: { createdAt: "asc" },
+  });
+  return p?.email ?? null;
 }
 
 /* ---------- site settings ---------- */

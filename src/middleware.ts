@@ -4,6 +4,12 @@ import { jwtVerify } from "jose";
 
 const secret = new TextEncoder().encode(process.env.AUTH_SECRET);
 
+function homeFor(role: string): string {
+  if (role === "confirmateur") return "/confirmation";
+  if (role === "plombier") return "/plombier";
+  return "/admin";
+}
+
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
@@ -11,20 +17,38 @@ export async function middleware(req: NextRequest) {
   if (pathname === "/admin/login") return NextResponse.next();
 
   const token = req.cookies.get("fm_admin_session")?.value;
+  let role: string | null = null;
   if (token) {
     try {
-      await jwtVerify(token, secret);
-      return NextResponse.next();
+      const { payload } = await jwtVerify(token, secret);
+      role = (payload.role as string) ?? "admin";
     } catch {
-      /* invalid/expired -> redirect below */
+      /* invalid/expired */
     }
   }
 
-  const url = req.nextUrl.clone();
-  url.pathname = "/admin/login";
-  return NextResponse.redirect(url);
+  // not logged in -> login
+  if (!role) {
+    const url = req.nextUrl.clone();
+    url.pathname = "/admin/login";
+    return NextResponse.redirect(url);
+  }
+
+  // role-based area gating (admin can access everything)
+  const denied =
+    (pathname.startsWith("/admin") && role !== "admin") ||
+    (pathname.startsWith("/confirmation") && role !== "confirmateur" && role !== "admin") ||
+    (pathname.startsWith("/plombier") && role !== "plombier" && role !== "admin");
+
+  if (denied) {
+    const url = req.nextUrl.clone();
+    url.pathname = homeFor(role);
+    return NextResponse.redirect(url);
+  }
+
+  return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: ["/admin/:path*", "/confirmation/:path*", "/plombier/:path*"],
 };

@@ -3,10 +3,24 @@
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { getSession } from "@/lib/auth";
-import { createOrder, updateOrderStatus } from "@/lib/data";
-import { notifyNewOrder } from "@/lib/notify";
+import {
+  createOrder,
+  updateOrderStatus,
+  confirmOrder,
+  getPlombierEmail,
+} from "@/lib/data";
+import { notifyNewOrder, notifyPlombierAssignment } from "@/lib/notify";
 import { rateLimit, ipFrom } from "@/lib/rate-limit";
 import type { OrderItem, OrderStatus } from "@/lib/types";
+
+/** Roles allowed to confirm orders / add phone orders. */
+async function requireStaff(roles: string[]) {
+  const session = await getSession();
+  if (!session || !roles.includes(session.role ?? "admin")) {
+    throw new Error("Non autorisé");
+  }
+  return session;
+}
 
 /** Public: place an order at checkout (cash on delivery). */
 export async function createOrderAction(payload: {
@@ -46,4 +60,74 @@ export async function updateOrderStatusAction(
   revalidatePath("/admin/orders");
   revalidatePath(`/admin/orders/${id}`);
   revalidatePath("/admin");
+}
+
+/**
+ * Confirmateur/admin: confirm an order after calling the client, schedule the
+ * install, auto-assign it to the plombier, and notify him by email.
+ */
+export async function confirmOrderAction(input: {
+  id: string;
+  installDate: string; // ISO from a datetime-local input
+  note?: string;
+}): Promise<{ ok: boolean; error?: string }> {
+  await requireStaff(["confirmateur", "admin"]);
+
+  const when = new Date(input.installDate);
+  if (isNaN(when.getTime())) return { ok: false, error: "Date d'installation invalide." };
+
+  const plombier = await getPlombierEmail();
+  const order = await confirmOrder(input.id, {
+    installDate: when,
+    assignedTo: plombier,
+    note: input.note?.trim() || undefined,
+  });
+
+  if (plombier) {
+    await notifyPlombierAssignment(plombier, {
+      orderId: order.id,
+      customerName: order.customerName,
+      phone: order.phone,
+      address: order.address,
+      city: order.city,
+      installDate: order.installDate,
+    });
+  }
+
+  revalidatePath("/confirmation");
+  revalidatePath("/plombier");
+  revalidatePath("/admin/orders");
+  revalidatePath("/admin");
+  return { ok: true };
+}
+
+/** Confirmateur/admin: manually create an order for a client who phoned in. */
+export async function createPhoneOrderAction(payload: {
+  customerName: string;
+  phone: string;
+  city: string;
+  address: string;
+  note?: string;
+  items: { productId: string; qty: number; variantLabel?: string }[];
+}): Promise<{ ok: boolean; id?: string; error?: string }> {
+  await requireStaff(["confirmateur", "admin"]);
+  try {
+    const order = await createOrder({ ...payload, source: "phone" });
+    revalidatePath("/confirmation");
+    revalidatePath("/admin/orders");
+    revalidatePath("/admin");
+    return { ok: true, id: order.id };
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "ERREUR";
+    const map: Record<string, string> = {
+      INVALID_NAME: "Nom invalide (3–60 caractères).",
+      INVALID_PHONE: "Téléphone invalide (format 0XXXXXXXXX).",
+      INVALID_CITY: "Ville invalide.",
+      INVALID_ADDRESS: "Adresse trop courte.",
+      INVALID_ITEMS: "Ajoutez au moins un produit.",
+      PRODUCT_NOT_FOUND: "Produit introuvable.",
+      OUT_OF_STOCK: "Stock insuffisant pour un produit.",
+    };
+    return { ok: false, error: map[msg] ?? "Une erreur est survenue." };
+  }
 }

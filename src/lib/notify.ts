@@ -133,6 +133,62 @@ function esc(s: string): string {
     .replace(/>/g, "&gt;");
 }
 
+/** Emails the plombier when a new installation is assigned to him. No-op if unconfigured. */
+export async function notifyPlombierAssignment(
+  to: string,
+  job: {
+    orderId: string;
+    customerName: string;
+    phone: string;
+    address: string;
+    city: string;
+    installDate?: string | null;
+  },
+): Promise<void> {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey || !to) return;
+  const from = process.env.ORDER_FROM_EMAIL || "Filtre Maroc <onboarding@resend.dev>";
+  const appUrl = process.env.APP_URL || "http://localhost:3000";
+
+  const when = job.installDate
+    ? new Date(job.installDate).toLocaleString("fr-MA", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        hour: "2-digit",
+        minute: "2-digit",
+      })
+    : "à planifier";
+
+  const html = `
+    <div style="font-family:Arial,Helvetica,sans-serif;max-width:560px;margin:auto;">
+      <div style="background:#1273b6;color:#fff;padding:18px 22px;border-radius:14px 14px 0 0;font-size:18px;font-weight:bold;">🔧 Nouvelle installation à faire</div>
+      <div style="border:1px solid #e8ebee;border-top:0;border-radius:0 0 14px 14px;padding:20px 22px;color:#0a0f16;line-height:1.8;">
+        <p style="margin:0 0 10px;"><b>Commande :</b> ${esc(job.orderId)}</p>
+        <p style="margin:0 0 4px;">👤 <b>${esc(job.customerName)}</b></p>
+        <p style="margin:0 0 4px;">📞 <a href="tel:${esc(job.phone)}" style="color:#1273b6;">${esc(job.phone)}</a></p>
+        <p style="margin:0 0 4px;">📍 ${esc(job.address)}, ${esc(job.city)}</p>
+        <p style="margin:10px 0 0;">🗓️ <b>Rendez-vous :</b> ${esc(when)}</p>
+        <p style="margin-top:18px;"><a href="${appUrl}/plombier" style="background:#1273b6;color:#fff;text-decoration:none;font-weight:bold;padding:10px 22px;border-radius:999px;display:inline-block;">Voir mes installations →</a></p>
+      </div>
+    </div>`;
+
+  try {
+    await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        from,
+        to,
+        subject: `🔧 Installation à faire — ${job.customerName} (${job.orderId})`,
+        html,
+      }),
+    });
+  } catch {
+    /* never block confirmation on a failed email */
+  }
+}
+
 /** Emails the owner when a customer sends the contact form. No-op if unconfigured. */
 export async function notifyNewMessage(msg: {
   name: string;

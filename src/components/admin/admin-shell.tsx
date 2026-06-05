@@ -14,6 +14,7 @@ import {
   Bell,
   LogOut,
   MessageSquare,
+  UserCog,
 } from "lucide-react";
 import { cn, formatMAD } from "@/lib/utils";
 import { logoutAction } from "@/lib/auth-actions";
@@ -26,6 +27,7 @@ const NAV = [
   { label: "Commandes", href: "/admin/orders", icon: ShoppingBag },
   { label: "Messages", href: "/admin/messages", icon: MessageSquare },
   { label: "Clients", href: "/admin/clients", icon: Users },
+  { label: "Utilisateurs", href: "/admin/users", icon: UserCog },
   { label: "Paramètres", href: "/admin/settings", icon: Settings },
 ];
 
