@@ -80,6 +80,7 @@ export type CartItem = {
 export type OrderStatus =
   | "pending"
   | "confirmed"
+  | "installed"
   | "shipped"
   | "delivered"
   | "returned"
@@ -109,4 +110,6 @@ export type Order = {
   confirmedAt?: string; // ISO
   installDate?: string; // ISO — scheduled installation
   assignedTo?: string; // plombier email
+  completedAt?: string; // ISO — when the plombier marked it installed
+  photoUrl?: string; // completion photo
 };

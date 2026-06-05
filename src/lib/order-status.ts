@@ -14,6 +14,11 @@ export const STATUS_META: Record<
     className: "bg-brand-100 text-brand-700",
     dot: "bg-brand-500",
   },
+  installed: {
+    label: "Installée",
+    className: "bg-teal-100 text-teal-700",
+    dot: "bg-teal-500",
+  },
   shipped: {
     label: "Expédiée",
     className: "bg-indigo-100 text-indigo-700",
@@ -39,6 +44,7 @@ export const STATUS_META: Record<
 export const STATUS_ORDER: OrderStatus[] = [
   "pending",
   "confirmed",
+  "installed",
   "shipped",
   "delivered",
   "returned",

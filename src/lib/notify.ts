@@ -1,6 +1,6 @@
 import type { Order } from "@/lib/types";
 import { formatMAD } from "@/lib/utils";
-import { getSettings } from "@/lib/data";
+import { getSettings, getConfirmateurEmails } from "@/lib/data";
 
 const BRAND = "#1273b6";
 const BRAND_DARK = "#0e3c5f";
@@ -115,11 +115,19 @@ export async function notifyNewOrder(order: Order): Promise<void> {
 
   const { subject, html } = buildOrderEmail(order, { logoUrl, siteName, appUrl });
 
+  // Alert the owner + any confirmateur accounts so they call the client.
+  let recipients = [to];
+  try {
+    recipients = [...new Set([to, ...(await getConfirmateurEmails())])];
+  } catch {
+    /* fall back to the owner only */
+  }
+
   try {
     await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ from, to, subject, html }),
+      body: JSON.stringify({ from, to: recipients, subject, html }),
     });
   } catch {
     /* never block an order on a failed email */

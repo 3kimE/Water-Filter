@@ -2,6 +2,7 @@ import { Phone, MessageCircle, MapPin, CalendarClock, Wrench } from "lucide-reac
 import { getSession } from "@/lib/auth";
 import { getPlombierJobs } from "@/lib/data";
 import { formatMAD } from "@/lib/utils";
+import { CompleteJobForm } from "@/components/staff/complete-job-form";
 
 export const dynamic = "force-dynamic";
 
@@ -93,6 +94,8 @@ export default async function PlombierPage() {
                 <MessageCircle className="h-4 w-4" /> WhatsApp
               </a>
             </div>
+
+            <CompleteJobForm orderId={o.id} />
           </div>
         );
       })}

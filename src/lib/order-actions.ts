@@ -9,12 +9,15 @@ import {
   updateOrderStatus,
   confirmOrder,
   getPlombierEmail,
+  getOrderById,
+  completeInstallation,
 } from "@/lib/data";
+import { uploadProductImage } from "@/lib/storage";
 import { notifyNewOrder, notifyPlombierAssignment } from "@/lib/notify";
 import { rateLimit, ipFrom } from "@/lib/rate-limit";
 import type { OrderItem, OrderStatus } from "@/lib/types";
 
-/** Roles allowed to confirm orders / add phone orders. */
+/** Resolves the caller's session + effective role and checks it's allowed. */
 async function requireStaff(roles: string[]) {
   const session = await getSession();
   if (!session) throw new Error("Non autorisé");
@@ -28,7 +31,7 @@ async function requireStaff(roles: string[]) {
     role = u?.role;
   }
   if (!role || !roles.includes(role)) throw new Error("Non autorisé");
-  return session;
+  return { session, role };
 }
 
 /** Public: place an order at checkout (cash on delivery). */
@@ -106,6 +109,44 @@ export async function confirmOrderAction(input: {
   revalidatePath("/confirmation");
   revalidatePath("/plombier");
   revalidatePath("/admin/orders");
+  revalidatePath("/admin");
+  return { ok: true };
+}
+
+/**
+ * Plombier/admin: mark an installation as done with a completion photo.
+ * A plombier may only complete a job assigned to him.
+ */
+export async function completeInstallationAction(
+  formData: FormData,
+): Promise<{ ok: boolean; error?: string }> {
+  const { session, role } = await requireStaff(["plombier", "admin"]);
+
+  const id = String(formData.get("orderId") ?? "");
+  if (!id) return { ok: false, error: "Commande manquante." };
+
+  const order = await getOrderById(id);
+  if (!order) return { ok: false, error: "Commande introuvable." };
+  if (role !== "admin" && order.assignedTo !== session.email) {
+    return { ok: false, error: "Cette installation ne vous est pas assignée." };
+  }
+
+  const file = formData.get("photo");
+  if (!(file instanceof File) || file.size === 0) {
+    return { ok: false, error: "Ajoutez une photo de l'installation." };
+  }
+
+  let photoUrl: string;
+  try {
+    photoUrl = await uploadProductImage(file);
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "Échec de l'envoi de la photo." };
+  }
+
+  await completeInstallation(id, photoUrl);
+  revalidatePath("/plombier");
+  revalidatePath("/admin/orders");
+  revalidatePath(`/admin/orders/${id}`);
   revalidatePath("/admin");
   return { ok: true };
 }

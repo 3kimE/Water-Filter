@@ -54,6 +54,8 @@ model Order {
   confirmedAt      DateTime?
   installDate      DateTime? // scheduled installation date/time
   assignedTo       String? // plombier email the job is assigned to
+  completedAt      DateTime? // when the plombier marked it installed
+  photoUrl         String? // completion photo uploaded by the plombier
   createdAt        DateTime  @default(now())
 
   @@index([status])

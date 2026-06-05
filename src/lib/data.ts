@@ -55,6 +55,8 @@ function toOrder(row: ORow): Order {
     confirmedAt: row.confirmedAt?.toISOString(),
     installDate: row.installDate?.toISOString(),
     assignedTo: row.assignedTo ?? undefined,
+    completedAt: row.completedAt?.toISOString(),
+    photoUrl: row.photoUrl ?? undefined,
     createdAt: row.createdAt.toISOString(),
   };
 }
@@ -504,13 +506,31 @@ export async function confirmOrder(
   return toOrder(row);
 }
 
-/** Installations assigned to a given plombier (by email), upcoming first. */
+/** Installations assigned to a given plombier (by email) still to do, upcoming first. */
 export async function getPlombierJobs(email: string): Promise<Order[]> {
   const rows = await prisma.order.findMany({
-    where: { assignedTo: email, status: { in: ["confirmed", "shipped"] } },
+    where: { assignedTo: email, status: "confirmed" },
     orderBy: { installDate: "asc" },
   });
   return rows.map(toOrder);
+}
+
+/** Plombier marks an installation done: records the completion photo + time. */
+export async function completeInstallation(id: string, photoUrl: string): Promise<Order> {
+  const row = await prisma.order.update({
+    where: { id },
+    data: { status: "installed", completedAt: new Date(), photoUrl },
+  });
+  return toOrder(row);
+}
+
+/** Emails of all confirmateur accounts (to alert on new orders). */
+export async function getConfirmateurEmails(): Promise<string[]> {
+  const rows = await prisma.adminUser.findMany({
+    where: { role: "confirmateur" },
+    select: { email: true },
+  });
+  return rows.map((r) => r.email);
 }
 
 /* ---------- staff (admin users) ---------- */

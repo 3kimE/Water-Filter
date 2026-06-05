@@ -194,7 +194,7 @@ export function OrderManager({ order }: { order: Order }) {
           </section>
 
           {/* Suivi (confirmation + installation) */}
-          {(order.confirmedAt || order.installDate || order.assignedTo || order.source === "phone") && (
+          {(order.confirmedAt || order.installDate || order.assignedTo || order.completedAt || order.source === "phone") && (
             <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
               <h3 className="font-display font-bold text-ink">Suivi</h3>
               <dl className="mt-3 space-y-2 text-sm">
@@ -229,7 +229,32 @@ export function OrderManager({ order }: { order: Order }) {
                     <dd className="break-all font-medium text-ink">{order.assignedTo}</dd>
                   </div>
                 )}
+                {order.completedAt && (
+                  <div className="flex justify-between gap-3">
+                    <dt className="text-ink-soft">Installée le</dt>
+                    <dd className="font-medium text-emerald-600">{formatDate(order.completedAt)}</dd>
+                  </div>
+                )}
               </dl>
+
+              {order.photoUrl && (
+                <a
+                  href={order.photoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 block overflow-hidden rounded-xl border border-slate-200"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={order.photoUrl}
+                    alt="Photo de l'installation"
+                    className="h-40 w-full object-cover"
+                  />
+                  <span className="block bg-slate-50 px-3 py-2 text-xs font-medium text-brand-600">
+                    Voir la photo de l&apos;installation →
+                  </span>
+                </a>
+              )}
             </section>
           )}
 

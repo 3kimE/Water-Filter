@@ -11,6 +11,7 @@ const TABS: { key: string; label: string }[] = [
   { key: "", label: "Toutes" },
   { key: "pending", label: "En attente" },
   { key: "confirmed", label: "Confirmées" },
+  { key: "installed", label: "Installées" },
   { key: "shipped", label: "Expédiées" },
   { key: "delivered", label: "Livrées" },
   { key: "returned", label: "Retournées" },
