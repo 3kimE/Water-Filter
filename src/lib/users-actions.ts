@@ -9,7 +9,17 @@ const ROLES = ["admin", "confirmateur", "plombier"] as const;
 
 async function requireAdmin() {
   const session = await getSession();
-  if (!session || session.role !== "admin") throw new Error("Non autorisé");
+  if (!session) throw new Error("Non autorisé");
+  // Fall back to the DB role for sessions issued before roles existed.
+  let role = session.role;
+  if (!role) {
+    const u = await prisma.adminUser.findUnique({
+      where: { id: session.sub },
+      select: { role: true },
+    });
+    role = u?.role;
+  }
+  if (role !== "admin") throw new Error("Non autorisé");
   return session;
 }
 

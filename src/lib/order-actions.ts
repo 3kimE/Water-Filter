@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
+import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
 import {
   createOrder,
@@ -16,9 +17,17 @@ import type { OrderItem, OrderStatus } from "@/lib/types";
 /** Roles allowed to confirm orders / add phone orders. */
 async function requireStaff(roles: string[]) {
   const session = await getSession();
-  if (!session || !roles.includes(session.role ?? "admin")) {
-    throw new Error("Non autorisé");
+  if (!session) throw new Error("Non autorisé");
+  // Fall back to the DB role for sessions issued before roles existed.
+  let role = session.role;
+  if (!role) {
+    const u = await prisma.adminUser.findUnique({
+      where: { id: session.sub },
+      select: { role: true },
+    });
+    role = u?.role;
   }
+  if (!role || !roles.includes(role)) throw new Error("Non autorisé");
   return session;
 }
 
