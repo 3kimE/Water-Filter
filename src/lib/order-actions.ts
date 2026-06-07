@@ -12,6 +12,9 @@ import {
   getOrderById,
   completeInstallation,
   setJobStage,
+  createMaintenanceVisit,
+  setMaintenanceInterval,
+  markMaintenanceDone,
 } from "@/lib/data";
 import { uploadProductImage } from "@/lib/storage";
 import {
@@ -203,6 +206,60 @@ export async function completeInstallationAction(
   revalidatePath(`/admin/orders/${id}`);
   revalidatePath("/admin");
   revalidatePath("/admin/clients");
+  return { ok: true };
+}
+
+/** Admin: schedule a maintenance visit for an installation (creates a plombier job + emails him). */
+export async function scheduleMaintenanceAction(input: {
+  parentId: string;
+  installDate: string;
+  assignedTo?: string;
+}): Promise<{ ok: boolean; error?: string }> {
+  await requireStaff(["admin"]);
+  const when = new Date(input.installDate);
+  if (isNaN(when.getTime())) return { ok: false, error: "Date invalide." };
+
+  const plombier = input.assignedTo?.trim() || (await getPlombierEmail());
+  const visit = await createMaintenanceVisit(input.parentId, { installDate: when, assignedTo: plombier });
+
+  if (plombier) {
+    await notifyPlombierAssignment(plombier, {
+      orderId: visit.id,
+      customerName: visit.customerName,
+      phone: visit.phone,
+      address: visit.address,
+      city: visit.city,
+      installDate: visit.installDate,
+    });
+  }
+  revalidatePath("/admin/clients");
+  revalidatePath("/plombier");
+  revalidatePath("/admin/orders");
+  revalidatePath("/admin");
+  return { ok: true };
+}
+
+/** Admin: change an installation's maintenance interval (months). */
+export async function setMaintenanceIntervalAction(
+  id: string,
+  months: number,
+): Promise<{ ok: boolean; error?: string }> {
+  await requireStaff(["admin"]);
+  const m = Math.floor(Number(months));
+  if (!Number.isFinite(m) || m < 1 || m > 36)
+    return { ok: false, error: "Intervalle invalide (1–36 mois)." };
+  await setMaintenanceInterval(id, m);
+  revalidatePath("/admin/clients");
+  revalidatePath("/admin");
+  return { ok: true };
+}
+
+/** Admin: mark an installation's maintenance as done manually (restarts the clock). */
+export async function markMaintenanceDoneAction(id: string): Promise<{ ok: boolean; error?: string }> {
+  await requireStaff(["admin"]);
+  await markMaintenanceDone(id);
+  revalidatePath("/admin/clients");
+  revalidatePath("/admin");
   return { ok: true };
 }
 

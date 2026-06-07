@@ -57,10 +57,18 @@ model Order {
   completedAt      DateTime? // when the plombier marked it installed
   photoUrl         String? // completion photo uploaded by the plombier
   installStage     String? // plombier progress: "enroute" | "arrived" (null = scheduled)
+  kind             String    @default("install") // "install" | "maintenance"
+  parentOrderId    String? // for a maintenance visit: the original installation
+  warrantyMonths   Int       @default(24) // warranty length from completion
+  maintenanceMonths Int      @default(6) // months between maintenance visits
+  nextMaintenanceAt DateTime? // when the next filter change is due
+  lastMaintenanceAt DateTime? // last maintenance done
   createdAt        DateTime  @default(now())
 
   @@index([status])
   @@index([assignedTo])
+  @@index([kind])
+  @@index([nextMaintenanceAt])
 }
 
 model AdminUser {
@@ -69,6 +77,7 @@ model AdminUser {
   passwordHash String
   name         String?
   role         String   @default("admin") // "admin" | "confirmateur" | "plombier"
+  city         String? // plombier coverage city/zone (for dispatch)
   createdAt    DateTime @default(now())
 }
 

@@ -58,8 +58,21 @@ function toOrder(row: ORow): Order {
     completedAt: row.completedAt?.toISOString(),
     photoUrl: row.photoUrl ?? undefined,
     installStage: (row.installStage as "enroute" | "arrived" | null) ?? undefined,
+    kind: (row.kind as "install" | "maintenance") ?? "install",
+    parentOrderId: row.parentOrderId ?? undefined,
+    warrantyMonths: row.warrantyMonths ?? 24,
+    maintenanceMonths: row.maintenanceMonths ?? 6,
+    nextMaintenanceAt: row.nextMaintenanceAt?.toISOString(),
+    lastMaintenanceAt: row.lastMaintenanceAt?.toISOString(),
     createdAt: row.createdAt.toISOString(),
   };
+}
+
+/** Adds `months` to a date and returns a new Date. */
+function addMonths(d: Date, months: number): Date {
+  const r = new Date(d);
+  r.setMonth(r.getMonth() + months);
+  return r;
 }
 
 /* ---------- product reads ---------- */
@@ -266,23 +279,37 @@ export type AdminNotifications = {
   pendingCount: number;
   lowStockCount: number;
   unreadMessagesCount: number;
+  maintenanceDueCount: number;
   pendingOrders: { id: string; customerName: string; total: number; createdAt: string }[];
   lowStock: { id: string; name: string; stock: number }[];
   messages: { id: string; name: string; message: string; createdAt: string }[];
+  maintenance: { id: string; name: string; dueAt: string }[];
 };
 
 export async function getAdminNotifications(): Promise<AdminNotifications> {
-  const [pendingCount, pending, low, unreadMessagesCount, msgs] = await Promise.all([
-    prisma.order.count({ where: { status: "pending" } }),
-    prisma.order.findMany({ where: { status: "pending" }, orderBy: { createdAt: "desc" }, take: 8 }),
-    prisma.product.findMany({ where: { inStock: true, stock: { lte: 5 } }, orderBy: { stock: "asc" }, take: 8 }),
-    prisma.contactMessage.count({ where: { read: false } }),
-    prisma.contactMessage.findMany({ where: { read: false }, orderBy: { createdAt: "desc" }, take: 8 }),
-  ]);
+  const dueLimit = new Date();
+  dueLimit.setDate(dueLimit.getDate() + 14);
+  const [pendingCount, pending, low, unreadMessagesCount, msgs, maintCount, maint] =
+    await Promise.all([
+      prisma.order.count({ where: { status: "pending" } }),
+      prisma.order.findMany({ where: { status: "pending" }, orderBy: { createdAt: "desc" }, take: 8 }),
+      prisma.product.findMany({ where: { inStock: true, stock: { lte: 5 } }, orderBy: { stock: "asc" }, take: 8 }),
+      prisma.contactMessage.count({ where: { read: false } }),
+      prisma.contactMessage.findMany({ where: { read: false }, orderBy: { createdAt: "desc" }, take: 8 }),
+      prisma.order.count({
+        where: { status: "installed", kind: "install", nextMaintenanceAt: { lte: dueLimit } },
+      }),
+      prisma.order.findMany({
+        where: { status: "installed", kind: "install", nextMaintenanceAt: { lte: dueLimit } },
+        orderBy: { nextMaintenanceAt: "asc" },
+        take: 8,
+      }),
+    ]);
   return {
     pendingCount,
     lowStockCount: low.length,
     unreadMessagesCount,
+    maintenanceDueCount: maintCount,
     pendingOrders: pending.map((o) => ({
       id: o.id,
       customerName: o.customerName,
@@ -295,6 +322,11 @@ export async function getAdminNotifications(): Promise<AdminNotifications> {
       name: m.name,
       message: m.message,
       createdAt: m.createdAt.toISOString(),
+    })),
+    maintenance: maint.map((o) => ({
+      id: o.id,
+      name: o.customerName,
+      dueAt: o.nextMaintenanceAt ? o.nextMaintenanceAt.toISOString() : "",
     })),
   };
 }
@@ -526,10 +558,10 @@ export async function getActiveInstalls(): Promise<Order[]> {
 }
 
 /** All plombier accounts (for the confirmateur's assignment dropdown). */
-export async function getPlombiers(): Promise<{ email: string; name: string | null }[]> {
+export async function getPlombiers(): Promise<{ email: string; name: string | null; city: string | null }[]> {
   return prisma.adminUser.findMany({
     where: { role: "plombier" },
-    select: { email: true, name: true },
+    select: { email: true, name: true, city: true },
     orderBy: { createdAt: "asc" },
   });
 }
@@ -578,11 +610,114 @@ export async function getPlombierNotifications(email: string | null, all: boolea
   };
 }
 
-/** Plombier marks an installation done: records the completion photo + time. */
+/**
+ * Plombier marks a job done with a photo.
+ * - An installation starts the maintenance clock (completion + interval).
+ * - A maintenance visit restarts the parent installation's clock instead.
+ */
 export async function completeInstallation(id: string, photoUrl: string): Promise<Order> {
+  const existing = await prisma.order.findUnique({ where: { id } });
+  const now = new Date();
+  const data: {
+    status: string;
+    completedAt: Date;
+    photoUrl: string;
+    nextMaintenanceAt?: Date;
+  } = { status: "installed", completedAt: now, photoUrl };
+
+  if (existing?.kind !== "maintenance") {
+    data.nextMaintenanceAt = addMonths(now, existing?.maintenanceMonths ?? 6);
+  }
+  const row = await prisma.order.update({ where: { id }, data });
+
+  // A completed maintenance visit restarts the original installation's clock.
+  if (existing?.kind === "maintenance" && existing.parentOrderId) {
+    const parent = await prisma.order.findUnique({ where: { id: existing.parentOrderId } });
+    if (parent) {
+      await prisma.order.update({
+        where: { id: parent.id },
+        data: { lastMaintenanceAt: now, nextMaintenanceAt: addMonths(now, parent.maintenanceMonths) },
+      });
+    }
+  }
+  return toOrder(row);
+}
+
+/* ---------- after-sales: installations + maintenance (Phase 3) ---------- */
+
+/** All completed installations (the "Suivi client" list), maintenance-due first. */
+export async function getInstallations(): Promise<Order[]> {
+  const rows = await prisma.order.findMany({
+    where: { status: "installed", kind: "install" },
+    orderBy: { nextMaintenanceAt: "asc" },
+  });
+  return rows.map(toOrder);
+}
+
+/** Installations whose maintenance is due within `days` (default 14) or overdue. */
+export async function getMaintenanceDue(days = 14): Promise<Order[]> {
+  const limit = new Date();
+  limit.setDate(limit.getDate() + days);
+  const rows = await prisma.order.findMany({
+    where: { status: "installed", kind: "install", nextMaintenanceAt: { lte: limit } },
+    orderBy: { nextMaintenanceAt: "asc" },
+    take: 12,
+  });
+  return rows.map(toOrder);
+}
+
+/** Admin: change the maintenance interval for an installation and recompute the due date. */
+export async function setMaintenanceInterval(id: string, months: number): Promise<Order> {
+  const o = await prisma.order.findUnique({ where: { id } });
+  if (!o) throw new Error("NOT_FOUND");
+  const base = o.lastMaintenanceAt ?? o.completedAt ?? o.createdAt;
   const row = await prisma.order.update({
     where: { id },
-    data: { status: "installed", completedAt: new Date(), photoUrl },
+    data: { maintenanceMonths: months, nextMaintenanceAt: addMonths(base, months) },
+  });
+  return toOrder(row);
+}
+
+/** Admin: mark a maintenance as done manually (restarts the clock, no visit record). */
+export async function markMaintenanceDone(id: string): Promise<Order> {
+  const o = await prisma.order.findUnique({ where: { id } });
+  if (!o) throw new Error("NOT_FOUND");
+  const now = new Date();
+  const row = await prisma.order.update({
+    where: { id },
+    data: { lastMaintenanceAt: now, nextMaintenanceAt: addMonths(now, o.maintenanceMonths) },
+  });
+  return toOrder(row);
+}
+
+/** Admin: schedule a maintenance VISIT — a new work order the plombier will see + complete. */
+export async function createMaintenanceVisit(
+  parentId: string,
+  opts: { installDate: Date; assignedTo: string | null },
+): Promise<Order> {
+  const parent = await prisma.order.findUnique({ where: { id: parentId } });
+  if (!parent) throw new Error("PARENT_NOT_FOUND");
+  await prisma.$executeRawUnsafe(`CREATE SEQUENCE IF NOT EXISTS order_seq START 1`);
+  const seq = await prisma.$queryRawUnsafe<{ n: number }[]>(`SELECT nextval('order_seq')::int AS n`);
+  if (!seq?.[0]) throw new Error("ID_GENERATION_FAILED");
+  const id = "FM-" + (2000 + seq[0].n);
+  const row = await prisma.order.create({
+    data: {
+      id,
+      customerName: parent.customerName,
+      phone: parent.phone,
+      city: parent.city,
+      address: parent.address,
+      note: "Visite d'entretien (changement de filtre)",
+      items: (parent.items as unknown as object) ?? [],
+      total: 0,
+      status: "confirmed",
+      kind: "maintenance",
+      parentOrderId: parent.id,
+      assignedTo: opts.assignedTo,
+      installDate: opts.installDate,
+      source: "web",
+    },
   });
   return toOrder(row);
 }
@@ -609,6 +744,7 @@ export type StaffUser = {
   email: string;
   name: string | null;
   role: string;
+  city: string | null;
   createdAt: string;
 };
 
@@ -619,6 +755,7 @@ export async function getStaffUsers(): Promise<StaffUser[]> {
     email: u.email,
     name: u.name,
     role: u.role,
+    city: u.city,
     createdAt: u.createdAt.toISOString(),
   }));
 }

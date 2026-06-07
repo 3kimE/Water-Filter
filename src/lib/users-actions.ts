@@ -29,6 +29,7 @@ export async function createStaffUserAction(input: {
   name: string;
   password: string;
   role: string;
+  city?: string;
 }): Promise<{ ok: boolean; error?: string }> {
   await requireAdmin();
 
@@ -36,6 +37,7 @@ export async function createStaffUserAction(input: {
   const name = (input.name ?? "").trim();
   const password = input.password ?? "";
   const role = input.role;
+  const city = (input.city ?? "").trim();
 
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email))
     return { ok: false, error: "Adresse email invalide." };
@@ -52,6 +54,7 @@ export async function createStaffUserAction(input: {
       email,
       name: name || null,
       role,
+      city: role === "plombier" ? city || null : null,
       passwordHash: await bcrypt.hash(password, 10),
     },
   });
@@ -62,7 +65,7 @@ export async function createStaffUserAction(input: {
 /** Admin: edit a staff account (name, email, role, and optionally reset password). */
 export async function updateStaffUserAction(
   id: string,
-  input: { email: string; name: string; role: string; password?: string },
+  input: { email: string; name: string; role: string; password?: string; city?: string },
 ): Promise<{ ok: boolean; error?: string }> {
   const session = await requireAdmin();
 
@@ -73,6 +76,7 @@ export async function updateStaffUserAction(
   const name = (input.name ?? "").trim();
   const role = input.role;
   const password = input.password ?? "";
+  const city = (input.city ?? "").trim();
 
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email))
     return { ok: false, error: "Adresse email invalide." };
@@ -103,6 +107,7 @@ export async function updateStaffUserAction(
       email,
       name: name || null,
       role,
+      city: role === "plombier" ? city || null : null,
       ...(password ? { passwordHash: await bcrypt.hash(password, 10) } : {}),
     },
   });

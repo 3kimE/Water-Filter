@@ -28,13 +28,17 @@ export function ConfirmOrderCard({
   plombiers,
 }: {
   order: Order;
-  plombiers: { email: string; name: string | null }[];
+  plombiers: { email: string; name: string | null; city: string | null }[];
 }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [date, setDate] = useState("");
   const [note, setNote] = useState("");
-  const [assignedTo, setAssignedTo] = useState(plombiers[0]?.email ?? "");
+  // Auto-match a plombier whose city equals the order's city (dispatch by zone).
+  const cityMatch = plombiers.find(
+    (p) => p.city && p.city.trim().toLowerCase() === order.city.trim().toLowerCase(),
+  );
+  const [assignedTo, setAssignedTo] = useState((cityMatch ?? plombiers[0])?.email ?? "");
   const [error, setError] = useState<string | null>(null);
   const tel = order.phone.replace(/\s/g, "");
 
@@ -155,7 +159,11 @@ export function ConfirmOrderCard({
             >
               {plombiers.map((p) => (
                 <option key={p.email} value={p.email}>
-                  {p.name ? `${p.name} (${p.email})` : p.email}
+                  {p.name ?? p.email}
+                  {p.city ? ` — ${p.city}` : ""}
+                  {p.city && p.city.trim().toLowerCase() === order.city.trim().toLowerCase()
+                    ? " ✓"
+                    : ""}
                 </option>
               ))}
             </select>

@@ -10,6 +10,7 @@ import {
   Navigation,
   Check,
   Truck,
+  Wrench,
 } from "lucide-react";
 import { setJobStageAction } from "@/lib/order-actions";
 import { CompleteJobForm } from "./complete-job-form";
@@ -56,12 +57,18 @@ export function PlombierJobCard({ order }: { order: Order }) {
 
   return (
     <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-      {/* date + price */}
+      {/* date + type/price */}
       <div className="flex items-center justify-between gap-3">
         <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-50 px-3 py-1.5 text-sm font-semibold text-brand-700">
           <CalendarClock className="h-4 w-4" /> {formatWhen(order.installDate)}
         </span>
-        <span className="font-display text-lg font-extrabold text-brand-700">{formatMAD(order.total)}</span>
+        {order.kind === "maintenance" ? (
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-orange-100 px-3 py-1 text-xs font-bold text-orange-700">
+            <Wrench className="h-3.5 w-3.5" /> Entretien
+          </span>
+        ) : (
+          <span className="font-display text-lg font-extrabold text-brand-700">{formatMAD(order.total)}</span>
+        )}
       </div>
 
       <p className="mt-3 font-display text-lg font-bold text-ink" dir="auto">{order.customerName}</p>

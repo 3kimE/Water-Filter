@@ -15,6 +15,7 @@ import {
   LogOut,
   MessageSquare,
   UserCog,
+  Wrench,
 } from "lucide-react";
 import { cn, formatMAD } from "@/lib/utils";
 import { logoutAction } from "@/lib/auth-actions";
@@ -35,9 +36,11 @@ const EMPTY: AdminNotifications = {
   pendingCount: 0,
   lowStockCount: 0,
   unreadMessagesCount: 0,
+  maintenanceDueCount: 0,
   pendingOrders: [],
   lowStock: [],
   messages: [],
+  maintenance: [],
 };
 
 export function AdminShell({
@@ -83,7 +86,11 @@ export function AdminShell({
   // Login page renders without the admin shell
   if (pathname === "/admin/login") return <>{children}</>;
 
-  const badge = notifs.pendingCount + notifs.lowStockCount + notifs.unreadMessagesCount;
+  const badge =
+    notifs.pendingCount +
+    notifs.lowStockCount +
+    notifs.unreadMessagesCount +
+    notifs.maintenanceDueCount;
 
   const SidebarContent = (
     <div className="flex h-full flex-col">
@@ -121,6 +128,11 @@ export function AdminShell({
               {item.href === "/admin/messages" && notifs.unreadMessagesCount > 0 && (
                 <span className="ms-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-brand-100 px-1 text-xs font-bold text-brand-700">
                   {notifs.unreadMessagesCount}
+                </span>
+              )}
+              {item.href === "/admin/clients" && notifs.maintenanceDueCount > 0 && (
+                <span className="ms-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-orange-100 px-1 text-xs font-bold text-orange-700">
+                  {notifs.maintenanceDueCount}
                 </span>
               )}
             </Link>
@@ -273,6 +285,32 @@ export function AdminShell({
                             <span className="min-w-0 flex-1 text-sm">
                               <span dir="auto" className="font-medium text-ink">{m.name}</span>
                               <span dir="auto" className="block text-xs text-ink-soft line-clamp-1">{m.message}</span>
+                            </span>
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+
+                    {notifs.maintenance.length > 0 && (
+                      <div className="border-t border-line py-1">
+                        <p className="px-4 pb-1 pt-2 text-xs font-semibold uppercase tracking-wide text-ink-soft">
+                          Entretiens à prévoir
+                        </p>
+                        {notifs.maintenance.map((m) => (
+                          <Link
+                            key={m.id}
+                            href="/admin/clients"
+                            onClick={() => setBellOpen(false)}
+                            className="flex items-center gap-3 px-4 py-2.5 hover:bg-neutral-50"
+                          >
+                            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-50 text-orange-600">
+                              <Wrench className="h-4 w-4" />
+                            </span>
+                            <span className="min-w-0 flex-1 text-sm">
+                              <span dir="auto" className="font-medium text-ink">{m.name}</span>
+                              <span className="block text-xs text-ink-soft">
+                                Filtre à remplacer{m.dueAt ? ` · ${new Date(m.dueAt).toLocaleDateString("fr-MA")}` : ""}
+                              </span>
                             </span>
                           </Link>
                         ))}

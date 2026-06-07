@@ -16,7 +16,7 @@ export function ConfirmationBoard({
 }: {
   orders: Order[];
   products: PickItem[];
-  plombiers: { email: string; name: string | null }[];
+  plombiers: { email: string; name: string | null; city: string | null }[];
   hasPlombier: boolean;
 }) {
   const [q, setQ] = useState("");

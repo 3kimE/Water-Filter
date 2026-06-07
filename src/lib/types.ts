@@ -113,4 +113,10 @@ export type Order = {
   completedAt?: string; // ISO — when the plombier marked it installed
   photoUrl?: string; // completion photo
   installStage?: "enroute" | "arrived"; // plombier progress (null = scheduled)
+  kind: "install" | "maintenance";
+  parentOrderId?: string; // for a maintenance visit, the original installation
+  warrantyMonths: number;
+  maintenanceMonths: number;
+  nextMaintenanceAt?: string; // ISO — next filter change due
+  lastMaintenanceAt?: string; // ISO
 };

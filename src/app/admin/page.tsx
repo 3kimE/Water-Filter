@@ -6,12 +6,14 @@ import {
   Package,
   ArrowUpRight,
   TrendingUp,
+  Wrench,
 } from "lucide-react";
 import {
   getDashboardStats,
   getOrders,
   getLowStockProducts,
   getTopSellers,
+  getMaintenanceDue,
 } from "@/lib/data";
 import { StatusBadge } from "@/components/admin/status-badge";
 import { STATUS_META, STATUS_ORDER } from "@/lib/order-status";
@@ -37,6 +39,7 @@ export default async function AdminDashboard() {
     ordersMoMPct !== null
       ? `${ordersMoMPct >= 0 ? "+" : ""}${ordersMoMPct}% ce mois`
       : `${ordersThisMonth} ce mois-ci`;
+  const maintenanceDue = await getMaintenanceDue();
   const [lowStock, topSellers] = await Promise.all([
     getLowStockProducts(5, 6),
     getTopSellers(5),
@@ -106,6 +109,27 @@ export default async function AdminDashboard() {
           </div>
         ))}
       </div>
+
+      {/* Maintenance due alert */}
+      {maintenanceDue.length > 0 && (
+        <Link
+          href="/admin/clients"
+          className="mt-6 flex items-center gap-3 rounded-2xl border border-orange-200 bg-orange-50 px-5 py-4 transition-colors hover:bg-orange-100"
+        >
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-orange-600">
+            <Wrench className="h-5 w-5" />
+          </span>
+          <span className="flex-1">
+            <span className="block font-display font-bold text-ink">
+              {maintenanceDue.length} entretien{maintenanceDue.length > 1 ? "s" : ""} à prévoir
+            </span>
+            <span className="block text-sm text-ink-soft">
+              Des filtres arrivent à 6 mois — planifiez le passage du plombier.
+            </span>
+          </span>
+          <ArrowUpRight className="h-5 w-5 text-orange-600" />
+        </Link>
+      )}
 
       {/* Orders by status */}
       <div className="mt-6">

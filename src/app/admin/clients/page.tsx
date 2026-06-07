@@ -1,20 +1,20 @@
-import { Users } from "lucide-react";
+import { getInstallations, getPlombiers } from "@/lib/data";
+import { ClientsSuivi } from "@/components/admin/clients-suivi";
 
-export default function AdminClientsPage() {
+export const dynamic = "force-dynamic";
+
+export default async function AdminClientsPage() {
+  const [installations, plombiers] = await Promise.all([getInstallations(), getPlombiers()]);
+
   return (
     <div>
-      <h1 className="mb-6 font-display text-2xl font-bold text-ink">Clients</h1>
-      <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-white py-24 text-center">
-        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-50 text-brand-500">
-          <Users className="h-7 w-7" />
-        </div>
-        <p className="mt-4 font-display text-lg font-semibold text-ink">
-          Gestion des clients
-        </p>
-        <p className="mt-1 text-sm text-ink-soft">
-          Bientôt disponible — historique d&apos;achat et fidélité.
+      <div className="mb-6">
+        <h1 className="font-display text-2xl font-bold text-ink">Suivi client</h1>
+        <p className="text-sm text-ink-soft">
+          Clients équipés — garantie et entretien des filtres (rappel tous les 6 mois).
         </p>
       </div>
+      <ClientsSuivi installations={installations} plombiers={plombiers} />
     </div>
   );
 }

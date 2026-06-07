@@ -19,7 +19,7 @@ const ROLE_META: Record<string, { label: string; className: string; icon: typeof
 export function UsersManager({ users, currentUserId }: { users: StaffUser[]; currentUserId: string }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
-  const [form, setForm] = useState({ email: "", name: "", password: "", role: "confirmateur" });
+  const [form, setForm] = useState({ email: "", name: "", password: "", role: "confirmateur", city: "" });
   const [error, setError] = useState<string | null>(null);
   const [okMsg, setOkMsg] = useState<string | null>(null);
 
@@ -31,7 +31,7 @@ export function UsersManager({ users, currentUserId }: { users: StaffUser[]; cur
       const res = await createStaffUserAction(form);
       if (res.ok) {
         setOkMsg("Compte créé ✓");
-        setForm({ email: "", name: "", password: "", role: "confirmateur" });
+        setForm({ email: "", name: "", password: "", role: "confirmateur", city: "" });
         router.refresh();
       } else {
         setError(res.error ?? "Erreur.");
@@ -50,12 +50,12 @@ export function UsersManager({ users, currentUserId }: { users: StaffUser[]; cur
 
   // --- edit ---
   const [editing, setEditing] = useState<StaffUser | null>(null);
-  const [eForm, setEForm] = useState({ email: "", name: "", role: "confirmateur", password: "" });
+  const [eForm, setEForm] = useState({ email: "", name: "", role: "confirmateur", password: "", city: "" });
   const [eError, setEError] = useState<string | null>(null);
 
   function openEdit(u: StaffUser) {
     setEditing(u);
-    setEForm({ email: u.email, name: u.name ?? "", role: u.role, password: "" });
+    setEForm({ email: u.email, name: u.name ?? "", role: u.role, password: "", city: u.city ?? "" });
     setEError(null);
   }
 
@@ -113,6 +113,21 @@ export function UsersManager({ users, currentUserId }: { users: StaffUser[]; cur
           placeholder="Ex : Youssef"
         />
 
+        {form.role === "plombier" && (
+          <>
+            <label className="mt-3 block text-sm font-medium text-ink">Ville / zone</label>
+            <input
+              value={form.city}
+              onChange={(e) => setForm({ ...form, city: e.target.value })}
+              className={`${input} mt-1`}
+              placeholder="Ex : Agadir"
+            />
+            <p className="mt-1 text-xs text-ink-soft">
+              Sert à proposer ce plombier pour les commandes de cette ville.
+            </p>
+          </>
+        )}
+
         <label className="mt-3 block text-sm font-medium text-ink">Email (identifiant)</label>
         <input
           type="email"
@@ -169,7 +184,10 @@ export function UsersManager({ users, currentUserId }: { users: StaffUser[]; cur
                       <span className="ms-2 text-xs font-normal text-ink-soft">(vous)</span>
                     )}
                   </p>
-                  <p className="truncate text-xs text-ink-soft">{u.email}</p>
+                  <p className="truncate text-xs text-ink-soft">
+                    {u.email}
+                    {u.city ? ` · ${u.city}` : ""}
+                  </p>
                 </div>
                 <span className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-semibold ${meta.className}`}>
                   {meta.label}
@@ -241,6 +259,18 @@ export function UsersManager({ users, currentUserId }: { users: StaffUser[]; cur
               onChange={(e) => setEForm({ ...eForm, name: e.target.value })}
               className={`${input} mt-1`}
             />
+
+            {eForm.role === "plombier" && (
+              <>
+                <label className="mt-3 block text-sm font-medium text-ink">Ville / zone</label>
+                <input
+                  value={eForm.city}
+                  onChange={(e) => setEForm({ ...eForm, city: e.target.value })}
+                  className={`${input} mt-1`}
+                  placeholder="Ex : Agadir"
+                />
+              </>
+            )}
 
             <label className="mt-3 block text-sm font-medium text-ink">Email (identifiant)</label>
             <input
