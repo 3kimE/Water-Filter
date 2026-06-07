@@ -19,9 +19,8 @@ import { ProductPhoto } from "@/components/product-photo";
 import { MOROCCAN_CITIES } from "@/lib/mock-data";
 import { formatMAD } from "@/lib/utils";
 import { useI18n } from "@/i18n/i18n-context";
+import { useSettings } from "@/context/settings-context";
 import { createOrderAction } from "@/lib/order-actions";
-
-const FREE_DELIVERY = 1000;
 
 type Errors = Partial<Record<"name" | "phone" | "city" | "address", string>>;
 
@@ -29,6 +28,7 @@ export default function CheckoutPage() {
   const router = useRouter();
   const { items, subtotal, clear, hydrated } = useCart();
   const { t } = useI18n();
+  const settings = useSettings();
 
   const [form, setForm] = useState({
     name: "",
@@ -41,7 +41,7 @@ export default function CheckoutPage() {
   const [errors, setErrors] = useState<Errors>({});
   const [submitting, setSubmitting] = useState(false);
 
-  const delivery = subtotal >= FREE_DELIVERY ? 0 : 40;
+  const delivery = subtotal >= settings.freeDeliveryThreshold ? 0 : settings.deliveryFee;
   const total = subtotal + delivery;
 
   function set(field: keyof typeof form, value: string) {

@@ -15,12 +15,12 @@ import { ProductPhoto } from "@/components/product-photo";
 import { Button } from "@/components/ui/button";
 import { formatMAD } from "@/lib/utils";
 import { useI18n } from "@/i18n/i18n-context";
-
-const FREE_DELIVERY = 1000;
+import { useSettings } from "@/context/settings-context";
 
 export default function CartPage() {
   const { t } = useI18n();
   const { items, subtotal, updateQty, removeItem, hydrated } = useCart();
+  const settings = useSettings();
 
   if (!hydrated) {
     return <div className="container-page py-24 text-center text-ink-soft">{t("common.loading")}</div>;
@@ -47,9 +47,9 @@ export default function CartPage() {
     );
   }
 
-  const delivery = subtotal >= FREE_DELIVERY ? 0 : 40;
+  const delivery = subtotal >= settings.freeDeliveryThreshold ? 0 : settings.deliveryFee;
   const total = subtotal + delivery;
-  const remaining = FREE_DELIVERY - subtotal;
+  const remaining = settings.freeDeliveryThreshold - subtotal;
 
   return (
     <div className="container-page py-10">

@@ -40,7 +40,8 @@ export async function updateSettingsAction(formData: FormData): Promise<void> {
     instagram: str("instagram"),
     tiktok: str("tiktok"),
     announcement: str("announcement"),
-    freeDeliveryThreshold: num("freeDeliveryThreshold") ?? 1000,
+    freeDeliveryThreshold: Math.max(0, num("freeDeliveryThreshold") ?? 1000),
+    deliveryFee: Math.max(0, num("deliveryFee") ?? 40),
   });
 
   revalidatePath("/");

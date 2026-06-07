@@ -116,10 +116,19 @@ export default async function AdminSettingsPage() {
         {/* Delivery */}
         <section className="rounded-2xl border border-line bg-white p-6 shadow-sm">
           <h2 className="font-display font-bold text-ink">Livraison</h2>
-          <div className="mt-4 max-w-xs">
-            <label className={label}>Livraison gratuite à partir de (MAD)</label>
-            <input name="freeDeliveryThreshold" type="number" defaultValue={s.freeDeliveryThreshold} className={input} />
+          <div className="mt-4 grid max-w-md gap-4 sm:grid-cols-2">
+            <div>
+              <label className={label}>Frais de livraison (MAD)</label>
+              <input name="deliveryFee" type="number" min={0} defaultValue={s.deliveryFee} className={input} />
+            </div>
+            <div>
+              <label className={label}>Livraison gratuite à partir de (MAD)</label>
+              <input name="freeDeliveryThreshold" type="number" min={0} defaultValue={s.freeDeliveryThreshold} className={input} />
+            </div>
           </div>
+          <p className="mt-2 text-xs text-ink-soft">
+            Mettez « Livraison gratuite à partir de » très haut pour désactiver la livraison gratuite.
+          </p>
         </section>
 
         <button

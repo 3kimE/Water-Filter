@@ -116,5 +116,6 @@ model SiteSettings {
   tiktok                 String?
   announcement           String?
   freeDeliveryThreshold  Int      @default(1000)
+  deliveryFee            Int      @default(40)
   updatedAt              DateTime @updatedAt
 }

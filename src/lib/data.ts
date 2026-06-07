@@ -398,8 +398,6 @@ export async function deleteProduct(id: string) {
 
 /* ---------- order writes ---------- */
 
-const DELIVERY_FEE = 40;
-
 function pickVariantDelta(variantsJson: unknown, label?: string): number {
   if (!label || !variantsJson) return 0;
   const arr = variantsJson as ProductVariant[];
@@ -456,7 +454,7 @@ export async function createOrder(data: {
   }
 
   const settings = await getSettings();
-  const delivery = subtotal >= settings.freeDeliveryThreshold ? 0 : DELIVERY_FEE;
+  const delivery = subtotal >= settings.freeDeliveryThreshold ? 0 : settings.deliveryFee;
   const total = subtotal + delivery;
 
   // aggregate quantity per product (handles the same product appearing twice)
@@ -851,6 +849,7 @@ export type SiteSettings = {
   tiktok: string | null;
   announcement: string | null;
   freeDeliveryThreshold: number;
+  deliveryFee: number;
 };
 
 const DEFAULT_SETTINGS: SiteSettings = {
@@ -868,6 +867,7 @@ const DEFAULT_SETTINGS: SiteSettings = {
   tiktok: "https://tiktok.com",
   announcement: null,
   freeDeliveryThreshold: 1000,
+  deliveryFee: 40,
 };
 
 export async function getSettings(): Promise<SiteSettings> {
@@ -888,6 +888,7 @@ export async function getSettings(): Promise<SiteSettings> {
     tiktok: row.tiktok,
     announcement: row.announcement,
     freeDeliveryThreshold: row.freeDeliveryThreshold,
+    deliveryFee: row.deliveryFee ?? DEFAULT_SETTINGS.deliveryFee,
   };
 }
 
