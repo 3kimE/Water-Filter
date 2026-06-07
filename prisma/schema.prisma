@@ -59,6 +59,8 @@ model Order {
   installStage     String? // plombier progress: "enroute" | "arrived" (null = scheduled)
   kind             String    @default("install") // "install" | "maintenance"
   parentOrderId    String? // for a maintenance visit: the original installation
+  lastOutcome      String? // last confirmation-call result: "confirmed"|"rappeler"|"pas_reponse"|"cancelled"
+  callAttempts     Int       @default(0) // number of confirmation-call attempts logged
   warrantyMonths   Int       @default(24) // warranty length from completion
   maintenanceMonths Int      @default(6) // months between maintenance visits
   nextMaintenanceAt DateTime? // when the next filter change is due
@@ -90,6 +92,12 @@ model ContactMessage {
   createdAt DateTime @default(now())
 
   @@index([read])
+}
+
+model RateLimit {
+  key     String   @id // e.g. "order:<ip>", "login:<ip>", "contact:<ip>"
+  count   Int      @default(0)
+  resetAt DateTime
 }
 
 model SiteSettings {

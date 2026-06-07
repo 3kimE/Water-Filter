@@ -115,6 +115,8 @@ export type Order = {
   installStage?: "enroute" | "arrived"; // plombier progress (null = scheduled)
   kind: "install" | "maintenance";
   parentOrderId?: string; // for a maintenance visit, the original installation
+  lastOutcome?: "confirmed" | "rappeler" | "pas_reponse" | "cancelled";
+  callAttempts: number;
   warrantyMonths: number;
   maintenanceMonths: number;
   nextMaintenanceAt?: string; // ISO — next filter change due

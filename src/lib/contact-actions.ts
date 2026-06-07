@@ -12,9 +12,12 @@ export async function sendContactMessageAction(data: {
   name: string;
   phone: string;
   message: string;
+  hp?: string; // honeypot — must stay empty
 }): Promise<{ ok: boolean; error?: string }> {
+  // Bot trap: pretend success so the bot doesn't retry, but save nothing.
+  if (data.hp && data.hp.trim() !== "") return { ok: true };
   const ip = ipFrom(await headers());
-  if (!rateLimit(`contact:${ip}`, 5, 10 * 60 * 1000).ok) {
+  if (!(await rateLimit(`contact:${ip}`, 5, 10 * 60 * 1000)).ok) {
     return { ok: false, error: "Trop de messages envoyés. Réessayez plus tard." };
   }
   const name = (data.name ?? "").trim();

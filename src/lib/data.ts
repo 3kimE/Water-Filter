@@ -60,6 +60,8 @@ function toOrder(row: ORow): Order {
     installStage: (row.installStage as "enroute" | "arrived" | null) ?? undefined,
     kind: (row.kind as "install" | "maintenance") ?? "install",
     parentOrderId: row.parentOrderId ?? undefined,
+    lastOutcome: (row.lastOutcome as Order["lastOutcome"]) ?? undefined,
+    callAttempts: row.callAttempts ?? 0,
     warrantyMonths: row.warrantyMonths ?? 24,
     maintenanceMonths: row.maintenanceMonths ?? 6,
     nextMaintenanceAt: row.nextMaintenanceAt?.toISOString(),
@@ -563,6 +565,7 @@ export async function confirmOrder(
       confirmedAt: new Date(),
       installDate: data.installDate,
       assignedTo: data.assignedTo,
+      lastOutcome: "confirmed",
       ...(data.note !== undefined ? { confirmationNote: data.note } : {}),
     },
   });

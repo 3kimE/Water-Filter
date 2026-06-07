@@ -12,7 +12,7 @@ export async function loginAction(
   formData: FormData,
 ): Promise<LoginState> {
   const ip = ipFrom(await headers());
-  if (!rateLimit(`login:${ip}`, 5, 15 * 60 * 1000).ok) {
+  if (!(await rateLimit(`login:${ip}`, 5, 15 * 60 * 1000)).ok) {
     return { error: "Trop de tentatives. Réessayez dans 15 minutes." };
   }
 

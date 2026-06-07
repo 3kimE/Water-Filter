@@ -51,9 +51,12 @@ export async function createOrderAction(payload: {
   address: string;
   note?: string;
   items: { productId: string; qty: number; variantLabel?: string }[];
+  hp?: string; // honeypot — must stay empty (bots fill it)
 }): Promise<{ id: string; total: number; delivery: number; items: OrderItem[] }> {
+  // Bot trap: a real (hidden) field humans never fill. If set, silently reject.
+  if (payload.hp && payload.hp.trim() !== "") throw new Error("RATE_LIMITED");
   const ip = ipFrom(await headers());
-  if (!rateLimit(`order:${ip}`, 5, 10 * 60 * 1000).ok) {
+  if (!(await rateLimit(`order:${ip}`, 5, 10 * 60 * 1000)).ok) {
     throw new Error("RATE_LIMITED");
   }
   const order = await createOrder(payload);
@@ -148,13 +151,19 @@ export async function recordCallOutcomeAction(
   });
   if (outcome === "annuler") {
     await updateOrderStatus(id, "cancelled", `Annulée par le confirmateur · ${stamp}`);
+    await prisma.order.update({ where: { id }, data: { lastOutcome: "cancelled" } });
   } else {
     const label = outcome === "rappeler" ? "À rappeler" : "Pas de réponse";
     await updateOrderStatus(id, "pending", `${label} · ${stamp}`);
+    await prisma.order.update({
+      where: { id },
+      data: { lastOutcome: outcome, callAttempts: { increment: 1 } },
+    });
   }
   revalidatePath("/confirmation");
   revalidatePath("/admin/orders");
   revalidatePath("/admin");
+  revalidatePath("/admin/clients");
   return { ok: true };
 }
 

@@ -21,7 +21,7 @@ export default function ContactPage() {
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [form, setForm] = useState({ name: "", phone: "", message: "" });
+  const [form, setForm] = useState({ name: "", phone: "", message: "", hp: "" });
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -31,6 +31,7 @@ export default function ContactPage() {
       name: form.name,
       phone: form.phone,
       message: form.message,
+      hp: form.hp,
     });
     setSending(false);
     if (res.ok) setSent(true);
@@ -137,7 +138,7 @@ export default function ContactPage() {
               <button
                 onClick={() => {
                   setSent(false);
-                  setForm({ name: "", phone: "", message: "" });
+                  setForm({ name: "", phone: "", message: "", hp: "" });
                 }}
                 className="mt-6 font-semibold text-brand-600 hover:text-brand-700"
               >
@@ -146,6 +147,17 @@ export default function ContactPage() {
             </div>
           ) : (
             <form onSubmit={submit} className="space-y-5">
+              {/* Honeypot — hidden from humans, traps bots */}
+              <input
+                type="text"
+                name="company"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                value={form.hp}
+                onChange={(e) => setForm({ ...form, hp: e.target.value })}
+                style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }}
+              />
               <h2 className="font-display text-xl font-bold text-ink">
                 {t("contact.form.title")}
               </h2>

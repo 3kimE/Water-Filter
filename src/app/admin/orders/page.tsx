@@ -119,6 +119,25 @@ export default async function AdminOrdersPage({
                   </td>
                   <td className="px-5 py-3">
                     <StatusBadge status={o.status} />
+                    {o.status === "pending" && (
+                      <p className="mt-1">
+                        <span
+                          className={`inline-block rounded-full px-2 py-0.5 text-[11px] font-medium ${
+                            o.lastOutcome === "rappeler"
+                              ? "bg-amber-100 text-amber-700"
+                              : o.lastOutcome === "pas_reponse"
+                                ? "bg-orange-100 text-orange-700"
+                                : "bg-slate-100 text-ink-soft"
+                          }`}
+                        >
+                          {o.lastOutcome === "rappeler"
+                            ? "À rappeler"
+                            : o.lastOutcome === "pas_reponse"
+                              ? `Sans réponse${o.callAttempts > 1 ? ` (${o.callAttempts})` : ""}`
+                              : "À traiter"}
+                        </span>
+                      </p>
+                    )}
                   </td>
                   <td className="px-5 py-3 text-right">
                     <Link

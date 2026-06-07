@@ -1,26 +1,36 @@
-// Simple in-memory rate limiter (per server instance).
-// Good enough to stop casual abuse/brute-force on a single server.
-// For multi-instance/serverless scale, move this to the DB or Redis later.
+import { prisma } from "@/lib/prisma";
 
-type Entry = { count: number; resetAt: number };
-const store = new Map<string, Entry>();
-
-export function rateLimit(
+/**
+ * DB-backed rate limiter — shared across all serverless instances (works on Vercel,
+ * unlike a per-process Map). Fixed-window counter per key. Best-effort (a tiny race
+ * on the window edge is acceptable for abuse protection).
+ */
+export async function rateLimit(
   key: string,
   limit: number,
   windowMs: number,
-): { ok: boolean; retryAfterSec: number } {
-  const now = Date.now();
-  const e = store.get(key);
-  if (!e || now > e.resetAt) {
-    store.set(key, { count: 1, resetAt: now + windowMs });
+): Promise<{ ok: boolean; retryAfterSec: number }> {
+  const now = new Date();
+  try {
+    const rec = await prisma.rateLimit.findUnique({ where: { key } });
+    if (!rec || rec.resetAt <= now) {
+      const resetAt = new Date(now.getTime() + windowMs);
+      await prisma.rateLimit.upsert({
+        where: { key },
+        create: { key, count: 1, resetAt },
+        update: { count: 1, resetAt },
+      });
+      return { ok: true, retryAfterSec: 0 };
+    }
+    if (rec.count >= limit) {
+      return { ok: false, retryAfterSec: Math.ceil((rec.resetAt.getTime() - now.getTime()) / 1000) };
+    }
+    await prisma.rateLimit.update({ where: { key }, data: { count: { increment: 1 } } });
+    return { ok: true, retryAfterSec: 0 };
+  } catch {
+    // Never block a legitimate request because the limiter itself failed.
     return { ok: true, retryAfterSec: 0 };
   }
-  if (e.count >= limit) {
-    return { ok: false, retryAfterSec: Math.ceil((e.resetAt - now) / 1000) };
-  }
-  e.count += 1;
-  return { ok: true, retryAfterSec: 0 };
 }
 
 /** Best-effort client IP from request headers (Next server actions). */

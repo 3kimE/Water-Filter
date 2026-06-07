@@ -36,6 +36,7 @@ export default function CheckoutPage() {
     city: "",
     address: "",
     note: "",
+    hp: "", // honeypot — stays empty for humans
   });
   const [errors, setErrors] = useState<Errors>({});
   const [submitting, setSubmitting] = useState(false);
@@ -77,6 +78,7 @@ export default function CheckoutPage() {
         address: form.address,
         note: form.note || undefined,
         items: orderItems,
+        hp: form.hp,
       });
 
       const order = {
@@ -134,6 +136,17 @@ export default function CheckoutPage() {
         onSubmit={handleSubmit}
         className="mt-8 grid gap-8 lg:grid-cols-[1fr_22rem]"
       >
+        {/* Honeypot — hidden from humans, bots fill it and get rejected */}
+        <input
+          type="text"
+          name="company"
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          value={form.hp}
+          onChange={(e) => set("hp", e.target.value)}
+          style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }}
+        />
         {/* Form */}
         <div className="rounded-card border border-line bg-white p-6 shadow-soft sm:p-8">
           <h2 className="flex items-center gap-2 font-display text-lg font-bold text-ink">
