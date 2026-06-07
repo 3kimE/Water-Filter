@@ -30,7 +30,7 @@ export default async function PlombierPage() {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="grid items-start gap-5 lg:grid-cols-2">
       {jobs.map((o) => (
         <PlombierJobCard key={o.id} order={o} />
       ))}

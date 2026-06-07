@@ -53,7 +53,7 @@ export default function PlombierLayout({ children }: { children: React.ReactNode
             P
           </div>
         </header>
-        <main className="mx-auto max-w-3xl p-4 lg:p-8">
+        <main className="mx-auto max-w-6xl p-4 lg:p-8">
           <div className="mb-6 lg:hidden">
             <h1 className="font-display text-2xl font-bold text-ink">Mes installations</h1>
           </div>
