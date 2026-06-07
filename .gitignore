@@ -45,3 +45,6 @@ next-env.d.ts
 
 # Stitch design scratch
 _design/
+
+# Deployment secrets reference (real keys — must NEVER be committed)
+DEPLOYMENT-KEYS.local.md
