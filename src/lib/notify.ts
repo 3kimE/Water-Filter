@@ -230,3 +230,73 @@ export async function notifyNewMessage(msg: {
     /* never block on a failed email */
   }
 }
+
+/** Small helper: send a simple branded email to the shop owner. No-op if unconfigured. */
+async function notifyOwner(subject: string, innerHtml: string): Promise<void> {
+  const apiKey = process.env.RESEND_API_KEY;
+  const to = process.env.ORDER_NOTIFY_EMAIL;
+  if (!apiKey || !to) return;
+  const from = process.env.ORDER_FROM_EMAIL || "Filtre Maroc <onboarding@resend.dev>";
+  const html = `
+    <div style="font-family:Arial,Helvetica,sans-serif;max-width:560px;margin:auto;">
+      ${innerHtml}
+    </div>`;
+  try {
+    await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ from, to, subject, html }),
+    });
+  } catch {
+    /* never block on a failed email */
+  }
+}
+
+function fmtDateTime(iso?: string): string {
+  if (!iso) return "—";
+  return new Date(iso).toLocaleString("fr-MA", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
+/** Owner alert: an order was confirmed by the confirmateur and scheduled. */
+export async function notifyOrderConfirmed(
+  order: Order,
+  plombier: string | null,
+): Promise<void> {
+  const appUrl = process.env.APP_URL || "http://localhost:3000";
+  await notifyOwner(
+    `✅ Commande ${order.id} confirmée — installation planifiée`,
+    `<div style="background:#1273b6;color:#fff;padding:18px 22px;border-radius:14px 14px 0 0;font-size:18px;font-weight:bold;">✅ Commande confirmée</div>
+     <div style="border:1px solid #e8ebee;border-top:0;border-radius:0 0 14px 14px;padding:20px 22px;color:#0a0f16;line-height:1.8;">
+       <p style="margin:0 0 8px;"><b>${esc(order.id)}</b> — ${esc(order.customerName)}</p>
+       <p style="margin:0;">📍 ${esc(order.address)}, ${esc(order.city)}</p>
+       <p style="margin:8px 0 0;">🗓️ Installation : <b>${esc(fmtDateTime(order.installDate))}</b></p>
+       <p style="margin:4px 0 0;">🔧 Plombier : ${esc(plombier ?? "non assigné")}</p>
+       <p style="margin-top:16px;"><a href="${appUrl}/admin/orders/${order.id}" style="background:#1273b6;color:#fff;text-decoration:none;font-weight:bold;padding:10px 22px;border-radius:999px;display:inline-block;">Voir la commande →</a></p>
+     </div>`,
+  );
+}
+
+/** Owner alert: the plombier finished an installation. */
+export async function notifyOrderInstalled(order: Order): Promise<void> {
+  const appUrl = process.env.APP_URL || "http://localhost:3000";
+  const photo = order.photoUrl
+    ? `<p style="margin:10px 0 0;"><a href="${esc(order.photoUrl)}" style="color:#1273b6;">📷 Voir la photo de l'installation</a></p>`
+    : "";
+  await notifyOwner(
+    `✅ Commande ${order.id} installée`,
+    `<div style="background:#0e9f6e;color:#fff;padding:18px 22px;border-radius:14px 14px 0 0;font-size:18px;font-weight:bold;">✅ Installation terminée</div>
+     <div style="border:1px solid #e8ebee;border-top:0;border-radius:0 0 14px 14px;padding:20px 22px;color:#0a0f16;line-height:1.8;">
+       <p style="margin:0 0 8px;"><b>${esc(order.id)}</b> — ${esc(order.customerName)}</p>
+       <p style="margin:0;">📍 ${esc(order.address)}, ${esc(order.city)}</p>
+       <p style="margin:8px 0 0;">🔧 Par : ${esc(order.assignedTo ?? "—")}</p>
+       ${photo}
+       <p style="margin-top:16px;"><a href="${appUrl}/admin/orders/${order.id}" style="background:#0e9f6e;color:#fff;text-decoration:none;font-weight:bold;padding:10px 22px;border-radius:999px;display:inline-block;">Voir la commande →</a></p>
+     </div>`,
+  );
+}

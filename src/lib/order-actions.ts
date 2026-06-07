@@ -14,7 +14,12 @@ import {
   setJobStage,
 } from "@/lib/data";
 import { uploadProductImage } from "@/lib/storage";
-import { notifyNewOrder, notifyPlombierAssignment } from "@/lib/notify";
+import {
+  notifyNewOrder,
+  notifyPlombierAssignment,
+  notifyOrderConfirmed,
+  notifyOrderInstalled,
+} from "@/lib/notify";
 import { rateLimit, ipFrom } from "@/lib/rate-limit";
 import type { OrderItem, OrderStatus } from "@/lib/types";
 
@@ -107,6 +112,7 @@ export async function confirmOrderAction(input: {
       installDate: order.installDate,
     });
   }
+  await notifyOrderConfirmed(order, plombier); // keep the owner in the loop
 
   revalidatePath("/confirmation");
   revalidatePath("/plombier");
@@ -190,11 +196,13 @@ export async function completeInstallationAction(
     return { ok: false, error: e instanceof Error ? e.message : "Échec de l'envoi de la photo." };
   }
 
-  await completeInstallation(id, photoUrl);
+  const updated = await completeInstallation(id, photoUrl);
+  await notifyOrderInstalled(updated); // keep the owner in the loop
   revalidatePath("/plombier");
   revalidatePath("/admin/orders");
   revalidatePath(`/admin/orders/${id}`);
   revalidatePath("/admin");
+  revalidatePath("/admin/clients");
   return { ok: true };
 }
 
