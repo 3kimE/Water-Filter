@@ -580,6 +580,15 @@ export async function getPlombierJobs(email: string): Promise<Order[]> {
   return rows.map(toOrder);
 }
 
+/** Confirmed (scheduled) install orders — for the confirmateur to view / cancel. */
+export async function getConfirmedOrders(): Promise<Order[]> {
+  const rows = await prisma.order.findMany({
+    where: { status: "confirmed", kind: "install" },
+    orderBy: { installDate: "asc" },
+  });
+  return rows.map(toOrder);
+}
+
 /** All installations still to do (admin oversight view), upcoming first. */
 export async function getActiveInstalls(): Promise<Order[]> {
   const rows = await prisma.order.findMany({

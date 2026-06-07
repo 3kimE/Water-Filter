@@ -1,34 +1,40 @@
 "use client";
 
 import { useState } from "react";
-import { Search, Inbox, AlertTriangle } from "lucide-react";
+import { Search, Inbox, AlertTriangle, CalendarCheck } from "lucide-react";
 import { ConfirmOrderCard } from "./confirm-order-card";
+import { ConfirmedOrderCard } from "./confirmed-order-card";
 import { PhoneOrderForm } from "./phone-order-form";
 import type { Order } from "@/lib/types";
 
 type PickItem = { id: string; name: string; price: number };
 
+function matches(o: Order, s: string): boolean {
+  if (!s) return true;
+  return (
+    o.customerName.toLowerCase().includes(s) ||
+    o.phone.replace(/\s/g, "").includes(s.replace(/\s/g, "")) ||
+    o.id.toLowerCase().includes(s)
+  );
+}
+
 export function ConfirmationBoard({
   orders,
+  confirmed,
   products,
   plombiers,
   hasPlombier,
 }: {
   orders: Order[];
+  confirmed: Order[];
   products: PickItem[];
   plombiers: { email: string; name: string | null; city: string | null }[];
   hasPlombier: boolean;
 }) {
   const [q, setQ] = useState("");
   const s = q.trim().toLowerCase();
-  const filtered = s
-    ? orders.filter(
-        (o) =>
-          o.customerName.toLowerCase().includes(s) ||
-          o.phone.replace(/\s/g, "").includes(s.replace(/\s/g, "")) ||
-          o.id.toLowerCase().includes(s),
-      )
-    : orders;
+  const filtered = orders.filter((o) => matches(o, s));
+  const filteredConfirmed = confirmed.filter((o) => matches(o, s));
 
   return (
     <div className="space-y-5">
@@ -71,6 +77,21 @@ export function ConfirmationBoard({
           {filtered.map((o) => (
             <ConfirmOrderCard key={o.id} order={o} plombiers={plombiers} />
           ))}
+        </div>
+      )}
+
+      {/* Already confirmed / scheduled — view + cancel */}
+      {filteredConfirmed.length > 0 && (
+        <div className="pt-2">
+          <h2 className="mb-3 flex items-center gap-2 font-display font-bold text-ink">
+            <CalendarCheck className="h-5 w-5 text-emerald-500" />
+            Confirmées · à venir ({filteredConfirmed.length})
+          </h2>
+          <div className="grid gap-4 xl:grid-cols-2">
+            {filteredConfirmed.map((o) => (
+              <ConfirmedOrderCard key={o.id} order={o} />
+            ))}
+          </div>
         </div>
       )}
     </div>

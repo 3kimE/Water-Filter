@@ -1,6 +1,3 @@
-"use client";
-
-import { useState, useTransition } from "react";
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -9,51 +6,16 @@ import {
   MapPin,
   StickyNote,
   Banknote,
-  Check,
-  Truck,
-  PackageCheck,
-  XCircle,
-  RotateCcw,
 } from "lucide-react";
-import type { Order, OrderStatus } from "@/lib/types";
+import type { Order } from "@/lib/types";
 import { StatusBadge } from "./status-badge";
 import { formatMAD, formatDate } from "@/lib/utils";
-import { updateOrderStatusAction } from "@/lib/order-actions";
 
-const ACTIONS: {
-  status: OrderStatus;
-  label: string;
-  icon: typeof Check;
-  className: string;
-}[] = [
-  { status: "confirmed", label: "Confirmer", icon: Check, className: "bg-brand-500 hover:bg-brand-600 text-white" },
-  { status: "shipped", label: "Expédier", icon: Truck, className: "bg-indigo-500 hover:bg-indigo-600 text-white" },
-  { status: "delivered", label: "Livrée & payée", icon: PackageCheck, className: "bg-emerald-500 hover:bg-emerald-600 text-white" },
-  { status: "returned", label: "Retournée", icon: RotateCcw, className: "bg-orange-500 hover:bg-orange-600 text-white" },
-  { status: "cancelled", label: "Annuler", icon: XCircle, className: "bg-rose-500 hover:bg-rose-600 text-white" },
-];
-
+/**
+ * Admin order view — READ-ONLY. The admin monitors what's happening; the order
+ * status is driven by the confirmateur (confirm/cancel) and the plombier (install).
+ */
 export function OrderManager({ order }: { order: Order }) {
-  const [status, setStatus] = useState<OrderStatus>(order.status);
-  const [note, setNote] = useState(order.confirmationNote ?? "");
-  const [touched, setTouched] = useState(false);
-  const [pending, startTransition] = useTransition();
-
-  function changeStatus(s: OrderStatus) {
-    setStatus(s);
-    setTouched(true);
-    startTransition(async () => {
-      await updateOrderStatusAction(order.id, s, note);
-    });
-  }
-
-  function saveNote() {
-    setTouched(true);
-    startTransition(async () => {
-      await updateOrderStatusAction(order.id, status, note);
-    });
-  }
-
   return (
     <div>
       {/* Header */}
@@ -66,23 +28,12 @@ export function OrderManager({ order }: { order: Order }) {
         </Link>
         <div className="flex-1">
           <div className="flex items-center gap-3">
-            <h1 className="font-display text-2xl font-bold text-ink">
-              {order.id}
-            </h1>
-            <StatusBadge status={status} />
+            <h1 className="font-display text-2xl font-bold text-ink">{order.id}</h1>
+            <StatusBadge status={order.status} />
           </div>
-          <p className="text-sm text-ink-soft">
-            Passée le {formatDate(order.createdAt)}
-          </p>
+          <p className="text-sm text-ink-soft">Passée le {formatDate(order.createdAt)}</p>
         </div>
       </div>
-
-      {touched && (
-        <div className="mb-6 flex items-center gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm font-medium text-emerald-700">
-          <Check className="h-5 w-5" />
-          {pending ? "Enregistrement…" : "Modifications enregistrées ✓"}
-        </div>
-      )}
 
       <div className="grid gap-6 lg:grid-cols-[1fr_22rem]">
         {/* Left: items */}
@@ -96,14 +47,12 @@ export function OrderManager({ order }: { order: Order }) {
                 {order.items.map((it, i) => (
                   <tr key={i} className="border-b border-slate-100 last:border-0">
                     <td className="px-5 py-3">
-                      <p className="font-medium text-ink">{it.name}</p>
+                      <p className="font-medium text-ink" dir="auto">{it.name}</p>
                       {it.variantLabel && (
                         <p className="text-xs text-ink-soft">{it.variantLabel}</p>
                       )}
                     </td>
-                    <td className="px-5 py-3 text-center text-ink-soft">
-                      × {it.qty}
-                    </td>
+                    <td className="px-5 py-3 text-center text-ink-soft">× {it.qty}</td>
                     <td className="px-5 py-3 text-right font-semibold text-ink">
                       {formatMAD(it.price * it.qty)}
                     </td>
@@ -124,46 +73,29 @@ export function OrderManager({ order }: { order: Order }) {
               <h3 className="flex items-center gap-2 font-semibold text-ink">
                 <StickyNote className="h-4 w-4 text-brand-500" /> Note du client
               </h3>
-              <p className="mt-2 text-sm text-ink-soft">{order.note}</p>
+              <p className="mt-2 text-sm text-ink-soft" dir="auto">{order.note}</p>
             </section>
           )}
 
-          {/* Confirmation note */}
-          <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-            <h3 className="font-semibold text-ink">Note de confirmation</h3>
-            <textarea
-              value={note}
-              onChange={(e) => {
-                setNote(e.target.value);
-                setTouched(true);
-              }}
-              rows={3}
-              placeholder="Ex : Client confirmé par téléphone, livraison demain matin."
-              className="mt-3 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none focus:border-brand-300 focus:ring-4 focus:ring-brand-100"
-            />
-            <button
-              type="button"
-              onClick={saveNote}
-              disabled={pending}
-              className="mt-3 rounded-full bg-brand-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-700 disabled:opacity-60"
-            >
-              {pending ? "Enregistrement…" : "Enregistrer la note"}
-            </button>
-          </section>
+          {order.confirmationNote && (
+            <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+              <h3 className="font-semibold text-ink">Note de confirmation</h3>
+              <p className="mt-2 text-sm text-ink-soft" dir="auto">{order.confirmationNote}</p>
+            </section>
+          )}
         </div>
 
-        {/* Right: customer + actions */}
+        {/* Right: customer + tracking (read-only) */}
         <aside className="space-y-6">
-          {/* Customer */}
           <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
             <h3 className="font-display font-bold text-ink">Client</h3>
-            <p className="mt-3 font-semibold text-ink">{order.customerName}</p>
+            <p className="mt-3 font-semibold text-ink" dir="auto">{order.customerName}</p>
             <div className="mt-1 flex items-center gap-2 text-sm text-ink-soft">
               <Phone className="h-4 w-4" /> {order.phone}
             </div>
             <div className="mt-2 flex items-start gap-2 text-sm text-ink-soft">
               <MapPin className="mt-0.5 h-4 w-4 shrink-0" />
-              <span>{order.address}, {order.city}</span>
+              <span dir="auto">{order.address}, {order.city}</span>
             </div>
 
             <div className="mt-4 grid grid-cols-2 gap-2">
@@ -184,7 +116,6 @@ export function OrderManager({ order }: { order: Order }) {
             </div>
           </section>
 
-          {/* Payment */}
           <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
             <h3 className="font-display font-bold text-ink">Paiement</h3>
             <div className="mt-3 flex items-center gap-2 rounded-xl bg-brand-50 p-3 text-sm">
@@ -193,8 +124,12 @@ export function OrderManager({ order }: { order: Order }) {
             </div>
           </section>
 
-          {/* Suivi (confirmation + installation) */}
-          {(order.confirmedAt || order.installDate || order.assignedTo || order.completedAt || order.source === "phone") && (
+          {/* Suivi (confirmation + installation) — read-only */}
+          {(order.confirmedAt ||
+            order.installDate ||
+            order.assignedTo ||
+            order.completedAt ||
+            order.source === "phone") && (
             <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
               <h3 className="font-display font-bold text-ink">Suivi</h3>
               <dl className="mt-3 space-y-2 text-sm">
@@ -258,23 +193,6 @@ export function OrderManager({ order }: { order: Order }) {
               )}
             </section>
           )}
-
-          {/* Status actions */}
-          <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-            <h3 className="font-display font-bold text-ink">Changer le statut</h3>
-            <div className="mt-3 space-y-2">
-              {ACTIONS.map((a) => (
-                <button
-                  key={a.status}
-                  onClick={() => changeStatus(a.status)}
-                  disabled={status === a.status}
-                  className={`flex w-full items-center justify-center gap-2 rounded-full py-2.5 text-sm font-semibold transition disabled:cursor-default disabled:opacity-50 ${a.className}`}
-                >
-                  <a.icon className="h-4 w-4" /> {a.label}
-                </button>
-              ))}
-            </div>
-          </section>
         </aside>
       </div>
     </div>
