@@ -63,7 +63,7 @@ export function ProductCard({ product }: { product: Product }) {
                 product.allowBackorder ? "bg-orange-100 text-orange-700" : "bg-slate-200 text-slate-600",
               )}
             >
-              {product.allowBackorder ? "Sur commande" : "Rupture"}
+              {product.allowBackorder ? t("common.backorder") : t("common.outOfStock")}
             </span>
           )}
         </div>
@@ -103,7 +103,7 @@ export function ProductCard({ product }: { product: Product }) {
           <button
             onClick={handleAdd}
             disabled={!canOrder}
-            aria-label={canOrder ? t("common.addToCart") : "Rupture de stock"}
+            aria-label={canOrder ? t("common.addToCart") : t("common.outOfStockFull")}
             className={cn(
               "flex h-10 w-10 items-center justify-center rounded-full text-white transition-all active:scale-90",
               !canOrder

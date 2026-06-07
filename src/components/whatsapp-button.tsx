@@ -8,7 +8,7 @@ export async function WhatsappButton({ settings }: { settings: SiteSettings }) {
   if (!settings.whatsapp) return null;
   return (
     <a
-      href={`https://wa.me/${settings.whatsapp}?text=${encodeURIComponent("Bonjour, j'ai une question")}`}
+      href={`https://wa.me/${settings.whatsapp}?text=${encodeURIComponent(t("whatsapp.prefill"))}`}
       target="_blank"
       rel="noopener noreferrer"
       aria-label={t("whatsapp.aria")}

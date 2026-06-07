@@ -118,11 +118,11 @@ export function ProductView({ product }: { product: Product }) {
             <Badge tone="success"><CircleCheck className="h-3 w-3" /> {t("common.inStock")}</Badge>
           ) : product.allowBackorder ? (
             <span className="inline-flex items-center rounded-full bg-orange-100 px-2.5 py-1 text-xs font-semibold text-orange-700">
-              Sur commande
+              {t("common.backorder")}
             </span>
           ) : (
             <span className="inline-flex items-center rounded-full bg-slate-200 px-2.5 py-1 text-xs font-semibold text-slate-600">
-              Rupture de stock
+              {t("common.outOfStockFull")}
             </span>
           )}
         </div>
@@ -238,7 +238,7 @@ export function ProductView({ product }: { product: Product }) {
             )}
           >
             {!canOrder ? (
-              "Rupture de stock"
+              t("common.outOfStockFull")
             ) : added ? (
               <><Check className="h-5 w-5" /> {t("common.added")}</>
             ) : (

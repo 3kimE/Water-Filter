@@ -1,5 +1,8 @@
+"use client";
+
 import { Star } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useI18n } from "@/i18n/i18n-context";
 
 /** Star rating with partial fill (e.g. 4.8). */
 export function StarRating({
@@ -11,10 +14,11 @@ export function StarRating({
   size?: number;
   className?: string;
 }) {
+  const { t } = useI18n();
   return (
     <div
       className={cn("inline-flex items-center gap-0.5", className)}
-      aria-label={`${value} sur 5`}
+      aria-label={t("common.ratingOutOf5", { value })}
     >
       {[0, 1, 2, 3, 4].map((i) => {
         const fill = Math.max(0, Math.min(1, value - i));

@@ -35,7 +35,7 @@ export default function ContactPage() {
     });
     setSending(false);
     if (res.ok) setSent(true);
-    else setError(res.error ?? "Une erreur est survenue.");
+    else setError(res.error ?? t("checkout.error.generic"));
   }
 
   const input =
@@ -183,7 +183,7 @@ export default function ContactPage() {
                 disabled={sending}
                 className="flex h-13 w-full items-center justify-center gap-2 rounded-full bg-brand-600 px-6 py-3.5 font-semibold text-white transition-all hover:bg-brand-700 disabled:opacity-60"
               >
-                <Send className="h-5 w-5" /> {sending ? "Envoi…" : t("contact.form.submit")}
+                <Send className="h-5 w-5" /> {sending ? t("contact.form.sending") : t("contact.form.submit")}
               </button>
             </form>
           )}
