@@ -113,7 +113,7 @@ export function ProductForm({ product }: { product?: Product | null }) {
                   <label className={label}>{t("admin.productForm.categoryLabel")}</label>
                   <select name="category" value={form.category} onChange={(e) => set("category", e.target.value)} className={input}>
                     {CATEGORIES.map((c) => (
-                      <option key={c.slug} value={c.slug}>{c.name}</option>
+                      <option key={c.slug} value={c.slug}>{t(`cat.${c.slug}.name`)}</option>
                     ))}
                   </select>
                 </div>

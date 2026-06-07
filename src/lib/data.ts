@@ -171,11 +171,10 @@ export async function getDashboardStats() {
   for (const g of grouped) byStatus[g.status] = g._count._all;
 
   // Real revenue per day for the last 7 days
-  const DAY_LABELS = ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"];
   const trend7d = Array.from({ length: 7 }, (_, i) => {
     const d = new Date(start7);
     d.setDate(d.getDate() + i);
-    return { label: DAY_LABELS[d.getDay()], revenue: 0 };
+    return { dow: d.getDay(), revenue: 0 };
   });
   for (const o of weekOrders) {
     const d = new Date(o.createdAt);

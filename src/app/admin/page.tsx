@@ -161,7 +161,7 @@ export default async function AdminDashboard() {
                   className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ${meta.className}`}
                 >
                   <span className={`h-1.5 w-1.5 rounded-full ${meta.dot}`} />
-                  {meta.label}
+                  {t(`status.${st}`)}
                 </span>
                 <p className="mt-3 font-display text-2xl font-extrabold text-ink">
                   {byStatus[st] ?? 0}
@@ -253,7 +253,7 @@ export default async function AdminDashboard() {
                         title={formatMAD(b.revenue)}
                       />
                     </div>
-                    <span className="text-xs text-ink-soft">{b.label}</span>
+                    <span className="text-xs text-ink-soft">{t(`common.dow.${b.dow}`)}</span>
                   </div>
                 );
               })}
@@ -299,7 +299,7 @@ export default async function AdminDashboard() {
                     <p dir="auto" className="line-clamp-1 text-sm font-medium text-ink">
                       {p.name}
                     </p>
-                    <p className="text-xs capitalize text-ink-soft">{p.categorySlug}</p>
+                    <p className="text-xs text-ink-soft">{t(`cat.${p.categorySlug}.name`)}</p>
                   </div>
                   <span
                     className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-bold ${

@@ -80,7 +80,7 @@ export default async function AdminProductsPage() {
                         </div>
                       </div>
                     </td>
-                    <td className="px-5 py-3 text-ink-soft">{cat?.name}</td>
+                    <td className="px-5 py-3 text-ink-soft">{cat ? t(`cat.${cat.slug}.name`) : p.categorySlug}</td>
                     <td className="px-5 py-3">
                       <span className="font-semibold text-ink">
                         {formatMAD(p.price)}
