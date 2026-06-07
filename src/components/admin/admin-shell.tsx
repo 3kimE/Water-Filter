@@ -20,16 +20,18 @@ import {
 import { cn, formatMAD } from "@/lib/utils";
 import { logoutAction } from "@/lib/auth-actions";
 import { fetchNotificationsAction } from "@/lib/notifications-actions";
+import { useI18n } from "@/i18n/i18n-context";
+import { LanguageSwitcher } from "@/components/language-switcher";
 import type { AdminNotifications } from "@/lib/data";
 
 const NAV = [
-  { label: "Tableau de bord", href: "/admin", icon: LayoutDashboard, exact: true },
-  { label: "Produits", href: "/admin/products", icon: Package },
-  { label: "Commandes", href: "/admin/orders", icon: ShoppingBag },
-  { label: "Messages", href: "/admin/messages", icon: MessageSquare },
-  { label: "Clients", href: "/admin/clients", icon: Users },
-  { label: "Utilisateurs", href: "/admin/users", icon: UserCog },
-  { label: "Paramètres", href: "/admin/settings", icon: Settings },
+  { labelKey: "admin.nav.dashboard", href: "/admin", icon: LayoutDashboard, exact: true },
+  { labelKey: "admin.nav.products", href: "/admin/products", icon: Package },
+  { labelKey: "admin.nav.orders", href: "/admin/orders", icon: ShoppingBag },
+  { labelKey: "admin.nav.messages", href: "/admin/messages", icon: MessageSquare },
+  { labelKey: "admin.nav.clients", href: "/admin/clients", icon: Users },
+  { labelKey: "admin.nav.users", href: "/admin/users", icon: UserCog },
+  { labelKey: "admin.nav.settings", href: "/admin/settings", icon: Settings },
 ];
 
 const EMPTY: AdminNotifications = {
@@ -51,6 +53,7 @@ export function AdminShell({
   notifications?: AdminNotifications;
 }) {
   const pathname = usePathname();
+  const { t } = useI18n();
   const [open, setOpen] = useState(false);
   const [bellOpen, setBellOpen] = useState(false);
   const [notifs, setNotifs] = useState<AdminNotifications>(notifications ?? EMPTY);
@@ -99,7 +102,7 @@ export function AdminShell({
           <p className="font-display text-lg font-extrabold tracking-tight text-ink">
             Filtre<span className="text-brand-600">Maroc</span>
           </p>
-          <p className="text-xs text-ink-soft">Espace Admin</p>
+          <p className="text-xs text-ink-soft">{t("admin.space")}</p>
         </div>
       </Link>
 
@@ -119,7 +122,7 @@ export function AdminShell({
               )}
             >
               <item.icon className="h-5 w-5" />
-              {item.label}
+              {t(item.labelKey)}
               {item.href === "/admin/orders" && notifs.pendingCount > 0 && (
                 <span className="ms-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-amber-100 px-1 text-xs font-bold text-amber-700">
                   {notifs.pendingCount}
@@ -146,7 +149,7 @@ export function AdminShell({
           className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-ink-soft transition-colors hover:bg-neutral-100 hover:text-ink"
         >
           <ExternalLink className="h-5 w-5" />
-          Voir le site
+          {t("dash.viewSite")}
         </Link>
         <form action={logoutAction}>
           <button
@@ -154,7 +157,7 @@ export function AdminShell({
             className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-ink-soft transition-colors hover:bg-rose-50 hover:text-rose-600"
           >
             <LogOut className="h-5 w-5" />
-            Déconnexion
+            {t("dash.logout")}
           </button>
         </form>
       </div>
@@ -164,7 +167,7 @@ export function AdminShell({
   return (
     <div className="min-h-screen bg-neutral-50">
       {/* Desktop sidebar */}
-      <aside className="fixed inset-y-0 left-0 hidden w-64 border-r border-line bg-white lg:block">
+      <aside className="fixed inset-y-0 start-0 hidden w-64 border-e border-line bg-white lg:block">
         {SidebarContent}
       </aside>
 
@@ -172,56 +175,58 @@ export function AdminShell({
       {open && (
         <div className="fixed inset-0 z-50 lg:hidden">
           <div className="absolute inset-0 bg-black/30" onClick={() => setOpen(false)} />
-          <aside className="absolute inset-y-0 left-0 w-64 border-r border-line bg-white">
+          <aside className="absolute inset-y-0 start-0 w-64 border-e border-line bg-white">
             {SidebarContent}
           </aside>
         </div>
       )}
 
       {/* Content */}
-      <div className="lg:pl-64">
+      <div className="lg:ps-64">
         {/* Topbar */}
         <header className="sticky top-0 z-40 flex h-16 items-center gap-3 border-b border-line bg-white/80 px-4 backdrop-blur lg:px-8">
           <button
             onClick={() => setOpen(true)}
             className="flex h-10 w-10 items-center justify-center rounded-full text-ink hover:bg-neutral-100 lg:hidden"
-            aria-label="Menu"
+            aria-label={t("dash.menu")}
           >
             <Menu className="h-5 w-5" />
           </button>
 
-          <div className="ml-auto flex items-center gap-3">
+          <div className="ms-auto flex items-center gap-3">
+            <LanguageSwitcher />
+
             {/* Notification bell */}
             <div ref={bellRef} className="relative">
               <button
                 onClick={() => setBellOpen((v) => !v)}
                 className="relative flex h-10 w-10 items-center justify-center rounded-full text-ink hover:bg-neutral-100"
-                aria-label="Notifications"
+                aria-label={t("dash.notifications")}
               >
                 <Bell className="h-5 w-5" />
                 {badge > 0 && (
-                  <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-rose-500 px-1 text-[10px] font-bold text-white">
+                  <span className="absolute -end-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-rose-500 px-1 text-[10px] font-bold text-white">
                     {badge > 9 ? "9+" : badge}
                   </span>
                 )}
               </button>
 
               {bellOpen && (
-                <div className="absolute right-0 top-full z-50 mt-2 w-80 overflow-hidden rounded-2xl border border-line bg-white shadow-[var(--shadow-soft)]">
+                <div className="absolute end-0 top-full z-50 mt-2 w-80 overflow-hidden rounded-2xl border border-line bg-white shadow-[var(--shadow-soft)]">
                   <div className="border-b border-line px-4 py-3 font-display font-semibold text-ink">
-                    Notifications
+                    {t("dash.notifications")}
                   </div>
                   <div className="max-h-96 overflow-y-auto">
                     {badge === 0 && (
                       <div className="px-4 py-10 text-center text-sm text-ink-soft">
-                        Aucune notification 🎉
+                        {t("dash.noNotifications")}
                       </div>
                     )}
 
                     {notifs.pendingOrders.length > 0 && (
                       <div className="py-1">
                         <p className="px-4 pb-1 pt-2 text-xs font-semibold uppercase tracking-wide text-ink-soft">
-                          Commandes à confirmer
+                          {t("admin.notif.pending")}
                         </p>
                         {notifs.pendingOrders.map((o) => (
                           <Link
@@ -246,7 +251,7 @@ export function AdminShell({
                     {notifs.lowStock.length > 0 && (
                       <div className="border-t border-line py-1">
                         <p className="px-4 pb-1 pt-2 text-xs font-semibold uppercase tracking-wide text-ink-soft">
-                          Stock faible
+                          {t("admin.notif.lowStock")}
                         </p>
                         {notifs.lowStock.map((p) => (
                           <Link
@@ -260,7 +265,7 @@ export function AdminShell({
                             </span>
                             <span className="min-w-0 flex-1 text-sm">
                               <span dir="auto" className="line-clamp-1 font-medium text-ink">{p.name}</span>
-                              <span className="block text-xs text-ink-soft">Stock : {p.stock}</span>
+                              <span className="block text-xs text-ink-soft">{t("admin.notif.stockLabel")} : {p.stock}</span>
                             </span>
                           </Link>
                         ))}
@@ -270,7 +275,7 @@ export function AdminShell({
                     {notifs.messages.length > 0 && (
                       <div className="border-t border-line py-1">
                         <p className="px-4 pb-1 pt-2 text-xs font-semibold uppercase tracking-wide text-ink-soft">
-                          Nouveaux messages
+                          {t("admin.notif.newMessages")}
                         </p>
                         {notifs.messages.map((m) => (
                           <Link
@@ -294,7 +299,7 @@ export function AdminShell({
                     {notifs.maintenance.length > 0 && (
                       <div className="border-t border-line py-1">
                         <p className="px-4 pb-1 pt-2 text-xs font-semibold uppercase tracking-wide text-ink-soft">
-                          Entretiens à prévoir
+                          {t("admin.notif.maintenance")}
                         </p>
                         {notifs.maintenance.map((m) => (
                           <Link
@@ -309,7 +314,7 @@ export function AdminShell({
                             <span className="min-w-0 flex-1 text-sm">
                               <span dir="auto" className="font-medium text-ink">{m.name}</span>
                               <span className="block text-xs text-ink-soft">
-                                Filtre à remplacer{m.dueAt ? ` · ${new Date(m.dueAt).toLocaleDateString("fr-MA", { timeZone: "Africa/Casablanca" })}` : ""}
+                                {t("admin.notif.replaceFilter")}{m.dueAt ? ` · ${new Date(m.dueAt).toLocaleDateString("fr-MA", { timeZone: "Africa/Casablanca" })}` : ""}
                               </span>
                             </span>
                           </Link>
@@ -322,7 +327,7 @@ export function AdminShell({
                     onClick={() => setBellOpen(false)}
                     className="block border-t border-line px-4 py-3 text-center text-sm font-semibold text-brand-600 hover:bg-neutral-50"
                   >
-                    Voir toutes les commandes →
+                    {t("admin.notif.viewAllOrders")} →
                   </Link>
                 </div>
               )}
@@ -333,7 +338,7 @@ export function AdminShell({
                 A
               </div>
               <div className="hidden text-sm leading-tight sm:block">
-                <p className="font-semibold text-ink">Admin</p>
+                <p className="font-semibold text-ink">{t("admin.roleLabel")}</p>
                 <p className="text-xs text-ink-soft">Filtre Maroc</p>
               </div>
             </div>

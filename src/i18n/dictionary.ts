@@ -261,6 +261,37 @@ export const DICT: Record<string, Record<Locale, string>> = {
   "contact.location.title": { fr: "Notre localisation", ar: "موقعنا", en: "Our location" },
   "contact.location.address": { fr: "Agadir, Maroc — livraison dans tout le Maroc", ar: "أكادير، المغرب — توصيل لكل المغرب", en: "Agadir, Morocco — delivery across Morocco" },
   "contact.location.directions": { fr: "Itinéraire", ar: "الاتجاهات", en: "Directions" },
+
+  // ---- dashboard chrome (admin / confirmation / technicien) ----
+  "dash.logout": { fr: "Déconnexion", ar: "تسجيل الخروج", en: "Log out" },
+  "dash.viewSite": { fr: "Voir le site", ar: "عرض الموقع", en: "View site" },
+  "dash.menu": { fr: "Menu", ar: "القائمة", en: "Menu" },
+  "dash.notifications": { fr: "Notifications", ar: "الإشعارات", en: "Notifications" },
+  "dash.noNotifications": { fr: "Aucune notification 🎉", ar: "لا توجد إشعارات 🎉", en: "No notifications 🎉" },
+  "dash.language": { fr: "Langue", ar: "اللغة", en: "Language" },
+
+  "admin.space": { fr: "Espace Admin", ar: "مساحة المدير", en: "Admin area" },
+  "admin.roleLabel": { fr: "Admin", ar: "المدير", en: "Admin" },
+  "admin.nav.dashboard": { fr: "Tableau de bord", ar: "لوحة التحكم", en: "Dashboard" },
+  "admin.nav.products": { fr: "Produits", ar: "المنتجات", en: "Products" },
+  "admin.nav.orders": { fr: "Commandes", ar: "الطلبات", en: "Orders" },
+  "admin.nav.messages": { fr: "Messages", ar: "الرسائل", en: "Messages" },
+  "admin.nav.clients": { fr: "Clients", ar: "العملاء", en: "Clients" },
+  "admin.nav.users": { fr: "Utilisateurs", ar: "المستخدمون", en: "Users" },
+  "admin.nav.settings": { fr: "Paramètres", ar: "الإعدادات", en: "Settings" },
+  "admin.notif.pending": { fr: "Commandes à confirmer", ar: "طلبات للتأكيد", en: "Orders to confirm" },
+  "admin.notif.lowStock": { fr: "Stock faible", ar: "مخزون منخفض", en: "Low stock" },
+  "admin.notif.newMessages": { fr: "Nouveaux messages", ar: "رسائل جديدة", en: "New messages" },
+  "admin.notif.maintenance": { fr: "Entretiens à prévoir", ar: "صيانة مرتقبة", en: "Upcoming maintenance" },
+  "admin.notif.stockLabel": { fr: "Stock", ar: "المخزون", en: "Stock" },
+  "admin.notif.replaceFilter": { fr: "Filtre à remplacer", ar: "فلتر للاستبدال", en: "Filter to replace" },
+  "admin.notif.viewAllOrders": { fr: "Voir toutes les commandes", ar: "عرض كل الطلبات", en: "View all orders" },
+
+  "conf.space": { fr: "Espace Confirmateur", ar: "مساحة التأكيد", en: "Confirmation area" },
+  "conf.title": { fr: "Commandes à confirmer", ar: "طلبات للتأكيد", en: "Orders to confirm" },
+
+  "tech.space": { fr: "Espace Technicien", ar: "مساحة الفني", en: "Technician area" },
+  "tech.title": { fr: "Mes installations", ar: "تركيباتي", en: "My installations" },
 };
 
 /** Translate a key for a locale, with {var} interpolation. */
