@@ -32,6 +32,7 @@ function formatWhen(iso?: string): string {
     month: "long",
     hour: "2-digit",
     minute: "2-digit",
+    timeZone: "Africa/Casablanca",
   });
 }
 

@@ -1,13 +1,12 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { getSession } from "@/lib/auth";
+import { requireRole } from "@/lib/auth";
 import { updateSettings } from "@/lib/data";
 import { uploadProductImage } from "@/lib/storage";
 
 export async function updateSettingsAction(formData: FormData): Promise<void> {
-  const session = await getSession();
-  if (!session) throw new Error("Non autorisé");
+  await requireRole(["admin"]);
 
   const str = (k: string) => {
     const s = String(formData.get(k) ?? "").trim();

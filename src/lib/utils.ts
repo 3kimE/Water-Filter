@@ -17,11 +17,27 @@ export function discountPercent(price: number, oldPrice?: number): number | null
   return Math.round(((oldPrice - price) / oldPrice) * 100);
 }
 
+/** The store operates in Morocco — pin all date formatting to its timezone. */
+export const TZ = "Africa/Casablanca";
+
 /** Short, human date, e.g. "12 mai 2026". */
 export function formatDate(iso: string): string {
   return new Intl.DateTimeFormat("fr-MA", {
     day: "numeric",
     month: "short",
     year: "numeric",
+    timeZone: TZ,
+  }).format(new Date(iso));
+}
+
+/** Date + time in Morocco time, e.g. "samedi 20 juin, 09:00". */
+export function formatDateTime(iso: string): string {
+  return new Intl.DateTimeFormat("fr-MA", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: TZ,
   }).format(new Date(iso));
 }

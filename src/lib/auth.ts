@@ -3,10 +3,36 @@ import { SignJWT, jwtVerify } from "jose";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 
-const secret = new TextEncoder().encode(process.env.AUTH_SECRET);
+// Fail fast if the signing secret is missing/weak — never sign or verify with an empty key.
+const AUTH_SECRET = process.env.AUTH_SECRET;
+if (!AUTH_SECRET || AUTH_SECRET.length < 16) {
+  throw new Error("AUTH_SECRET is missing or too short (set a long random value in your env).");
+}
+const secret = new TextEncoder().encode(AUTH_SECRET);
 export const SESSION_COOKIE = "fm_admin_session";
 
 export type Role = "admin" | "confirmateur" | "plombier";
+
+/**
+ * Resolves the caller's session + effective role and enforces it's allowed.
+ * Falls back to the DB role for sessions issued before roles existed. Throws if not allowed.
+ */
+export async function requireRole(
+  roles: string[],
+): Promise<{ sub: string; email: string; role: string }> {
+  const session = await getSession();
+  if (!session) throw new Error("Non autorisé");
+  let role = session.role;
+  if (!role) {
+    const u = await prisma.adminUser.findUnique({
+      where: { id: session.sub },
+      select: { role: true },
+    });
+    role = u?.role ?? undefined;
+  }
+  if (!role || !roles.includes(role)) throw new Error("Non autorisé");
+  return { sub: session.sub, email: session.email, role };
+}
 
 /** Where each role lands after login / when redirected out of a forbidden area. */
 export function roleHome(role: string | undefined): string {

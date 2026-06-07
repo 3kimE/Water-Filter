@@ -2,7 +2,7 @@
 
 import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
-import { getSession } from "@/lib/auth";
+import { requireRole } from "@/lib/auth";
 import { createContactMessage, markMessageRead } from "@/lib/data";
 import { notifyNewMessage } from "@/lib/notify";
 import { rateLimit, ipFrom } from "@/lib/rate-limit";
@@ -36,8 +36,7 @@ export async function sendContactMessageAction(data: {
 
 /** Admin: mark a message as read. */
 export async function markMessageReadAction(id: string): Promise<void> {
-  const session = await getSession();
-  if (!session) throw new Error("Non autorisé");
+  await requireRole(["admin"]);
   await markMessageRead(id);
   revalidatePath("/admin/messages");
   revalidatePath("/admin");

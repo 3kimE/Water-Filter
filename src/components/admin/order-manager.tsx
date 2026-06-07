@@ -219,6 +219,7 @@ export function OrderManager({ order }: { order: Order }) {
                         month: "short",
                         hour: "2-digit",
                         minute: "2-digit",
+                        timeZone: "Africa/Casablanca",
                       })}
                     </dd>
                   </div>

@@ -75,12 +75,12 @@ export async function updateOrderStatusAction(
   status: OrderStatus,
   confirmationNote?: string,
 ): Promise<void> {
-  const session = await getSession();
-  if (!session) throw new Error("Non autorisé");
+  await requireStaff(["admin"]);
   await updateOrderStatus(id, status, confirmationNote);
   revalidatePath("/admin/orders");
   revalidatePath(`/admin/orders/${id}`);
   revalidatePath("/admin");
+  revalidatePath("/admin/clients");
 }
 
 /**
@@ -163,6 +163,9 @@ export async function setJobStageAction(
   if (role !== "admin" && order.assignedTo !== session.email) {
     return { ok: false, error: "Cette installation ne vous est pas assignée." };
   }
+  if (order.status !== "confirmed") {
+    return { ok: false, error: "Cette installation n'est plus en cours." };
+  }
   await setJobStage(id, stage);
   revalidatePath("/plombier");
   revalidatePath("/admin");
@@ -185,6 +188,9 @@ export async function completeInstallationAction(
   if (!order) return { ok: false, error: "Commande introuvable." };
   if (role !== "admin" && order.assignedTo !== session.email) {
     return { ok: false, error: "Cette installation ne vous est pas assignée." };
+  }
+  if (order.status !== "confirmed") {
+    return { ok: false, error: "Cette commande n'est pas en cours d'installation." };
   }
 
   const file = formData.get("photo");

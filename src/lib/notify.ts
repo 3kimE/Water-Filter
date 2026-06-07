@@ -32,7 +32,7 @@ export function buildOrderEmail(
       (i) => `
         <tr>
           <td style="padding:10px 0;border-bottom:1px solid ${LINE};font-size:14px;color:${INK};">
-            ${i.name}${i.variantLabel ? ` <span style="color:${MUTED};">(${i.variantLabel})</span>` : ""}
+            ${esc(i.name)}${i.variantLabel ? ` <span style="color:${MUTED};">(${esc(i.variantLabel)})</span>` : ""}
             <span style="color:${MUTED};">× ${i.qty}</span>
           </td>
           <td align="right" style="padding:10px 0;border-bottom:1px solid ${LINE};font-size:14px;font-weight:bold;color:${INK};white-space:nowrap;">
@@ -58,9 +58,9 @@ export function buildOrderEmail(
         <tr><td style="padding:8px 28px;">
           <table role="presentation" width="100%" style="background:#f7fafc;border-radius:12px;">
             <tr><td style="padding:16px;font-size:14px;color:${INK};line-height:1.9;">
-              👤 <b>${order.customerName}</b><br>
-              📞 <a href="tel:${order.phone}" style="color:${BRAND};text-decoration:none;">${order.phone}</a><br>
-              📍 ${order.address}, ${order.city}${order.note ? `<br>📝 ${order.note}` : ""}
+              👤 <b>${esc(order.customerName)}</b><br>
+              📞 <a href="tel:${esc(order.phone)}" style="color:${BRAND};text-decoration:none;">${esc(order.phone)}</a><br>
+              📍 ${esc(order.address)}, ${esc(order.city)}${order.note ? `<br>📝 ${esc(order.note)}` : ""}
             </td></tr>
           </table>
         </td></tr>
@@ -165,6 +165,7 @@ export async function notifyPlombierAssignment(
         month: "long",
         hour: "2-digit",
         minute: "2-digit",
+        timeZone: "Africa/Casablanca",
       })
     : "à planifier";
 
@@ -260,6 +261,7 @@ function fmtDateTime(iso?: string): string {
     month: "long",
     hour: "2-digit",
     minute: "2-digit",
+    timeZone: "Africa/Casablanca",
   });
 }
 

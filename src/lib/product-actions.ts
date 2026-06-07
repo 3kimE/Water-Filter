@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { getSession } from "@/lib/auth";
+import { requireRole } from "@/lib/auth";
 import {
   createProduct,
   updateProduct,
@@ -53,8 +53,7 @@ export async function saveProductAction(
   id: string | null,
   formData: FormData,
 ): Promise<void> {
-  const session = await getSession();
-  if (!session) throw new Error("Non autorisé");
+  await requireRole(["admin"]);
 
   const name = String(formData.get("name") ?? "").trim();
   const categorySlug = String(formData.get("category") ?? "cuisine");
@@ -137,8 +136,7 @@ export async function saveProductAction(
 }
 
 export async function deleteProductAction(id: string): Promise<void> {
-  const session = await getSession();
-  if (!session) throw new Error("Non autorisé");
+  await requireRole(["admin"]);
   await deleteProduct(id);
   revalidatePath("/admin/products");
   revalidatePath("/shop");

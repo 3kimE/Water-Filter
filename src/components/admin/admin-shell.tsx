@@ -309,7 +309,7 @@ export function AdminShell({
                             <span className="min-w-0 flex-1 text-sm">
                               <span dir="auto" className="font-medium text-ink">{m.name}</span>
                               <span className="block text-xs text-ink-soft">
-                                Filtre à remplacer{m.dueAt ? ` · ${new Date(m.dueAt).toLocaleDateString("fr-MA")}` : ""}
+                                Filtre à remplacer{m.dueAt ? ` · ${new Date(m.dueAt).toLocaleDateString("fr-MA", { timeZone: "Africa/Casablanca" })}` : ""}
                               </span>
                             </span>
                           </Link>

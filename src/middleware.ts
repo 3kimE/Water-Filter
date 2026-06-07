@@ -2,7 +2,11 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { jwtVerify } from "jose";
 
-const secret = new TextEncoder().encode(process.env.AUTH_SECRET);
+const AUTH_SECRET = process.env.AUTH_SECRET;
+if (!AUTH_SECRET || AUTH_SECRET.length < 16) {
+  throw new Error("AUTH_SECRET is missing or too short.");
+}
+const secret = new TextEncoder().encode(AUTH_SECRET);
 
 function homeFor(role: string): string {
   if (role === "confirmateur") return "/confirmation";

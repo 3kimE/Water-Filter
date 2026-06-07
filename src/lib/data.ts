@@ -459,12 +459,12 @@ export async function createOrder(data: {
       qtyByProduct.set(it.productId, (qtyByProduct.get(it.productId) ?? 0) + it.qty);
   }
 
-  // ensure the order-number sequence exists (idempotent)
-  await prisma.$executeRawUnsafe(`CREATE SEQUENCE IF NOT EXISTS order_seq START 1`);
-
   // ATOMIC: guard stock (prevents overselling/negative stock), reserve a
   // collision-proof id, and create the order — all in one transaction.
   const row = await prisma.$transaction(async (tx) => {
+    // Ensure the order-number sequence exists in the SAME session as nextval
+    // (safe with pooled/PgBouncer connections).
+    await tx.$executeRawUnsafe(`CREATE SEQUENCE IF NOT EXISTS order_seq START 1`);
     for (const [pid, qty] of qtyByProduct) {
       const res = await tx.product.updateMany({
         where: { id: pid, stock: { gte: qty } },
@@ -496,14 +496,37 @@ export async function createOrder(data: {
   return toOrder(row);
 }
 
+const STOCK_RELEASING = new Set(["cancelled", "returned"]);
+
 export async function updateOrderStatus(
   id: string,
   status: OrderStatus,
   confirmationNote?: string,
 ) {
-  return prisma.order.update({
-    where: { id },
-    data: { status, ...(confirmationNote !== undefined ? { confirmationNote } : {}) },
+  const noteData = confirmationNote !== undefined ? { confirmationNote } : {};
+  const current = await prisma.order.findUnique({ where: { id } });
+
+  // Restore stock when an install order is cancelled/returned (it reserved stock at creation).
+  const restore =
+    current &&
+    current.kind === "install" &&
+    STOCK_RELEASING.has(status) &&
+    !STOCK_RELEASING.has(current.status);
+
+  if (!restore) {
+    return prisma.order.update({ where: { id }, data: { status, ...noteData } });
+  }
+
+  const items = (current!.items as unknown as OrderItem[]) ?? [];
+  const qtyByProduct = new Map<string, number>();
+  for (const it of items) {
+    if (it.productId) qtyByProduct.set(it.productId, (qtyByProduct.get(it.productId) ?? 0) + it.qty);
+  }
+  return prisma.$transaction(async (tx) => {
+    for (const [pid, qty] of qtyByProduct) {
+      await tx.product.updateMany({ where: { id: pid }, data: { stock: { increment: qty } } });
+    }
+    return tx.order.update({ where: { id }, data: { status, ...noteData } });
   });
 }
 
@@ -718,6 +741,12 @@ export async function createMaintenanceVisit(
       installDate: opts.installDate,
       source: "web",
     },
+  });
+  // Push the parent's due date forward so it leaves the "à prévoir" list while the
+  // visit is scheduled. Completing the visit recomputes it precisely (see completeInstallation).
+  await prisma.order.update({
+    where: { id: parent.id },
+    data: { nextMaintenanceAt: addMonths(opts.installDate, parent.maintenanceMonths) },
   });
   return toOrder(row);
 }
