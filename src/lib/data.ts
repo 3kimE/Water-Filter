@@ -95,14 +95,6 @@ export async function getProductById(id: string): Promise<Product | null> {
   return row ? toProduct(row) : null;
 }
 
-export async function getProductsByCategory(slug: string): Promise<Product[]> {
-  const rows = await prisma.product.findMany({
-    where: { categorySlug: slug },
-    orderBy: { createdAt: "desc" },
-  });
-  return rows.map(toProduct);
-}
-
 export async function getBestSellers(limit = 8): Promise<Product[]> {
   const best = await prisma.product.findMany({
     where: { bestSeller: true },

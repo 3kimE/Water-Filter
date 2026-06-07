@@ -29,15 +29,3 @@ export function formatDate(iso: string): string {
     timeZone: TZ,
   }).format(new Date(iso));
 }
-
-/** Date + time in Morocco time, e.g. "samedi 20 juin, 09:00". */
-export function formatDateTime(iso: string): string {
-  return new Intl.DateTimeFormat("fr-MA", {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-    hour: "2-digit",
-    minute: "2-digit",
-    timeZone: TZ,
-  }).format(new Date(iso));
-}

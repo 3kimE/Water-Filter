@@ -11,8 +11,6 @@ if (!AUTH_SECRET || AUTH_SECRET.length < 16) {
 const secret = new TextEncoder().encode(AUTH_SECRET);
 export const SESSION_COOKIE = "fm_admin_session";
 
-export type Role = "admin" | "confirmateur" | "plombier";
-
 /**
  * Resolves the caller's session + effective role and enforces it's allowed.
  * Falls back to the DB role for sessions issued before roles existed. Throws if not allowed.
