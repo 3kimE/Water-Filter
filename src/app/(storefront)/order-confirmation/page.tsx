@@ -12,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { formatMAD } from "@/lib/utils";
 import { useI18n } from "@/i18n/i18n-context";
+import { useSettings } from "@/context/settings-context";
 import type { CartItem } from "@/lib/types";
 
 type LastOrder = {
@@ -28,6 +29,7 @@ type LastOrder = {
 
 export default function OrderConfirmationPage() {
   const { t } = useI18n();
+  const settings = useSettings();
   const [order, setOrder] = useState<LastOrder | null>(null);
   const [loaded, setLoaded] = useState(false);
 
@@ -139,14 +141,16 @@ export default function OrderConfirmationPage() {
 
       <div className="mx-auto mt-8 flex max-w-2xl flex-wrap justify-center gap-3">
         <Button href="/shop" size="lg">{t("confirmation.continueShopping")}</Button>
-        <a
-          href="https://wa.me/212660781919"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex h-14 items-center justify-center gap-2 rounded-full bg-[#25D366] px-8 font-semibold text-white transition hover:brightness-105"
-        >
-          <MessageCircle className="h-5 w-5" /> {t("confirmation.contactUs")}
-        </a>
+        {settings.whatsapp && (
+          <a
+            href={`https://wa.me/${settings.whatsapp}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex h-14 items-center justify-center gap-2 rounded-full bg-[#25D366] px-8 font-semibold text-white transition hover:brightness-105"
+          >
+            <MessageCircle className="h-5 w-5" /> {t("confirmation.contactUs")}
+          </a>
+        )}
       </div>
     </div>
   );

@@ -57,6 +57,7 @@ export type Product = {
   badges: string[]; // "Best Seller", "Promo", "Nouveau"
   inStock: boolean;
   stock: number;
+  allowBackorder?: boolean; // "sur commande": orderable even at 0 stock
   bestSeller?: boolean;
   hue: number; // 0..360, fallback visual gradient when no photo
   images: string[]; // real product photo URLs (Shopify CDN for now)

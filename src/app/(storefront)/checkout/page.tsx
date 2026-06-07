@@ -39,6 +39,7 @@ export default function CheckoutPage() {
     hp: "", // honeypot — stays empty for humans
   });
   const [errors, setErrors] = useState<Errors>({});
+  const [formError, setFormError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
   const delivery = subtotal >= settings.freeDeliveryThreshold ? 0 : settings.deliveryFee;
@@ -62,6 +63,7 @@ export default function CheckoutPage() {
 
   async function handleSubmit(ev: React.FormEvent) {
     ev.preventDefault();
+    setFormError(null);
     if (!validate()) return;
     setSubmitting(true);
 
@@ -81,6 +83,12 @@ export default function CheckoutPage() {
         hp: form.hp,
       });
 
+      if (!res.ok) {
+        setSubmitting(false);
+        setFormError(res.error);
+        return;
+      }
+
       const order = {
         id: res.id,
         ...form,
@@ -93,7 +101,7 @@ export default function CheckoutPage() {
       router.push("/order-confirmation");
     } catch {
       setSubmitting(false);
-      setErrors((e) => ({ ...e, address: t("checkout.error.generic") }));
+      setFormError(t("checkout.error.generic"));
     }
   }
 
@@ -147,6 +155,11 @@ export default function CheckoutPage() {
           onChange={(e) => set("hp", e.target.value)}
           style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }}
         />
+        {formError && (
+          <div className="rounded-card border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-700 lg:col-span-2">
+            {formError}
+          </div>
+        )}
         {/* Form */}
         <div className="rounded-card border border-line bg-white p-6 shadow-soft sm:p-8">
           <h2 className="flex items-center gap-2 font-display text-lg font-bold text-ink">

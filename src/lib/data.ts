@@ -29,6 +29,7 @@ function toProduct(row: PRow): Product {
     badges: row.badges,
     inStock: row.inStock,
     stock: row.stock,
+    allowBackorder: row.allowBackorder ?? false,
     bestSeller: row.bestSeller,
     hue: row.hue,
     images: row.images,
@@ -354,6 +355,7 @@ export type ProductInput = {
   badges: string[];
   inStock: boolean;
   stock: number;
+  allowBackorder?: boolean;
   bestSeller?: boolean;
   hue: number;
   images: string[];
@@ -376,6 +378,7 @@ function toData(input: ProductInput) {
     badges: input.badges,
     inStock: input.inStock,
     stock: input.stock,
+    allowBackorder: input.allowBackorder ?? false,
     bestSeller: input.bestSeller ?? false,
     hue: input.hue,
     images: input.images,
@@ -471,6 +474,11 @@ export async function createOrder(data: {
     // (safe with pooled/PgBouncer connections).
     await tx.$executeRawUnsafe(`CREATE SEQUENCE IF NOT EXISTS order_seq START 1`);
     for (const [pid, qty] of qtyByProduct) {
+      // "Sur commande" products stay orderable (stock may go negative = backorder).
+      if (byId.get(pid)?.allowBackorder) {
+        await tx.product.update({ where: { id: pid }, data: { stock: { decrement: qty } } });
+        continue;
+      }
       const res = await tx.product.updateMany({
         where: { id: pid, stock: { gte: qty } },
         data: { stock: { decrement: qty } },

@@ -49,6 +49,7 @@ export function ProductForm({ product }: { product?: Product | null }) {
     features: product?.features?.join("\n") ?? "",
     badges: product?.badges ?? [],
     inStock: product?.inStock ?? true,
+    allowBackorder: product?.allowBackorder ?? false,
     hue: product?.hue ?? 205,
   });
   const [newPreviews, setNewPreviews] = useState<string[]>([]);
@@ -148,6 +149,15 @@ export function ProductForm({ product }: { product?: Product | null }) {
             <label className="mt-4 flex cursor-pointer items-center gap-3">
               <input type="checkbox" name="inStock" checked={form.inStock} onChange={(e) => set("inStock", e.target.checked)} className="h-5 w-5 rounded border-neutral-300 text-brand-600 focus:ring-brand-300" />
               <span className="text-sm font-medium text-ink">Produit en stock</span>
+            </label>
+            <label className="mt-3 flex cursor-pointer items-start gap-3">
+              <input type="checkbox" name="allowBackorder" checked={form.allowBackorder} onChange={(e) => set("allowBackorder", e.target.checked)} className="mt-0.5 h-5 w-5 rounded border-neutral-300 text-brand-600 focus:ring-brand-300" />
+              <span className="text-sm text-ink">
+                <span className="font-medium">Autoriser « sur commande »</span>
+                <span className="block text-xs text-ink-soft">
+                  Le client peut commander même quand le stock est à 0 (affiché « Sur commande »).
+                </span>
+              </span>
             </label>
           </section>
 

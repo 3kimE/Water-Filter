@@ -19,6 +19,7 @@ import { StarRating } from "./star-rating";
 import { Badge, toneForBadge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { useCart } from "@/context/cart-context";
+import { useSettings } from "@/context/settings-context";
 import { formatMAD, discountPercent, cn } from "@/lib/utils";
 import { useI18n } from "@/i18n/i18n-context";
 import { translateBadge } from "@/i18n/dictionary";
@@ -27,11 +28,14 @@ export function ProductView({ product }: { product: Product }) {
   const router = useRouter();
   const { addItem } = useCart();
   const { t, locale } = useI18n();
+  const settings = useSettings();
   const [activeImg, setActiveImg] = useState(0);
   const [qty, setQty] = useState(1);
   const [variant, setVariant] = useState(product.variants?.[0]);
   const [added, setAdded] = useState(false);
 
+  const outOfStock = !product.inStock || product.stock <= 0;
+  const canOrder = !outOfStock || !!product.allowBackorder;
   const unitPrice = product.price + (variant?.priceDelta ?? 0);
   const off = discountPercent(product.price, product.oldPrice);
   const images = product.images;
@@ -52,12 +56,14 @@ export function ProductView({ product }: { product: Product }) {
   }
 
   function handleAddToCart() {
+    if (!canOrder) return;
     add();
     setAdded(true);
     setTimeout(() => setAdded(false), 1600);
   }
 
   function handleBuyNow() {
+    if (!canOrder) return;
     add();
     router.push("/checkout");
   }
@@ -108,10 +114,16 @@ export function ProductView({ product }: { product: Product }) {
           {product.badges.map((b) => (
             <Badge key={b} tone={toneForBadge(b)}>{translateBadge(locale, b)}</Badge>
           ))}
-          {product.inStock ? (
+          {!outOfStock ? (
             <Badge tone="success"><CircleCheck className="h-3 w-3" /> {t("common.inStock")}</Badge>
+          ) : product.allowBackorder ? (
+            <span className="inline-flex items-center rounded-full bg-orange-100 px-2.5 py-1 text-xs font-semibold text-orange-700">
+              Sur commande
+            </span>
           ) : (
-            <Badge tone="neutral">{t("common.outOfStock")}</Badge>
+            <span className="inline-flex items-center rounded-full bg-slate-200 px-2.5 py-1 text-xs font-semibold text-slate-600">
+              Rupture de stock
+            </span>
           )}
         </div>
 
@@ -216,12 +228,18 @@ export function ProductView({ product }: { product: Product }) {
 
           <button
             onClick={handleAddToCart}
+            disabled={!canOrder}
             className={cn(
-              "flex h-12 flex-1 items-center justify-center gap-2 rounded-full px-6 font-semibold text-white shadow-[var(--shadow-glow)] transition-all hover:-translate-y-0.5",
-              added ? "bg-emerald-500" : "bg-brand-500 hover:bg-brand-600",
+              "flex h-12 flex-1 items-center justify-center gap-2 rounded-full px-6 font-semibold text-white transition-all",
+              !canOrder
+                ? "cursor-not-allowed bg-slate-300"
+                : "shadow-[var(--shadow-glow)] hover:-translate-y-0.5 " +
+                  (added ? "bg-emerald-500" : "bg-brand-500 hover:bg-brand-600"),
             )}
           >
-            {added ? (
+            {!canOrder ? (
+              "Rupture de stock"
+            ) : added ? (
               <><Check className="h-5 w-5" /> {t("common.added")}</>
             ) : (
               <><ShoppingCart className="h-5 w-5" /> {t("common.addToCart")}</>
@@ -229,21 +247,25 @@ export function ProductView({ product }: { product: Product }) {
           </button>
         </div>
 
-        <div className="mt-3 flex flex-wrap gap-3">
-          <Button onClick={handleBuyNow} variant="dark" size="lg" className="flex-1">
-            <Banknote className="h-5 w-5" /> {t("common.orderCod")}
-          </Button>
-          <a
-            href={`https://wa.me/212660781919?text=${encodeURIComponent(
-              `${t("product.whatsappMessage")} ${product.name}`,
-            )}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex h-14 items-center justify-center gap-2 rounded-full bg-[#25D366] px-6 font-semibold text-white transition hover:brightness-105"
-          >
-            <MessageCircle className="h-5 w-5" /> {t("common.whatsapp")}
-          </a>
-        </div>
+        {canOrder && (
+          <div className="mt-3 flex flex-wrap gap-3">
+            <Button onClick={handleBuyNow} variant="dark" size="lg" className="flex-1">
+              <Banknote className="h-5 w-5" /> {t("common.orderCod")}
+            </Button>
+            {settings.whatsapp && (
+              <a
+                href={`https://wa.me/${settings.whatsapp}?text=${encodeURIComponent(
+                  `${t("product.whatsappMessage")} ${product.name}`,
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex h-14 items-center justify-center gap-2 rounded-full bg-[#25D366] px-6 font-semibold text-white transition hover:brightness-105"
+              >
+                <MessageCircle className="h-5 w-5" /> {t("common.whatsapp")}
+              </a>
+            )}
+          </div>
+        )}
 
         {/* Trust row */}
         <div className="mt-7 grid grid-cols-1 gap-3 rounded-card bg-brand-50/70 p-4 sm:grid-cols-3">

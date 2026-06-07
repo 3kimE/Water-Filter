@@ -27,6 +27,7 @@ model Product {
   badges           String[] @default([])
   inStock          Boolean  @default(true)
   stock            Int      @default(0)
+  allowBackorder   Boolean  @default(false) // "sur commande": orderable even at 0 stock
   bestSeller       Boolean  @default(false)
   hue              Int      @default(205)
   images           String[] @default([])

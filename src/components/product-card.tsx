@@ -17,10 +17,13 @@ export function ProductCard({ product }: { product: Product }) {
   const { addItem } = useCart();
   const [added, setAdded] = useState(false);
   const off = discountPercent(product.price, product.oldPrice);
+  const outOfStock = !product.inStock || product.stock <= 0;
+  const canOrder = !outOfStock || !!product.allowBackorder;
 
   function handleAdd(e: React.MouseEvent) {
     e.preventDefault();
     e.stopPropagation();
+    if (!canOrder) return;
     addItem({
       productId: product.id,
       slug: product.slug,
@@ -53,6 +56,16 @@ export function ProductCard({ product }: { product: Product }) {
             </Badge>
           ))}
           {off && <Badge tone="sale">-{off}%</Badge>}
+          {outOfStock && (
+            <span
+              className={cn(
+                "rounded-full px-2.5 py-1 text-xs font-semibold",
+                product.allowBackorder ? "bg-orange-100 text-orange-700" : "bg-slate-200 text-slate-600",
+              )}
+            >
+              {product.allowBackorder ? "Sur commande" : "Rupture"}
+            </span>
+          )}
         </div>
       </div>
 
@@ -89,17 +102,18 @@ export function ProductCard({ product }: { product: Product }) {
 
           <button
             onClick={handleAdd}
-            aria-label={t("common.addToCart")}
+            disabled={!canOrder}
+            aria-label={canOrder ? t("common.addToCart") : "Rupture de stock"}
             className={cn(
               "flex h-10 w-10 items-center justify-center rounded-full text-white transition-all active:scale-90",
-              added ? "bg-emerald-500" : "bg-brand-600 hover:bg-brand-700",
+              !canOrder
+                ? "cursor-not-allowed bg-slate-300"
+                : added
+                  ? "bg-emerald-500"
+                  : "bg-brand-600 hover:bg-brand-700",
             )}
           >
-            {added ? (
-              <Check className="h-5 w-5" />
-            ) : (
-              <ShoppingCart className="h-5 w-5" />
-            )}
+            {added ? <Check className="h-5 w-5" /> : <ShoppingCart className="h-5 w-5" />}
           </button>
         </div>
       </div>

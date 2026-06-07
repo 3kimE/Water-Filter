@@ -71,6 +71,7 @@ export async function saveProductAction(
     .filter(Boolean);
   const badges = formData.getAll("badges").map(String);
   const inStock = formData.get("inStock") != null;
+  const allowBackorder = formData.get("allowBackorder") != null;
   const hue = num(formData.get("hue")) ?? 205;
 
   // server-side validation
@@ -119,6 +120,7 @@ export async function saveProductAction(
     badges,
     inStock,
     stock,
+    allowBackorder,
     bestSeller: badges.includes("Best Seller"),
     hue,
     images,

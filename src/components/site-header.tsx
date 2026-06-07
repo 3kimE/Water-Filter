@@ -171,12 +171,14 @@ export function SiteHeader({ settings }: { settings: SiteSettings }) {
                   </Link>
                 ))}
               </div>
-              <a
-                href="tel:0660781919"
-                className="mt-2 flex items-center gap-2 rounded-xl bg-neutral-100 px-4 py-3 font-medium text-ink"
-              >
-                <Phone className="h-4 w-4" /> 0660 781 919
-              </a>
+              {settings.phone1 && (
+                <a
+                  href={`tel:${settings.phone1.replace(/\s/g, "")}`}
+                  className="mt-2 flex items-center gap-2 rounded-xl bg-neutral-100 px-4 py-3 font-medium text-ink"
+                >
+                  <Phone className="h-4 w-4" /> {settings.phone1}
+                </a>
+              )}
             </div>
           </div>
         )}

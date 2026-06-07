@@ -52,24 +52,42 @@ export async function createOrderAction(payload: {
   note?: string;
   items: { productId: string; qty: number; variantLabel?: string }[];
   hp?: string; // honeypot — must stay empty (bots fill it)
-}): Promise<{ id: string; total: number; delivery: number; items: OrderItem[] }> {
+}): Promise<
+  | { ok: true; id: string; total: number; delivery: number; items: OrderItem[] }
+  | { ok: false; error: string }
+> {
   // Bot trap: a real (hidden) field humans never fill. If set, silently reject.
-  if (payload.hp && payload.hp.trim() !== "") throw new Error("RATE_LIMITED");
+  if (payload.hp && payload.hp.trim() !== "") return { ok: false, error: "Une erreur est survenue." };
   const ip = ipFrom(await headers());
   if (!(await rateLimit(`order:${ip}`, 5, 10 * 60 * 1000)).ok) {
-    throw new Error("RATE_LIMITED");
+    return { ok: false, error: "Trop de commandes envoyées. Réessayez dans quelques minutes." };
   }
-  const order = await createOrder(payload);
-  await notifyNewOrder(order); // emails the owner if configured; never throws
-  revalidatePath("/admin/orders");
-  revalidatePath("/admin");
-  const subtotal = order.items.reduce((s, i) => s + i.price * i.qty, 0);
-  return {
-    id: order.id,
-    total: order.total,
-    delivery: order.total - subtotal,
-    items: order.items,
-  };
+  try {
+    const order = await createOrder(payload);
+    await notifyNewOrder(order); // emails the owner if configured; never throws
+    revalidatePath("/admin/orders");
+    revalidatePath("/admin");
+    const subtotal = order.items.reduce((s, i) => s + i.price * i.qty, 0);
+    return {
+      ok: true,
+      id: order.id,
+      total: order.total,
+      delivery: order.total - subtotal,
+      items: order.items,
+    };
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "ERREUR";
+    const map: Record<string, string> = {
+      OUT_OF_STOCK: "Un article de votre panier est en rupture de stock. Retirez-le pour continuer.",
+      INVALID_NAME: "Nom invalide (3–60 caractères).",
+      INVALID_PHONE: "Téléphone invalide (format 0XXXXXXXXX).",
+      INVALID_CITY: "Veuillez choisir une ville.",
+      INVALID_ADDRESS: "Adresse trop courte.",
+      INVALID_ITEMS: "Votre panier est vide.",
+      PRODUCT_NOT_FOUND: "Un produit n'existe plus.",
+    };
+    return { ok: false, error: map[msg] ?? "Une erreur est survenue. Réessayez." };
+  }
 }
 
 /** Admin only: change an order's status / confirmation note. */
