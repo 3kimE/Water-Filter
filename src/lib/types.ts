@@ -112,4 +112,5 @@ export type Order = {
   assignedTo?: string; // plombier email
   completedAt?: string; // ISO — when the plombier marked it installed
   photoUrl?: string; // completion photo
+  installStage?: "enroute" | "arrived"; // plombier progress (null = scheduled)
 };

@@ -1,28 +1,9 @@
-import { Phone, MessageCircle, MapPin, CalendarClock, Wrench } from "lucide-react";
+import { Wrench } from "lucide-react";
 import { getSession } from "@/lib/auth";
 import { getPlombierJobs } from "@/lib/data";
-import { formatMAD } from "@/lib/utils";
-import { CompleteJobForm } from "@/components/staff/complete-job-form";
+import { PlombierJobCard } from "@/components/staff/plombier-job-card";
 
 export const dynamic = "force-dynamic";
-
-function waNumber(phone: string): string {
-  const d = phone.replace(/\D/g, "");
-  if (d.startsWith("212")) return d;
-  if (d.startsWith("0")) return "212" + d.slice(1);
-  return d;
-}
-
-function formatWhen(iso?: string): string {
-  if (!iso) return "À planifier";
-  return new Date(iso).toLocaleString("fr-MA", {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-}
 
 export default async function PlombierPage() {
   const session = await getSession();
@@ -45,60 +26,10 @@ export default async function PlombierPage() {
   }
 
   return (
-    <div className="grid gap-4 sm:grid-cols-2">
-      {jobs.map((o) => {
-        const tel = o.phone.replace(/\s/g, "");
-        return (
-          <div key={o.id} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-            <div className="flex items-center justify-between">
-              <p className="font-display font-bold text-ink">{o.id}</p>
-              <span className="font-display text-lg font-extrabold text-brand-700">
-                {formatMAD(o.total)}
-              </span>
-            </div>
-
-            <p className="mt-3 flex items-center gap-1.5 rounded-xl bg-brand-50 px-3 py-2 text-sm font-medium text-brand-800">
-              <CalendarClock className="h-4 w-4 shrink-0" /> {formatWhen(o.installDate)}
-            </p>
-
-            <div className="mt-3 space-y-1 text-sm">
-              <p className="font-medium text-ink" dir="auto">{o.customerName}</p>
-              <p className="flex items-center gap-1.5 text-ink-soft">
-                <MapPin className="h-4 w-4 shrink-0" /> <span dir="auto">{o.address}, {o.city}</span>
-              </p>
-              <div className="flex flex-wrap gap-2 pt-1">
-                {o.items.map((it, i) => (
-                  <span key={i} className="rounded-lg bg-slate-50 px-2 py-1 text-xs text-ink" dir="auto">
-                    {it.name} × {it.qty}
-                  </span>
-                ))}
-              </div>
-              {o.confirmationNote && (
-                <p className="pt-1 text-xs text-ink-soft" dir="auto">📝 {o.confirmationNote}</p>
-              )}
-            </div>
-
-            <div className="mt-4 grid grid-cols-2 gap-2">
-              <a
-                href={`tel:${tel}`}
-                className="flex items-center justify-center gap-2 rounded-full bg-brand-500 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-600"
-              >
-                <Phone className="h-4 w-4" /> Appeler
-              </a>
-              <a
-                href={`https://wa.me/${waNumber(o.phone)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 rounded-full bg-[#25D366] py-2.5 text-sm font-semibold text-white transition hover:brightness-105"
-              >
-                <MessageCircle className="h-4 w-4" /> WhatsApp
-              </a>
-            </div>
-
-            <CompleteJobForm orderId={o.id} />
-          </div>
-        );
-      })}
+    <div className="space-y-4">
+      {jobs.map((o) => (
+        <PlombierJobCard key={o.id} order={o} />
+      ))}
     </div>
   );
 }

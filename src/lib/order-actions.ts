@@ -11,6 +11,7 @@ import {
   getPlombierEmail,
   getOrderById,
   completeInstallation,
+  setJobStage,
 } from "@/lib/data";
 import { uploadProductImage } from "@/lib/storage";
 import { notifyNewOrder, notifyPlombierAssignment } from "@/lib/notify";
@@ -109,6 +110,51 @@ export async function confirmOrderAction(input: {
   revalidatePath("/confirmation");
   revalidatePath("/plombier");
   revalidatePath("/admin/orders");
+  revalidatePath("/admin");
+  return { ok: true };
+}
+
+/**
+ * Confirmateur/admin: record the outcome of a confirmation call.
+ * - "annuler"  -> order cancelled
+ * - "rappeler" / "pas_reponse" -> stays pending, logs the attempt as a note
+ */
+export async function recordCallOutcomeAction(
+  id: string,
+  outcome: "rappeler" | "pas_reponse" | "annuler",
+): Promise<{ ok: boolean; error?: string }> {
+  await requireStaff(["confirmateur", "admin"]);
+  const stamp = new Date().toLocaleString("fr-MA", {
+    day: "numeric",
+    month: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+  if (outcome === "annuler") {
+    await updateOrderStatus(id, "cancelled", `Annulée par le confirmateur · ${stamp}`);
+  } else {
+    const label = outcome === "rappeler" ? "À rappeler" : "Pas de réponse";
+    await updateOrderStatus(id, "pending", `${label} · ${stamp}`);
+  }
+  revalidatePath("/confirmation");
+  revalidatePath("/admin/orders");
+  revalidatePath("/admin");
+  return { ok: true };
+}
+
+/** Plombier/admin: advance progress on an assigned job ("enroute" | "arrived"). */
+export async function setJobStageAction(
+  id: string,
+  stage: "enroute" | "arrived",
+): Promise<{ ok: boolean; error?: string }> {
+  const { session, role } = await requireStaff(["plombier", "admin"]);
+  const order = await getOrderById(id);
+  if (!order) return { ok: false, error: "Commande introuvable." };
+  if (role !== "admin" && order.assignedTo !== session.email) {
+    return { ok: false, error: "Cette installation ne vous est pas assignée." };
+  }
+  await setJobStage(id, stage);
+  revalidatePath("/plombier");
   revalidatePath("/admin");
   return { ok: true };
 }

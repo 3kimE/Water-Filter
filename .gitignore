@@ -42,3 +42,6 @@ next-env.d.ts
 
 # catalogue scraper (raw Shopify data + import script)
 /_scrape/
+
+# Stitch design scratch
+_design/

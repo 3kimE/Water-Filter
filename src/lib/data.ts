@@ -57,6 +57,7 @@ function toOrder(row: ORow): Order {
     assignedTo: row.assignedTo ?? undefined,
     completedAt: row.completedAt?.toISOString(),
     photoUrl: row.photoUrl ?? undefined,
+    installStage: (row.installStage as "enroute" | "arrived" | null) ?? undefined,
     createdAt: row.createdAt.toISOString(),
   };
 }
@@ -521,6 +522,12 @@ export async function completeInstallation(id: string, photoUrl: string): Promis
     where: { id },
     data: { status: "installed", completedAt: new Date(), photoUrl },
   });
+  return toOrder(row);
+}
+
+/** Plombier advances his progress on a job: "enroute" | "arrived". */
+export async function setJobStage(id: string, stage: "enroute" | "arrived"): Promise<Order> {
+  const row = await prisma.order.update({ where: { id }, data: { installStage: stage } });
   return toOrder(row);
 }
 
