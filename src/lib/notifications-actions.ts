@@ -1,7 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { getSession } from "@/lib/auth";
+import { getSession, requireRole } from "@/lib/auth";
 import {
   getAdminNotifications,
   getConfirmationNotifications,
@@ -10,10 +10,13 @@ import {
   type StaffNotif,
 } from "@/lib/data";
 
-/** Live notifications for the admin bell (auth-gated). */
+/** Live notifications for the admin bell (ADMIN ONLY — contains private order/message data). */
 export async function fetchNotificationsAction(): Promise<AdminNotifications | null> {
-  const session = await getSession();
-  if (!session) return null;
+  try {
+    await requireRole(["admin"]);
+  } catch {
+    return null;
+  }
   return getAdminNotifications();
 }
 

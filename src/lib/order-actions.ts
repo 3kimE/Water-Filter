@@ -99,11 +99,16 @@ export async function confirmOrderAction(input: {
   if (isNaN(when.getTime())) return { ok: false, error: "Date d'installation invalide." };
 
   const plombier = input.assignedTo?.trim() || (await getPlombierEmail());
-  const order = await confirmOrder(input.id, {
-    installDate: when,
-    assignedTo: plombier,
-    note: input.note?.trim() || undefined,
-  });
+  let order;
+  try {
+    order = await confirmOrder(input.id, {
+      installDate: when,
+      assignedTo: plombier,
+      note: input.note?.trim() || undefined,
+    });
+  } catch {
+    return { ok: false, error: "Cette commande n'est plus en attente (déjà traitée)." };
+  }
 
   if (plombier) {
     await notifyPlombierAssignment(plombier, {
@@ -206,7 +211,12 @@ export async function completeInstallationAction(
     return { ok: false, error: e instanceof Error ? e.message : "Échec de l'envoi de la photo." };
   }
 
-  const updated = await completeInstallation(id, photoUrl);
+  let updated;
+  try {
+    updated = await completeInstallation(id, photoUrl);
+  } catch {
+    return { ok: false, error: "Cette commande a déjà été installée." };
+  }
   await notifyOrderInstalled(updated); // keep the owner in the loop
   revalidatePath("/plombier");
   revalidatePath("/admin/orders");

@@ -133,7 +133,9 @@ export async function getOrderById(id: string): Promise<Order | null> {
   return row ? toOrder(row) : null;
 }
 
-const SALE_STATUSES = ["confirmed", "shipped", "delivered"];
+// "installed" is the field-service done state — it must count as a sale, otherwise
+// completing a job would DECREASE revenue.
+const SALE_STATUSES = ["confirmed", "shipped", "delivered", "installed"];
 
 export async function getDashboardStats() {
   const now = new Date();
@@ -213,9 +215,12 @@ export async function getLowStockProducts(threshold = 5, limit = 6): Promise<Low
 
 export type TopSeller = { name: string; units: number };
 
-/** Best-selling products by units sold, aggregated from real order items. */
+/** Best-selling products by units sold — real install orders only (no maintenance, no cancelled/returned). */
 export async function getTopSellers(limit = 5): Promise<TopSeller[]> {
-  const orders = await prisma.order.findMany({ select: { items: true } });
+  const orders = await prisma.order.findMany({
+    where: { kind: "install", status: { notIn: ["cancelled", "returned"] } },
+    select: { items: true },
+  });
   const tally = new Map<string, number>();
   for (const o of orders) {
     const items = (o.items as unknown as OrderItem[]) ?? [];
@@ -549,8 +554,10 @@ export async function confirmOrder(
   id: string,
   data: { installDate: Date; assignedTo: string | null; note?: string },
 ): Promise<Order> {
-  const row = await prisma.order.update({
-    where: { id },
+  // Atomic: only a still-pending order can be confirmed (can't re-confirm a
+  // cancelled/installed order, even under a double-submit race).
+  const upd = await prisma.order.updateMany({
+    where: { id, status: "pending" },
     data: {
       status: "confirmed",
       confirmedAt: new Date(),
@@ -559,7 +566,9 @@ export async function confirmOrder(
       ...(data.note !== undefined ? { confirmationNote: data.note } : {}),
     },
   });
-  return toOrder(row);
+  if (upd.count !== 1) throw new Error("NOT_PENDING");
+  const row = await prisma.order.findUnique({ where: { id } });
+  return toOrder(row!);
 }
 
 /** Installations assigned to a given plombier (by email) still to do, upcoming first. */
@@ -641,31 +650,38 @@ export async function getPlombierNotifications(email: string | null, all: boolea
  * - A maintenance visit restarts the parent installation's clock instead.
  */
 export async function completeInstallation(id: string, photoUrl: string): Promise<Order> {
-  const existing = await prisma.order.findUnique({ where: { id } });
   const now = new Date();
-  const data: {
-    status: string;
-    completedAt: Date;
-    photoUrl: string;
-    nextMaintenanceAt?: Date;
-  } = { status: "installed", completedAt: now, photoUrl };
+  return prisma.$transaction(async (tx) => {
+    const existing = await tx.order.findUnique({ where: { id } });
+    if (!existing) throw new Error("NOT_FOUND");
 
-  if (existing?.kind !== "maintenance") {
-    data.nextMaintenanceAt = addMonths(now, existing?.maintenanceMonths ?? 6);
-  }
-  const row = await prisma.order.update({ where: { id }, data });
-
-  // A completed maintenance visit restarts the original installation's clock.
-  if (existing?.kind === "maintenance" && existing.parentOrderId) {
-    const parent = await prisma.order.findUnique({ where: { id: existing.parentOrderId } });
-    if (parent) {
-      await prisma.order.update({
-        where: { id: parent.id },
-        data: { lastMaintenanceAt: now, nextMaintenanceAt: addMonths(now, parent.maintenanceMonths) },
-      });
+    const data: {
+      status: string;
+      completedAt: Date;
+      photoUrl: string;
+      nextMaintenanceAt?: Date;
+    } = { status: "installed", completedAt: now, photoUrl };
+    if (existing.kind !== "maintenance") {
+      data.nextMaintenanceAt = addMonths(now, existing.maintenanceMonths ?? 6);
     }
-  }
-  return toOrder(row);
+
+    // Atomic guard: only a still-confirmed job can be completed (blocks double-completion).
+    const upd = await tx.order.updateMany({ where: { id, status: "confirmed" }, data });
+    if (upd.count !== 1) throw new Error("NOT_CONFIRMED");
+
+    // A completed maintenance visit restarts the original installation's clock.
+    if (existing.kind === "maintenance" && existing.parentOrderId) {
+      const parent = await tx.order.findUnique({ where: { id: existing.parentOrderId } });
+      if (parent) {
+        await tx.order.update({
+          where: { id: parent.id },
+          data: { lastMaintenanceAt: now, nextMaintenanceAt: addMonths(now, parent.maintenanceMonths) },
+        });
+      }
+    }
+    const row = await tx.order.findUnique({ where: { id } });
+    return toOrder(row!);
+  });
 }
 
 /* ---------- after-sales: installations + maintenance (Phase 3) ---------- */
@@ -722,33 +738,39 @@ export async function createMaintenanceVisit(
 ): Promise<Order> {
   const parent = await prisma.order.findUnique({ where: { id: parentId } });
   if (!parent) throw new Error("PARENT_NOT_FOUND");
-  await prisma.$executeRawUnsafe(`CREATE SEQUENCE IF NOT EXISTS order_seq START 1`);
-  const seq = await prisma.$queryRawUnsafe<{ n: number }[]>(`SELECT nextval('order_seq')::int AS n`);
-  if (!seq?.[0]) throw new Error("ID_GENERATION_FAILED");
-  const id = "FM-" + (2000 + seq[0].n);
-  const row = await prisma.order.create({
-    data: {
-      id,
-      customerName: parent.customerName,
-      phone: parent.phone,
-      city: parent.city,
-      address: parent.address,
-      note: "Visite d'entretien (changement de filtre)",
-      items: (parent.items as unknown as object) ?? [],
-      total: 0,
-      status: "confirmed",
-      kind: "maintenance",
-      parentOrderId: parent.id,
-      assignedTo: opts.assignedTo,
-      installDate: opts.installDate,
-      source: "web",
-    },
-  });
-  // Push the parent's due date forward so it leaves the "à prévoir" list while the
-  // visit is scheduled. Completing the visit recomputes it precisely (see completeInstallation).
-  await prisma.order.update({
-    where: { id: parent.id },
-    data: { nextMaintenanceAt: addMonths(opts.installDate, parent.maintenanceMonths) },
+
+  // All three writes (sequence id, the visit, the parent's pushed-forward due date)
+  // run in one transaction/session — safe under pooled (PgBouncer) connections.
+  const row = await prisma.$transaction(async (tx) => {
+    await tx.$executeRawUnsafe(`CREATE SEQUENCE IF NOT EXISTS order_seq START 1`);
+    const seq = await tx.$queryRawUnsafe<{ n: number }[]>(`SELECT nextval('order_seq')::int AS n`);
+    if (!seq?.[0]) throw new Error("ID_GENERATION_FAILED");
+    const id = "FM-" + (2000 + seq[0].n);
+    const created = await tx.order.create({
+      data: {
+        id,
+        customerName: parent.customerName,
+        phone: parent.phone,
+        city: parent.city,
+        address: parent.address,
+        note: "Visite d'entretien (changement de filtre)",
+        items: (parent.items as unknown as object) ?? [],
+        total: 0,
+        status: "confirmed",
+        kind: "maintenance",
+        parentOrderId: parent.id,
+        assignedTo: opts.assignedTo,
+        installDate: opts.installDate,
+        source: "web",
+      },
+    });
+    // Push the parent's due date forward so it leaves the "à prévoir" list while the
+    // visit is scheduled. Completing the visit recomputes it precisely (see completeInstallation).
+    await tx.order.update({
+      where: { id: parent.id },
+      data: { nextMaintenanceAt: addMonths(opts.installDate, parent.maintenanceMonths) },
+    });
+    return created;
   });
   return toOrder(row);
 }
