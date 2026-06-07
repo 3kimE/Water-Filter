@@ -59,6 +59,57 @@ export async function createStaffUserAction(input: {
   return { ok: true };
 }
 
+/** Admin: edit a staff account (name, email, role, and optionally reset password). */
+export async function updateStaffUserAction(
+  id: string,
+  input: { email: string; name: string; role: string; password?: string },
+): Promise<{ ok: boolean; error?: string }> {
+  const session = await requireAdmin();
+
+  const target = await prisma.adminUser.findUnique({ where: { id } });
+  if (!target) return { ok: false, error: "Compte introuvable." };
+
+  const email = (input.email ?? "").trim().toLowerCase();
+  const name = (input.name ?? "").trim();
+  const role = input.role;
+  const password = input.password ?? "";
+
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email))
+    return { ok: false, error: "Adresse email invalide." };
+  if (!ROLES.includes(role as (typeof ROLES)[number]))
+    return { ok: false, error: "Rôle invalide." };
+  if (password && password.length < 8)
+    return { ok: false, error: "Le mot de passe doit faire au moins 8 caractères." };
+
+  // email must stay unique
+  if (email !== target.email) {
+    const exists = await prisma.adminUser.findUnique({ where: { email } });
+    if (exists && exists.id !== id) return { ok: false, error: "Cet email est déjà utilisé." };
+  }
+
+  // don't let someone change their own role (could lock themselves out)
+  if (id === session.sub && role !== target.role)
+    return { ok: false, error: "Vous ne pouvez pas changer votre propre rôle." };
+
+  // don't demote the last admin
+  if (target.role === "admin" && role !== "admin") {
+    const adminCount = await prisma.adminUser.count({ where: { role: "admin" } });
+    if (adminCount <= 1) return { ok: false, error: "Impossible de retirer le dernier administrateur." };
+  }
+
+  await prisma.adminUser.update({
+    where: { id },
+    data: {
+      email,
+      name: name || null,
+      role,
+      ...(password ? { passwordHash: await bcrypt.hash(password, 10) } : {}),
+    },
+  });
+  revalidatePath("/admin/users");
+  return { ok: true };
+}
+
 /** Admin: delete a staff account (cannot delete yourself or the last admin). */
 export async function deleteStaffUserAction(id: string): Promise<{ ok: boolean; error?: string }> {
   const session = await requireAdmin();
