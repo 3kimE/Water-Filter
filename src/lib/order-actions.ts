@@ -83,13 +83,14 @@ export async function confirmOrderAction(input: {
   id: string;
   installDate: string; // ISO from a datetime-local input
   note?: string;
+  assignedTo?: string; // selected plombier email; falls back to the first plombier
 }): Promise<{ ok: boolean; error?: string }> {
   await requireStaff(["confirmateur", "admin"]);
 
   const when = new Date(input.installDate);
   if (isNaN(when.getTime())) return { ok: false, error: "Date d'installation invalide." };
 
-  const plombier = await getPlombierEmail();
+  const plombier = input.assignedTo?.trim() || (await getPlombierEmail());
   const order = await confirmOrder(input.id, {
     installDate: when,
     assignedTo: plombier,

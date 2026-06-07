@@ -11,10 +11,12 @@ type PickItem = { id: string; name: string; price: number };
 export function ConfirmationBoard({
   orders,
   products,
+  plombiers,
   hasPlombier,
 }: {
   orders: Order[];
   products: PickItem[];
+  plombiers: { email: string; name: string | null }[];
   hasPlombier: boolean;
 }) {
   const [q, setQ] = useState("");
@@ -67,7 +69,7 @@ export function ConfirmationBoard({
       ) : (
         <div className="grid gap-4 xl:grid-cols-2">
           {filtered.map((o) => (
-            <ConfirmOrderCard key={o.id} order={o} />
+            <ConfirmOrderCard key={o.id} order={o} plombiers={plombiers} />
           ))}
         </div>
       )}

@@ -1,38 +1,65 @@
 import Link from "next/link";
-import { LogOut, ClipboardList, User } from "lucide-react";
+import { Wrench, LogOut } from "lucide-react";
 import { logoutAction } from "@/lib/auth-actions";
 
 export const dynamic = "force-dynamic";
 
 export default function PlombierLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-neutral-50 pb-20">
-      {/* Top app bar */}
-      <header className="sticky top-0 z-40 flex h-16 items-center gap-3 border-b border-line bg-white/90 px-4 backdrop-blur">
-        <Link href="/plombier" className="leading-tight">
-          <span className="block font-display text-base font-extrabold tracking-tight text-ink">
-            Filtre<span className="text-brand-600">Maroc</span>
+    <div className="min-h-screen bg-neutral-50">
+      {/* Sidebar (desktop) */}
+      <aside className="fixed inset-y-0 left-0 hidden w-64 flex-col border-r border-line bg-white lg:flex">
+        <Link href="/plombier" className="flex items-center gap-2 px-5 py-5">
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-600 text-white">
+            <Wrench className="h-5 w-5" />
           </span>
-          <span className="block text-[11px] text-ink-soft">Espace Plombier</span>
+          <span className="leading-tight">
+            <span className="block font-display text-lg font-extrabold tracking-tight text-ink">
+              Filtre<span className="text-brand-600">Maroc</span>
+            </span>
+            <span className="block text-xs text-ink-soft">Espace Plombier</span>
+          </span>
         </Link>
-        <h1 className="ms-auto font-display text-base font-bold text-ink">Mes installations</h1>
-      </header>
+        <nav className="mt-2 flex-1 px-3">
+          <span className="flex items-center gap-3 rounded-xl bg-brand-50 px-3 py-2.5 text-sm font-semibold text-brand-700">
+            <Wrench className="h-5 w-5" /> Mes installations
+          </span>
+        </nav>
+        <div className="border-t border-line p-3">
+          <form action={logoutAction}>
+            <button
+              type="submit"
+              className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-ink-soft transition hover:bg-rose-50 hover:text-rose-600"
+            >
+              <LogOut className="h-5 w-5" /> Déconnexion
+            </button>
+          </form>
+        </div>
+      </aside>
 
-      <main className="mx-auto max-w-xl p-4">{children}</main>
-
-      {/* Bottom nav (mobile app feel) */}
-      <nav className="fixed inset-x-0 bottom-0 z-40 flex border-t border-line bg-white">
-        <span className="flex flex-1 flex-col items-center gap-0.5 py-2.5 text-brand-600">
-          <ClipboardList className="h-5 w-5" />
-          <span className="text-[11px] font-semibold">Missions</span>
-        </span>
-        <form action={logoutAction} className="flex-1">
-          <button type="submit" className="flex w-full flex-col items-center gap-0.5 py-2.5 text-ink-soft">
-            <User className="h-5 w-5" />
-            <span className="text-[11px] font-medium">Déconnexion</span>
-          </button>
-        </form>
-      </nav>
+      {/* Content */}
+      <div className="lg:pl-64">
+        <header className="sticky top-0 z-40 flex h-16 items-center gap-3 border-b border-line bg-white/85 px-4 backdrop-blur lg:px-8">
+          <Link href="/plombier" className="font-display font-extrabold text-ink lg:hidden">
+            Filtre<span className="text-brand-600">Maroc</span>
+          </Link>
+          <h1 className="hidden font-display text-lg font-bold text-ink lg:block">Mes installations</h1>
+          <form action={logoutAction} className="ms-auto lg:hidden">
+            <button type="submit" className="flex h-10 w-10 items-center justify-center rounded-full text-ink-soft hover:bg-neutral-100">
+              <LogOut className="h-5 w-5" />
+            </button>
+          </form>
+          <div className="ms-auto hidden h-9 w-9 items-center justify-center rounded-full bg-brand-600 text-sm font-bold text-white lg:flex">
+            P
+          </div>
+        </header>
+        <main className="mx-auto max-w-3xl p-4 lg:p-8">
+          <div className="mb-6 lg:hidden">
+            <h1 className="font-display text-2xl font-bold text-ink">Mes installations</h1>
+          </div>
+          {children}
+        </main>
+      </div>
     </div>
   );
 }

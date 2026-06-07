@@ -516,6 +516,24 @@ export async function getPlombierJobs(email: string): Promise<Order[]> {
   return rows.map(toOrder);
 }
 
+/** All installations still to do (admin oversight view), upcoming first. */
+export async function getActiveInstalls(): Promise<Order[]> {
+  const rows = await prisma.order.findMany({
+    where: { status: "confirmed" },
+    orderBy: { installDate: "asc" },
+  });
+  return rows.map(toOrder);
+}
+
+/** All plombier accounts (for the confirmateur's assignment dropdown). */
+export async function getPlombiers(): Promise<{ email: string; name: string | null }[]> {
+  return prisma.adminUser.findMany({
+    where: { role: "plombier" },
+    select: { email: true, name: true },
+    orderBy: { createdAt: "asc" },
+  });
+}
+
 /** Plombier marks an installation done: records the completion photo + time. */
 export async function completeInstallation(id: string, photoUrl: string): Promise<Order> {
   const row = await prisma.order.update({

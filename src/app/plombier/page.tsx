@@ -1,13 +1,17 @@
 import { Wrench } from "lucide-react";
 import { getSession } from "@/lib/auth";
-import { getPlombierJobs } from "@/lib/data";
+import { getPlombierJobs, getActiveInstalls } from "@/lib/data";
 import { PlombierJobCard } from "@/components/staff/plombier-job-card";
 
 export const dynamic = "force-dynamic";
 
 export default async function PlombierPage() {
   const session = await getSession();
-  const jobs = session?.email ? await getPlombierJobs(session.email) : [];
+  // The plombier sees only his own jobs; the admin sees every active install.
+  const jobs =
+    session?.role === "plombier" && session?.email
+      ? await getPlombierJobs(session.email)
+      : await getActiveInstalls();
 
   if (jobs.length === 0) {
     return (

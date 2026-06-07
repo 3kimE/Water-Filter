@@ -23,11 +23,18 @@ function waNumber(phone: string): string {
   return d;
 }
 
-export function ConfirmOrderCard({ order }: { order: Order }) {
+export function ConfirmOrderCard({
+  order,
+  plombiers,
+}: {
+  order: Order;
+  plombiers: { email: string; name: string | null }[];
+}) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [date, setDate] = useState("");
   const [note, setNote] = useState("");
+  const [assignedTo, setAssignedTo] = useState(plombiers[0]?.email ?? "");
   const [error, setError] = useState<string | null>(null);
   const tel = order.phone.replace(/\s/g, "");
 
@@ -37,11 +44,16 @@ export function ConfirmOrderCard({ order }: { order: Order }) {
       setError("Choisissez une date d'installation.");
       return;
     }
+    if (plombiers.length > 0 && !assignedTo) {
+      setError("Choisissez un plombier.");
+      return;
+    }
     startTransition(async () => {
       const res = await confirmOrderAction({
         id: order.id,
         installDate: new Date(date).toISOString(),
         note: note.trim() || undefined,
+        assignedTo: assignedTo || undefined,
       });
       if (res.ok) router.refresh();
       else setError(res.error ?? "Erreur.");
@@ -132,6 +144,24 @@ export function ConfirmOrderCard({ order }: { order: Order }) {
       {/* Treatment */}
       <div className="mt-4 border-t border-slate-100 bg-slate-50/60 px-5 py-4">
         <p className="mb-2 text-sm font-semibold text-ink">Traitement de la commande</p>
+
+        {plombiers.length > 0 && (
+          <>
+            <label className="mb-1 block text-xs font-medium text-ink-soft">Plombier assigné</label>
+            <select
+              value={assignedTo}
+              onChange={(e) => setAssignedTo(e.target.value)}
+              className="mb-2 h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm outline-none focus:border-brand-300 focus:ring-4 focus:ring-brand-100"
+            >
+              {plombiers.map((p) => (
+                <option key={p.email} value={p.email}>
+                  {p.name ? `${p.name} (${p.email})` : p.email}
+                </option>
+              ))}
+            </select>
+          </>
+        )}
+
         <label className="mb-1 block text-xs font-medium text-ink-soft">Date d&apos;installation prévue</label>
         <input
           type="datetime-local"

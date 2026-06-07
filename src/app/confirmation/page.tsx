@@ -1,13 +1,13 @@
-import { getOrdersToConfirm, getProducts, getPlombierEmail } from "@/lib/data";
+import { getOrdersToConfirm, getProducts, getPlombiers } from "@/lib/data";
 import { ConfirmationBoard } from "@/components/staff/confirmation-board";
 
 export const dynamic = "force-dynamic";
 
 export default async function ConfirmationPage() {
-  const [orders, products, plombier] = await Promise.all([
+  const [orders, products, plombiers] = await Promise.all([
     getOrdersToConfirm(),
     getProducts(),
-    getPlombierEmail(),
+    getPlombiers(),
   ]);
 
   const pickProducts = products
@@ -15,6 +15,11 @@ export default async function ConfirmationPage() {
     .map((p) => ({ id: p.id, name: p.name, price: p.price }));
 
   return (
-    <ConfirmationBoard orders={orders} products={pickProducts} hasPlombier={!!plombier} />
+    <ConfirmationBoard
+      orders={orders}
+      products={pickProducts}
+      plombiers={plombiers}
+      hasPlombier={plombiers.length > 0}
+    />
   );
 }
