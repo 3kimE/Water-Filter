@@ -139,6 +139,7 @@ export async function recordCallOutcomeAction(
     month: "short",
     hour: "2-digit",
     minute: "2-digit",
+    timeZone: "Africa/Casablanca",
   });
   if (outcome === "annuler") {
     await updateOrderStatus(id, "cancelled", `Annulée par le confirmateur · ${stamp}`);

@@ -627,7 +627,9 @@ export async function getPlombierNotifications(email: string | null, all: boolea
     items: rows.map((o) => ({
       id: o.id,
       title: `${o.id} · ${o.customerName}`,
-      subtitle: o.installDate ? new Date(o.installDate).toLocaleDateString("fr-MA") : "à planifier",
+      subtitle: o.installDate
+        ? new Date(o.installDate).toLocaleDateString("fr-MA", { timeZone: "Africa/Casablanca" })
+        : "à planifier",
       href: "/plombier",
     })),
   };
