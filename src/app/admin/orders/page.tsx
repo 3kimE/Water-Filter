@@ -4,18 +4,19 @@ import { getOrders } from "@/lib/data";
 import { StatusBadge } from "@/components/admin/status-badge";
 import { formatMAD, formatDate } from "@/lib/utils";
 import type { OrderStatus } from "@/lib/types";
+import { getT } from "@/i18n/server";
 
 type SP = Record<string, string | string[] | undefined>;
 
-const TABS: { key: string; label: string }[] = [
-  { key: "", label: "Toutes" },
-  { key: "pending", label: "En attente" },
-  { key: "confirmed", label: "Confirmées" },
-  { key: "installed", label: "Installées" },
-  { key: "shipped", label: "Expédiées" },
-  { key: "delivered", label: "Livrées" },
-  { key: "returned", label: "Retournées" },
-  { key: "cancelled", label: "Annulées" },
+const TABS: { key: string; labelKey: string }[] = [
+  { key: "", labelKey: "admin.ordersPage.tabAll" },
+  { key: "pending", labelKey: "admin.ordersPage.tabPending" },
+  { key: "confirmed", labelKey: "admin.ordersPage.tabConfirmed" },
+  { key: "installed", labelKey: "admin.ordersPage.tabInstalled" },
+  { key: "shipped", labelKey: "admin.ordersPage.tabShipped" },
+  { key: "delivered", labelKey: "admin.ordersPage.tabDelivered" },
+  { key: "returned", labelKey: "admin.ordersPage.tabReturned" },
+  { key: "cancelled", labelKey: "admin.ordersPage.tabCancelled" },
 ];
 
 export default async function AdminOrdersPage({
@@ -23,6 +24,7 @@ export default async function AdminOrdersPage({
 }: {
   searchParams: Promise<SP>;
 }) {
+  const { t } = await getT();
   const params = await searchParams;
   const status = (Array.isArray(params.status) ? params.status[0] : params.status) ?? "";
 
@@ -37,33 +39,33 @@ export default async function AdminOrdersPage({
   return (
     <div>
       <div className="mb-6">
-        <h1 className="font-display text-2xl font-bold text-ink">Commandes</h1>
+        <h1 className="font-display text-2xl font-bold text-ink">{t("admin.ordersPage.title")}</h1>
         <p className="text-sm text-ink-soft">
-          Gérez et confirmez les commandes de vos clients
+          {t("admin.ordersPage.subtitle")}
         </p>
       </div>
 
       {/* Tabs */}
       <div className="mb-5 flex flex-wrap gap-2">
-        {TABS.map((t) => {
-          const active = status === t.key;
+        {TABS.map((tab) => {
+          const active = status === tab.key;
           return (
             <Link
-              key={t.key}
-              href={t.key ? `/admin/orders?status=${t.key}` : "/admin/orders"}
+              key={tab.key}
+              href={tab.key ? `/admin/orders?status=${tab.key}` : "/admin/orders"}
               className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
                 active
                   ? "bg-brand-500 text-white"
                   : "border border-slate-200 bg-white text-ink-soft hover:bg-slate-50"
               }`}
             >
-              {t.label}
+              {t(tab.labelKey)}
               <span
                 className={`rounded-full px-1.5 text-xs ${
                   active ? "bg-white/20" : "bg-slate-100 text-ink"
                 }`}
               >
-                {countFor(t.key)}
+                {countFor(tab.key)}
               </span>
             </Link>
           );
@@ -75,13 +77,13 @@ export default async function AdminOrdersPage({
           <table className="w-full text-left text-sm">
             <thead>
               <tr className="text-xs uppercase tracking-wide text-ink-soft">
-                <th className="px-5 py-3 font-semibold">Commande</th>
-                <th className="px-5 py-3 font-semibold">Client</th>
-                <th className="px-5 py-3 font-semibold">Ville</th>
-                <th className="px-5 py-3 font-semibold">Total</th>
-                <th className="px-5 py-3 font-semibold">Date</th>
-                <th className="px-5 py-3 font-semibold">Statut</th>
-                <th className="px-5 py-3 text-right font-semibold">Action</th>
+                <th className="px-5 py-3 font-semibold">{t("admin.ordersPage.colOrder")}</th>
+                <th className="px-5 py-3 font-semibold">{t("admin.ordersPage.colCustomer")}</th>
+                <th className="px-5 py-3 font-semibold">{t("admin.ordersPage.colCity")}</th>
+                <th className="px-5 py-3 font-semibold">{t("admin.ordersPage.colTotal")}</th>
+                <th className="px-5 py-3 font-semibold">{t("admin.ordersPage.colDate")}</th>
+                <th className="px-5 py-3 font-semibold">{t("admin.ordersPage.colStatus")}</th>
+                <th className="px-5 py-3 text-right font-semibold">{t("admin.ordersPage.colAction")}</th>
               </tr>
             </thead>
             <tbody>
@@ -98,7 +100,9 @@ export default async function AdminOrdersPage({
                       {o.id}
                     </Link>
                     <p className="text-xs text-ink-soft">
-                      {o.items.length} article{o.items.length > 1 ? "s" : ""}
+                      {o.items.length > 1
+                        ? t("admin.ordersPage.itemsPlural", { count: o.items.length })
+                        : t("admin.ordersPage.itemsSingular", { count: o.items.length })}
                     </p>
                   </td>
                   <td className="px-5 py-3">
@@ -131,10 +135,12 @@ export default async function AdminOrdersPage({
                           }`}
                         >
                           {o.lastOutcome === "rappeler"
-                            ? "À rappeler"
+                            ? t("admin.ordersPage.outcomeCallBack")
                             : o.lastOutcome === "pas_reponse"
-                              ? `Sans réponse${o.callAttempts > 1 ? ` (${o.callAttempts})` : ""}`
-                              : "À traiter"}
+                              ? o.callAttempts > 1
+                                ? t("admin.ordersPage.outcomeNoAnswerCount", { count: o.callAttempts })
+                                : t("admin.ordersPage.outcomeNoAnswer")
+                              : t("admin.ordersPage.outcomeToProcess")}
                         </span>
                       </p>
                     )}
@@ -143,7 +149,7 @@ export default async function AdminOrdersPage({
                     <Link
                       href={`/admin/orders/${o.id}`}
                       className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-ink-soft transition-colors hover:bg-brand-50 hover:text-brand-600"
-                      aria-label="Voir"
+                      aria-label={t("admin.ordersPage.view")}
                     >
                       <Eye className="h-4 w-4" />
                     </Link>
@@ -156,7 +162,7 @@ export default async function AdminOrdersPage({
 
         {list.length === 0 && (
           <p className="py-16 text-center text-ink-soft">
-            Aucune commande dans cette catégorie.
+            {t("admin.ordersPage.empty")}
           </p>
         )}
       </div>

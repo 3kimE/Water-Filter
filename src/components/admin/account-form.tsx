@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import { Check, ShieldCheck } from "lucide-react";
 import { updateAdminAccountAction, type AccountState } from "@/lib/account-actions";
+import { useI18n } from "@/i18n/i18n-context";
 
 const initial: AccountState = { error: null };
 
@@ -12,14 +13,15 @@ const input =
 
 export function AdminAccountForm({ currentEmail }: { currentEmail: string }) {
   const [state, action, pending] = useActionState(updateAdminAccountAction, initial);
+  const { t } = useI18n();
 
   return (
     <section className="rounded-2xl border border-line bg-white p-6 shadow-sm">
       <h2 className="flex items-center gap-2 font-display font-bold text-ink">
-        <ShieldCheck className="h-5 w-5 text-brand-600" /> Mon compte
+        <ShieldCheck className="h-5 w-5 text-brand-600" /> {t("admin.account.title")}
       </h2>
       <p className="mt-1 text-sm text-ink-soft">
-        Email de connexion actuel : <b className="text-ink">{currentEmail}</b>
+        {t("admin.account.currentEmail")} <b className="text-ink">{currentEmail}</b>
       </p>
 
       <form action={action} className="mt-4 space-y-4">
@@ -30,29 +32,29 @@ export function AdminAccountForm({ currentEmail }: { currentEmail: string }) {
         )}
         {state.ok && (
           <div className="flex items-center gap-2 rounded-xl bg-emerald-50 px-4 py-2.5 text-sm font-medium text-emerald-700">
-            <Check className="h-4 w-4" /> Compte mis à jour ✓
+            <Check className="h-4 w-4" /> {t("admin.account.updated")}
           </div>
         )}
 
         <div>
-          <label className={label}>Nouvel email (laisser vide pour ne pas changer)</label>
+          <label className={label}>{t("admin.account.newEmailLabel")}</label>
           <input name="newEmail" type="email" placeholder={currentEmail} className={input} />
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label className={label}>Nouveau mot de passe</label>
+            <label className={label}>{t("admin.account.newPasswordLabel")}</label>
             <input name="newPassword" type="password" placeholder="••••••••" className={input} />
           </div>
           <div>
-            <label className={label}>Confirmer le mot de passe</label>
+            <label className={label}>{t("admin.account.confirmPasswordLabel")}</label>
             <input name="confirmPassword" type="password" placeholder="••••••••" className={input} />
           </div>
         </div>
 
         <div className="border-t border-line pt-4">
           <label className={label}>
-            Mot de passe actuel <span className="font-normal text-ink-soft">(obligatoire pour confirmer)</span>
+            {t("admin.account.currentPasswordLabel")} <span className="font-normal text-ink-soft">{t("admin.account.currentPasswordHint")}</span>
           </label>
           <input name="currentPassword" type="password" required placeholder="••••••••" className={`${input} max-w-xs`} />
         </div>
@@ -62,7 +64,7 @@ export function AdminAccountForm({ currentEmail }: { currentEmail: string }) {
           disabled={pending}
           className="rounded-full bg-brand-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-brand-700 disabled:opacity-60"
         >
-          {pending ? "Enregistrement…" : "Mettre à jour le compte"}
+          {pending ? t("admin.account.saving") : t("admin.account.submit")}
         </button>
       </form>
     </section>

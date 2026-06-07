@@ -11,6 +11,7 @@ import { Badge, toneForBadge } from "@/components/ui/badge";
 import { formatMAD } from "@/lib/utils";
 import { saveProductAction } from "@/lib/product-actions";
 import type { Product } from "@/lib/types";
+import { useI18n } from "@/i18n/i18n-context";
 
 const BADGES = ["Best Seller", "Promo", "Nouveau"];
 
@@ -20,18 +21,20 @@ const input =
 
 function SubmitButton() {
   const { pending } = useFormStatus();
+  const { t } = useI18n();
   return (
     <button
       type="submit"
       disabled={pending}
       className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-brand-600 font-semibold text-white transition hover:bg-brand-700 disabled:opacity-60"
     >
-      <Save className="h-5 w-5" /> {pending ? "Enregistrement…" : "Enregistrer le produit"}
+      <Save className="h-5 w-5" /> {pending ? t("admin.productForm.saving") : t("admin.productForm.save")}
     </button>
   );
 }
 
 export function ProductForm({ product }: { product?: Product | null }) {
+  const { t } = useI18n();
   const action = saveProductAction.bind(null, product?.id ?? null);
   const existingImages = product?.images ?? [];
 
@@ -83,10 +86,10 @@ export function ProductForm({ product }: { product?: Product | null }) {
         </Link>
         <div>
           <h1 className="font-display text-2xl font-bold text-ink">
-            {product ? "Modifier le produit" : "Ajouter un produit"}
+            {product ? t("admin.productForm.editTitle") : t("admin.productForm.addTitle")}
           </h1>
           <p className="text-sm text-ink-soft">
-            Les champs apparaîtront dans la boutique après enregistrement.
+            {t("admin.productForm.subtitle")}
           </p>
         </div>
       </div>
@@ -99,15 +102,15 @@ export function ProductForm({ product }: { product?: Product | null }) {
         {/* Main */}
         <div className="space-y-6">
           <section className="rounded-2xl border border-line bg-white p-6 shadow-sm">
-            <h2 className="font-display font-bold text-ink">Informations générales</h2>
+            <h2 className="font-display font-bold text-ink">{t("admin.productForm.generalInfo")}</h2>
             <div className="mt-4 space-y-4">
               <div>
-                <label className={label}>Nom du produit</label>
-                <input name="name" required value={form.name} onChange={(e) => set("name", e.target.value)} className={input} placeholder="Ex : Osmoseur 6 étapes" />
+                <label className={label}>{t("admin.productForm.nameLabel")}</label>
+                <input name="name" required value={form.name} onChange={(e) => set("name", e.target.value)} className={input} placeholder={t("admin.productForm.namePlaceholder")} />
               </div>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
-                  <label className={label}>Catégorie</label>
+                  <label className={label}>{t("admin.productForm.categoryLabel")}</label>
                   <select name="category" value={form.category} onChange={(e) => set("category", e.target.value)} className={input}>
                     {CATEGORIES.map((c) => (
                       <option key={c.slug} value={c.slug}>{c.name}</option>
@@ -115,70 +118,70 @@ export function ProductForm({ product }: { product?: Product | null }) {
                   </select>
                 </div>
                 <div>
-                  <label className={label}>Garantie</label>
-                  <input name="warranty" value={form.warranty} onChange={(e) => set("warranty", e.target.value)} className={input} placeholder="Ex : 2 ans" />
+                  <label className={label}>{t("admin.productForm.warrantyLabel")}</label>
+                  <input name="warranty" value={form.warranty} onChange={(e) => set("warranty", e.target.value)} className={input} placeholder={t("admin.productForm.warrantyPlaceholder")} />
                 </div>
               </div>
               <div>
-                <label className={label}>Description courte</label>
-                <input name="shortDescription" value={form.shortDescription} onChange={(e) => set("shortDescription", e.target.value)} className={input} placeholder="Une phrase qui résume le produit" />
+                <label className={label}>{t("admin.productForm.shortDescriptionLabel")}</label>
+                <input name="shortDescription" value={form.shortDescription} onChange={(e) => set("shortDescription", e.target.value)} className={input} placeholder={t("admin.productForm.shortDescriptionPlaceholder")} />
               </div>
               <div>
-                <label className={label}>Description complète</label>
-                <textarea name="description" value={form.description} onChange={(e) => set("description", e.target.value)} rows={5} className="w-full rounded-xl border border-line bg-white px-4 py-3 text-sm outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100" placeholder="Décrivez le produit en détail..." />
+                <label className={label}>{t("admin.productForm.descriptionLabel")}</label>
+                <textarea name="description" value={form.description} onChange={(e) => set("description", e.target.value)} rows={5} className="w-full rounded-xl border border-line bg-white px-4 py-3 text-sm outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100" placeholder={t("admin.productForm.descriptionPlaceholder")} />
               </div>
             </div>
           </section>
 
           <section className="rounded-2xl border border-line bg-white p-6 shadow-sm">
-            <h2 className="font-display font-bold text-ink">Prix & stock</h2>
+            <h2 className="font-display font-bold text-ink">{t("admin.productForm.priceStock")}</h2>
             <div className="mt-4 grid gap-4 sm:grid-cols-3">
               <div>
-                <label className={label}>Prix (MAD)</label>
+                <label className={label}>{t("admin.productForm.priceLabel")}</label>
                 <input name="price" required type="number" value={form.price} onChange={(e) => set("price", e.target.value)} className={input} placeholder="1900" />
               </div>
               <div>
-                <label className={label}>Ancien prix</label>
+                <label className={label}>{t("admin.productForm.oldPriceLabel")}</label>
                 <input name="oldPrice" type="number" value={form.oldPrice} onChange={(e) => set("oldPrice", e.target.value)} className={input} placeholder="2300" />
               </div>
               <div>
-                <label className={label}>Stock</label>
+                <label className={label}>{t("admin.productForm.stockLabel")}</label>
                 <input name="stock" type="number" value={form.stock} onChange={(e) => set("stock", e.target.value)} className={input} placeholder="20" />
               </div>
             </div>
             <label className="mt-4 flex cursor-pointer items-center gap-3">
               <input type="checkbox" name="inStock" checked={form.inStock} onChange={(e) => set("inStock", e.target.checked)} className="h-5 w-5 rounded border-neutral-300 text-brand-600 focus:ring-brand-300" />
-              <span className="text-sm font-medium text-ink">Produit en stock</span>
+              <span className="text-sm font-medium text-ink">{t("admin.productForm.inStockLabel")}</span>
             </label>
             <label className="mt-3 flex cursor-pointer items-start gap-3">
               <input type="checkbox" name="allowBackorder" checked={form.allowBackorder} onChange={(e) => set("allowBackorder", e.target.checked)} className="mt-0.5 h-5 w-5 rounded border-neutral-300 text-brand-600 focus:ring-brand-300" />
               <span className="text-sm text-ink">
-                <span className="font-medium">Autoriser « sur commande »</span>
+                <span className="font-medium">{t("admin.productForm.allowBackorderLabel")}</span>
                 <span className="block text-xs text-ink-soft">
-                  Le client peut commander même quand le stock est à 0 (affiché « Sur commande »).
+                  {t("admin.productForm.allowBackorderHint")}
                 </span>
               </span>
             </label>
           </section>
 
           <section className="rounded-2xl border border-line bg-white p-6 shadow-sm">
-            <h2 className="font-display font-bold text-ink">Caractéristiques</h2>
+            <h2 className="font-display font-bold text-ink">{t("admin.productForm.specifications")}</h2>
             <div className="mt-4 grid gap-4 sm:grid-cols-2">
               <div>
-                <label className={label}>Nombre d&apos;étapes</label>
+                <label className={label}>{t("admin.productForm.stagesLabel")}</label>
                 <input name="stages" type="number" value={form.stages} onChange={(e) => set("stages", e.target.value)} className={input} placeholder="6" />
               </div>
               <div>
-                <label className={label}>Capacité / débit</label>
+                <label className={label}>{t("admin.productForm.capacityLabel")}</label>
                 <input name="capacity" value={form.capacity} onChange={(e) => set("capacity", e.target.value)} className={input} placeholder="75 GPD" />
               </div>
             </div>
             <div className="mt-4">
-              <label className={label}>Points forts <span className="font-normal text-ink-soft">(un par ligne)</span></label>
-              <textarea name="features" value={form.features} onChange={(e) => set("features", e.target.value)} rows={4} className="w-full rounded-xl border border-line bg-white px-4 py-3 text-sm outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100" placeholder={"Purification en 6 étapes\nRéservoir 12 litres\nRobinet inox inclus"} />
+              <label className={label}>{t("admin.productForm.featuresLabel")} <span className="font-normal text-ink-soft">{t("admin.productForm.featuresHint")}</span></label>
+              <textarea name="features" value={form.features} onChange={(e) => set("features", e.target.value)} rows={4} className="w-full rounded-xl border border-line bg-white px-4 py-3 text-sm outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100" placeholder={t("admin.productForm.featuresPlaceholder")} />
             </div>
             <div className="mt-4">
-              <span className={label}>Étiquettes</span>
+              <span className={label}>{t("admin.productForm.badgesLabel")}</span>
               <div className="flex flex-wrap gap-2">
                 {BADGES.map((b) => {
                   const active = form.badges.includes(b);
@@ -197,41 +200,41 @@ export function ProductForm({ product }: { product?: Product | null }) {
         {/* Right: image + preview + save */}
         <aside className="space-y-6">
           <section className="rounded-2xl border border-line bg-white p-6 shadow-sm">
-            <h2 className="font-display font-bold text-ink">Photos</h2>
+            <h2 className="font-display font-bold text-ink">{t("admin.productForm.photos")}</h2>
             <label className="mt-4 flex aspect-square cursor-pointer flex-col items-center justify-center overflow-hidden rounded-2xl border-2 border-dashed border-neutral-300 bg-neutral-50 transition-colors hover:border-brand-400">
               {previewImg ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={previewImg} alt="aperçu" className="h-full w-full object-contain p-2" />
+                <img src={previewImg} alt={t("admin.productForm.previewAlt")} className="h-full w-full object-contain p-2" />
               ) : (
                 <div className="flex flex-col items-center text-ink-soft">
                   <ImagePlus className="h-9 w-9" />
-                  <span className="mt-2 text-sm font-medium">Cliquez pour ajouter</span>
-                  <span className="text-xs">JPG, PNG — plusieurs possibles</span>
+                  <span className="mt-2 text-sm font-medium">{t("admin.productForm.clickToAdd")}</span>
+                  <span className="text-xs">{t("admin.productForm.fileTypes")}</span>
                 </div>
               )}
               <input type="file" name="images" accept="image/*" multiple onChange={onFiles} className="hidden" />
             </label>
             {existingImages.length > 0 && newPreviews.length === 0 && (
               <p className="mt-2 text-xs text-ink-soft">
-                {existingImages.length} photo(s) actuelle(s) conservée(s). Choisir de nouvelles photos les ajoutera.
+                {t("admin.productForm.existingPhotosNote", { count: existingImages.length })}
               </p>
             )}
             <div className="mt-4">
-              <label className={label}>Teinte (aperçu sans photo)</label>
+              <label className={label}>{t("admin.productForm.hueLabel")}</label>
               <input type="range" name="hue" min={180} max={230} value={form.hue} onChange={(e) => set("hue", Number(e.target.value))} className="w-full accent-brand-600" />
             </div>
           </section>
 
           {/* Live preview */}
           <section className="rounded-2xl border border-line bg-white p-5 shadow-sm">
-            <h2 className="mb-3 font-display font-bold text-ink">Aperçu boutique</h2>
+            <h2 className="mb-3 font-display font-bold text-ink">{t("admin.productForm.shopPreview")}</h2>
             <div className="overflow-hidden rounded-card border border-line">
               <div className="relative aspect-square bg-white">
                 {previewImg ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={previewImg} alt="" className="h-full w-full object-contain p-3" />
                 ) : (
-                  <ProductPhoto src={undefined} alt={form.name || "Produit"} hue={form.hue} className="h-full w-full" />
+                  <ProductPhoto src={undefined} alt={form.name || t("admin.productForm.productFallback")} hue={form.hue} className="h-full w-full" />
                 )}
                 <div className="absolute left-2 top-2 flex flex-col gap-1">
                   {form.badges.map((b) => (
@@ -241,7 +244,7 @@ export function ProductForm({ product }: { product?: Product | null }) {
               </div>
               <div className="p-3">
                 <p dir="auto" className="line-clamp-1 font-display font-semibold text-ink">
-                  {form.name || "Nom du produit"}
+                  {form.name || t("admin.productForm.nameFallback")}
                 </p>
                 <div className="mt-1 flex items-center gap-1">
                   <StarRating value={5} size={13} />

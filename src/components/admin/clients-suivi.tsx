@@ -19,6 +19,7 @@ import {
   markMaintenanceDoneAction,
 } from "@/lib/order-actions";
 import { formatDate } from "@/lib/utils";
+import { useI18n } from "@/i18n/i18n-context";
 import type { Order } from "@/lib/types";
 
 type Plombier = { email: string; name: string | null; city: string | null };
@@ -40,6 +41,7 @@ const INTERVALS = [3, 4, 6, 8, 12];
 
 function InstallationCard({ o, plombiers }: { o: Order; plombiers: Plombier[] }) {
   const router = useRouter();
+  const { t } = useI18n();
   const [pending, startTransition] = useTransition();
   const [scheduling, setScheduling] = useState(false);
   const [date, setDate] = useState("");
@@ -58,10 +60,10 @@ function InstallationCard({ o, plombiers }: { o: Order; plombiers: Plombier[] })
   const soon = next ? !overdue && next.getTime() < now + 14 * 86_400_000 : false;
 
   const maintPill = overdue
-    ? { label: "Entretien en retard", cls: "bg-rose-100 text-rose-700" }
+    ? { label: t("admin.clientsSuivi.maintOverdue"), cls: "bg-rose-100 text-rose-700" }
     : soon
-      ? { label: "Entretien bientôt", cls: "bg-orange-100 text-orange-700" }
-      : { label: "À jour", cls: "bg-emerald-100 text-emerald-700" };
+      ? { label: t("admin.clientsSuivi.maintSoon"), cls: "bg-orange-100 text-orange-700" }
+      : { label: t("admin.clientsSuivi.maintUpToDate"), cls: "bg-emerald-100 text-emerald-700" };
 
   function run(fn: () => Promise<{ ok: boolean; error?: string }>) {
     setError(null);
@@ -70,7 +72,7 @@ function InstallationCard({ o, plombiers }: { o: Order; plombiers: Plombier[] })
       if (res.ok) {
         setScheduling(false);
         router.refresh();
-      } else setError(res.error ?? "Erreur.");
+      } else setError(res.error ?? t("admin.clientsSuivi.errorGeneric"));
     });
   }
 
@@ -85,7 +87,7 @@ function InstallationCard({ o, plombiers }: { o: Order; plombiers: Plombier[] })
         </div>
         <div className="flex flex-wrap items-center gap-1.5">
           <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold ${warrantyActive ? "bg-brand-100 text-brand-700" : "bg-slate-100 text-ink-soft"}`}>
-            <ShieldCheck className="h-3.5 w-3.5" /> {warrantyActive ? "Garantie active" : "Garantie expirée"}
+            <ShieldCheck className="h-3.5 w-3.5" /> {warrantyActive ? t("admin.clientsSuivi.warrantyActive") : t("admin.clientsSuivi.warrantyExpired")}
           </span>
           <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold ${maintPill.cls}`}>
             <Wrench className="h-3.5 w-3.5" /> {maintPill.label}
@@ -103,21 +105,21 @@ function InstallationCard({ o, plombiers }: { o: Order; plombiers: Plombier[] })
 
       <dl className="mt-3 space-y-1 text-sm">
         <div className="flex justify-between gap-3">
-          <dt className="text-ink-soft">Installé le</dt>
+          <dt className="text-ink-soft">{t("admin.clientsSuivi.installedOn")}</dt>
           <dd className="font-medium text-ink">{o.completedAt ? formatDate(o.completedAt) : "—"}</dd>
         </div>
         <div className="flex justify-between gap-3">
-          <dt className="text-ink-soft">Garantie jusqu&apos;au</dt>
+          <dt className="text-ink-soft">{t("admin.clientsSuivi.warrantyUntil")}</dt>
           <dd className="font-medium text-ink">{warrantyEnd ? formatDate(warrantyEnd.toISOString()) : "—"}</dd>
         </div>
         <div className="flex justify-between gap-3">
-          <dt className="text-ink-soft">Prochain entretien</dt>
+          <dt className="text-ink-soft">{t("admin.clientsSuivi.nextMaintenance")}</dt>
           <dd className={`font-medium ${overdue ? "text-rose-600" : soon ? "text-orange-600" : "text-ink"}`}>
             {next ? formatDate(next.toISOString()) : "—"}
           </dd>
         </div>
         <div className="flex items-center justify-between gap-3">
-          <dt className="text-ink-soft">Intervalle</dt>
+          <dt className="text-ink-soft">{t("admin.clientsSuivi.interval")}</dt>
           <dd>
             <select
               value={o.maintenanceMonths}
@@ -126,7 +128,7 @@ function InstallationCard({ o, plombiers }: { o: Order; plombiers: Plombier[] })
               className="rounded-lg border border-slate-200 bg-white px-2 py-1 text-sm outline-none focus:border-brand-300"
             >
               {INTERVALS.map((m) => (
-                <option key={m} value={m}>{m} mois</option>
+                <option key={m} value={m}>{t("admin.clientsSuivi.months", { m })}</option>
               ))}
             </select>
           </dd>
@@ -137,7 +139,7 @@ function InstallationCard({ o, plombiers }: { o: Order; plombiers: Plombier[] })
 
       <div className="mt-3 grid grid-cols-2 gap-2">
         <a href={`tel:${tel}`} className="flex items-center justify-center gap-1.5 rounded-full border border-slate-200 py-2 text-sm font-semibold text-ink transition hover:bg-slate-50">
-          <Phone className="h-4 w-4" /> Appeler
+          <Phone className="h-4 w-4" /> {t("admin.clientsSuivi.call")}
         </a>
         <a href={`https://wa.me/${waNumber(o.phone)}`} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-1.5 rounded-full bg-[#25D366] py-2 text-sm font-semibold text-white transition hover:brightness-105">
           <MessageCircle className="h-4 w-4" /> WhatsApp
@@ -149,20 +151,20 @@ function InstallationCard({ o, plombiers }: { o: Order; plombiers: Plombier[] })
           onClick={() => setScheduling((v) => !v)}
           className="inline-flex items-center gap-1.5 rounded-full bg-brand-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-700"
         >
-          <CalendarClock className="h-4 w-4" /> Planifier l&apos;entretien
+          <CalendarClock className="h-4 w-4" /> {t("admin.clientsSuivi.scheduleMaintenance")}
         </button>
         <button
           onClick={() => run(() => markMaintenanceDoneAction(o.id))}
           disabled={pending}
           className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-white px-4 py-2 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-50 disabled:opacity-60"
         >
-          <Check className="h-4 w-4" /> Entretien fait
+          <Check className="h-4 w-4" /> {t("admin.clientsSuivi.maintenanceDone")}
         </button>
       </div>
 
       {scheduling && (
         <div className="mt-3 rounded-xl bg-slate-50 p-3">
-          <p className="mb-2 text-sm font-semibold text-ink">Envoyer le plombier (visite d&apos;entretien)</p>
+          <p className="mb-2 text-sm font-semibold text-ink">{t("admin.clientsSuivi.sendTechnicianTitle")}</p>
           <input
             type="datetime-local"
             value={date}
@@ -184,13 +186,13 @@ function InstallationCard({ o, plombiers }: { o: Order; plombiers: Plombier[] })
           )}
           <button
             onClick={() => {
-              if (!date) { setError("Choisissez une date."); return; }
+              if (!date) { setError(t("admin.clientsSuivi.errorNoDate")); return; }
               run(() => scheduleMaintenanceAction({ parentId: o.id, installDate: new Date(date).toISOString(), assignedTo: assignedTo || undefined }));
             }}
             disabled={pending}
             className="mt-3 flex w-full items-center justify-center gap-2 rounded-full bg-brand-600 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700 disabled:opacity-60"
           >
-            <Send className="h-4 w-4" /> {pending ? "Envoi…" : "Envoyer le plombier"}
+            <Send className="h-4 w-4" /> {pending ? t("admin.clientsSuivi.sending") : t("admin.clientsSuivi.sendTechnician")}
           </button>
         </div>
       )}
@@ -205,6 +207,7 @@ export function ClientsSuivi({
   installations: Order[];
   plombiers: Plombier[];
 }) {
+  const { t } = useI18n();
   const [q, setQ] = useState("");
   const s = q.trim().toLowerCase();
   const list = s
@@ -223,7 +226,7 @@ export function ClientsSuivi({
         <input
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder="Rechercher un client (nom, téléphone, ville)…"
+          placeholder={t("admin.clientsSuivi.searchPlaceholder")}
           className="h-12 w-full rounded-xl border border-slate-200 bg-white ps-10 pe-4 text-sm outline-none focus:border-brand-300 focus:ring-4 focus:ring-brand-100"
         />
       </div>
@@ -234,12 +237,12 @@ export function ClientsSuivi({
             <ShieldCheck className="h-7 w-7" />
           </div>
           <p className="mt-4 font-display text-lg font-semibold text-ink">
-            {installations.length === 0 ? "Aucune installation pour le moment" : "Aucun résultat"}
+            {installations.length === 0 ? t("admin.clientsSuivi.emptyTitle") : t("admin.clientsSuivi.noResultsTitle")}
           </p>
           <p className="mt-1 text-sm text-ink-soft">
             {installations.length === 0
-              ? "Les clients apparaîtront ici une fois leurs filtres installés."
-              : "Essayez un autre mot-clé."}
+              ? t("admin.clientsSuivi.emptyHint")
+              : t("admin.clientsSuivi.noResultsHint")}
           </p>
         </div>
       ) : (

@@ -3,11 +3,13 @@
 import { useActionState } from "react";
 import { Lock, Mail, LogIn } from "lucide-react";
 import { loginAction, type LoginState } from "@/lib/auth-actions";
+import { useI18n } from "@/i18n/i18n-context";
 
 const initial: LoginState = { error: null };
 
 export default function LoginPage() {
   const [state, action, pending] = useActionState(loginAction, initial);
+  const { t } = useI18n();
 
   const input =
     "h-11 w-full rounded-xl border border-line bg-white pl-10 pr-4 text-sm outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100";
@@ -19,7 +21,7 @@ export default function LoginPage() {
           <span className="font-display text-2xl font-extrabold tracking-tight text-ink">
             Filtre<span className="text-brand-600">Maroc</span>
           </span>
-          <p className="mt-1 text-sm text-ink-soft">Espace Admin</p>
+          <p className="mt-1 text-sm text-ink-soft">{t("admin.login.subtitle")}</p>
         </div>
 
         <form action={action} className="mt-6 space-y-4">
@@ -29,7 +31,7 @@ export default function LoginPage() {
             </div>
           )}
           <div>
-            <label className="mb-1.5 block text-sm font-semibold text-ink">Email</label>
+            <label className="mb-1.5 block text-sm font-semibold text-ink">{t("admin.login.email")}</label>
             <div className="relative">
               <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-soft" />
               <input
@@ -43,7 +45,7 @@ export default function LoginPage() {
           </div>
           <div>
             <label className="mb-1.5 block text-sm font-semibold text-ink">
-              Mot de passe
+              {t("admin.login.password")}
             </label>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-soft" />
@@ -61,7 +63,7 @@ export default function LoginPage() {
             disabled={pending}
             className="flex h-11 w-full items-center justify-center gap-2 rounded-full bg-brand-600 font-semibold text-white transition hover:bg-brand-700 disabled:opacity-60"
           >
-            <LogIn className="h-4 w-4" /> {pending ? "Connexion…" : "Se connecter"}
+            <LogIn className="h-4 w-4" /> {pending ? t("admin.login.submitting") : t("admin.login.submit")}
           </button>
         </form>
       </div>

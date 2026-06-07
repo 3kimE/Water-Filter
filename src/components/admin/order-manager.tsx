@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -10,12 +12,14 @@ import {
 import type { Order } from "@/lib/types";
 import { StatusBadge } from "./status-badge";
 import { formatMAD, formatDate } from "@/lib/utils";
+import { useI18n } from "@/i18n/i18n-context";
 
 /**
  * Admin order view — READ-ONLY. The admin monitors what's happening; the order
  * status is driven by the confirmateur (confirm/cancel) and the plombier (install).
  */
 export function OrderManager({ order }: { order: Order }) {
+  const { t } = useI18n();
   return (
     <div>
       {/* Header */}
@@ -31,7 +35,7 @@ export function OrderManager({ order }: { order: Order }) {
             <h1 className="font-display text-2xl font-bold text-ink">{order.id}</h1>
             <StatusBadge status={order.status} />
           </div>
-          <p className="text-sm text-ink-soft">Passée le {formatDate(order.createdAt)}</p>
+          <p className="text-sm text-ink-soft">{t("admin.orderManager.placedOn", { date: formatDate(order.createdAt) })}</p>
         </div>
       </div>
 
@@ -40,7 +44,7 @@ export function OrderManager({ order }: { order: Order }) {
         <div className="space-y-6">
           <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
             <h2 className="border-b border-slate-200 px-5 py-4 font-display font-bold text-ink">
-              Articles commandés
+              {t("admin.orderManager.orderedItems")}
             </h2>
             <table className="w-full text-left text-sm">
               <tbody>
@@ -61,7 +65,7 @@ export function OrderManager({ order }: { order: Order }) {
               </tbody>
             </table>
             <div className="flex items-center justify-between bg-slate-50 px-5 py-4">
-              <span className="font-bold text-ink">Total à encaisser</span>
+              <span className="font-bold text-ink">{t("admin.orderManager.totalToCollect")}</span>
               <span className="font-display text-xl font-extrabold text-brand-700">
                 {formatMAD(order.total)}
               </span>
@@ -71,7 +75,7 @@ export function OrderManager({ order }: { order: Order }) {
           {order.note && (
             <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
               <h3 className="flex items-center gap-2 font-semibold text-ink">
-                <StickyNote className="h-4 w-4 text-brand-500" /> Note du client
+                <StickyNote className="h-4 w-4 text-brand-500" /> {t("admin.orderManager.customerNote")}
               </h3>
               <p className="mt-2 text-sm text-ink-soft" dir="auto">{order.note}</p>
             </section>
@@ -79,7 +83,7 @@ export function OrderManager({ order }: { order: Order }) {
 
           {order.confirmationNote && (
             <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-              <h3 className="font-semibold text-ink">Note de confirmation</h3>
+              <h3 className="font-semibold text-ink">{t("admin.orderManager.confirmationNote")}</h3>
               <p className="mt-2 text-sm text-ink-soft" dir="auto">{order.confirmationNote}</p>
             </section>
           )}
@@ -88,7 +92,7 @@ export function OrderManager({ order }: { order: Order }) {
         {/* Right: customer + tracking (read-only) */}
         <aside className="space-y-6">
           <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-            <h3 className="font-display font-bold text-ink">Client</h3>
+            <h3 className="font-display font-bold text-ink">{t("admin.orderManager.customer")}</h3>
             <p className="mt-3 font-semibold text-ink" dir="auto">{order.customerName}</p>
             <div className="mt-1 flex items-center gap-2 text-sm text-ink-soft">
               <Phone className="h-4 w-4" /> {order.phone}
@@ -103,7 +107,7 @@ export function OrderManager({ order }: { order: Order }) {
                 href={`tel:${order.phone}`}
                 className="flex items-center justify-center gap-2 rounded-full bg-brand-500 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-600"
               >
-                <Phone className="h-4 w-4" /> Appeler
+                <Phone className="h-4 w-4" /> {t("admin.orderManager.call")}
               </a>
               <a
                 href={`https://wa.me/212${order.phone.replace(/^0/, "")}`}
@@ -117,10 +121,10 @@ export function OrderManager({ order }: { order: Order }) {
           </section>
 
           <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-            <h3 className="font-display font-bold text-ink">Paiement</h3>
+            <h3 className="font-display font-bold text-ink">{t("admin.orderManager.payment")}</h3>
             <div className="mt-3 flex items-center gap-2 rounded-xl bg-brand-50 p-3 text-sm">
               <Banknote className="h-5 w-5 text-brand-600" />
-              <span className="font-medium text-ink">À la livraison (COD)</span>
+              <span className="font-medium text-ink">{t("admin.orderManager.cod")}</span>
             </div>
           </section>
 
@@ -131,23 +135,23 @@ export function OrderManager({ order }: { order: Order }) {
             order.completedAt ||
             order.source === "phone") && (
             <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-              <h3 className="font-display font-bold text-ink">Suivi</h3>
+              <h3 className="font-display font-bold text-ink">{t("admin.orderManager.tracking")}</h3>
               <dl className="mt-3 space-y-2 text-sm">
                 <div className="flex justify-between gap-3">
-                  <dt className="text-ink-soft">Source</dt>
+                  <dt className="text-ink-soft">{t("admin.orderManager.source")}</dt>
                   <dd className="font-medium text-ink">
-                    {order.source === "phone" ? "Téléphone" : "Site web"}
+                    {order.source === "phone" ? t("admin.orderManager.sourcePhone") : t("admin.orderManager.sourceWeb")}
                   </dd>
                 </div>
                 {order.confirmedAt && (
                   <div className="flex justify-between gap-3">
-                    <dt className="text-ink-soft">Confirmée le</dt>
+                    <dt className="text-ink-soft">{t("admin.orderManager.confirmedOn")}</dt>
                     <dd className="font-medium text-ink">{formatDate(order.confirmedAt)}</dd>
                   </div>
                 )}
                 {order.installDate && (
                   <div className="flex justify-between gap-3">
-                    <dt className="text-ink-soft">Installation prévue</dt>
+                    <dt className="text-ink-soft">{t("admin.orderManager.plannedInstall")}</dt>
                     <dd className="text-end font-medium text-ink">
                       {new Date(order.installDate).toLocaleString("fr-MA", {
                         day: "numeric",
@@ -161,13 +165,13 @@ export function OrderManager({ order }: { order: Order }) {
                 )}
                 {order.assignedTo && (
                   <div className="flex justify-between gap-3">
-                    <dt className="text-ink-soft">Plombier</dt>
+                    <dt className="text-ink-soft">{t("admin.orderManager.technician")}</dt>
                     <dd className="break-all font-medium text-ink">{order.assignedTo}</dd>
                   </div>
                 )}
                 {order.completedAt && (
                   <div className="flex justify-between gap-3">
-                    <dt className="text-ink-soft">Installée le</dt>
+                    <dt className="text-ink-soft">{t("admin.orderManager.installedOn")}</dt>
                     <dd className="font-medium text-emerald-600">{formatDate(order.completedAt)}</dd>
                   </div>
                 )}
@@ -183,11 +187,11 @@ export function OrderManager({ order }: { order: Order }) {
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={order.photoUrl}
-                    alt="Photo de l'installation"
+                    alt={t("admin.orderManager.installationPhotoAlt")}
                     className="h-40 w-full object-cover"
                   />
                   <span className="block bg-slate-50 px-3 py-2 text-xs font-medium text-brand-600">
-                    Voir la photo de l&apos;installation →
+                    {t("admin.orderManager.viewInstallationPhoto")}
                   </span>
                 </a>
               )}

@@ -9,15 +9,17 @@ import {
   updateStaffUserAction,
 } from "@/lib/users-actions";
 import type { StaffUser } from "@/lib/data";
+import { useI18n } from "@/i18n/i18n-context";
 
-const ROLE_META: Record<string, { label: string; className: string; icon: typeof ShieldCheck }> = {
-  admin: { label: "Administrateur", className: "bg-brand-100 text-brand-700", icon: ShieldCheck },
-  confirmateur: { label: "Confirmateur", className: "bg-amber-100 text-amber-700", icon: PhoneCall },
-  plombier: { label: "Plombier", className: "bg-emerald-100 text-emerald-700", icon: Wrench },
+const ROLE_META: Record<string, { labelKey: string; className: string; icon: typeof ShieldCheck }> = {
+  admin: { labelKey: "admin.usersManager.role.admin", className: "bg-brand-100 text-brand-700", icon: ShieldCheck },
+  confirmateur: { labelKey: "admin.usersManager.role.confirmateur", className: "bg-amber-100 text-amber-700", icon: PhoneCall },
+  plombier: { labelKey: "admin.usersManager.role.technicien", className: "bg-emerald-100 text-emerald-700", icon: Wrench },
 };
 
 export function UsersManager({ users, currentUserId }: { users: StaffUser[]; currentUserId: string }) {
   const router = useRouter();
+  const { t } = useI18n();
   const [pending, startTransition] = useTransition();
   const [form, setForm] = useState({ email: "", name: "", password: "", role: "confirmateur", city: "" });
   const [error, setError] = useState<string | null>(null);
@@ -30,20 +32,20 @@ export function UsersManager({ users, currentUserId }: { users: StaffUser[]; cur
     startTransition(async () => {
       const res = await createStaffUserAction(form);
       if (res.ok) {
-        setOkMsg("Compte créé ✓");
+        setOkMsg(t("admin.usersManager.accountCreated"));
         setForm({ email: "", name: "", password: "", role: "confirmateur", city: "" });
         router.refresh();
       } else {
-        setError(res.error ?? "Erreur.");
+        setError(res.error ?? t("admin.usersManager.error"));
       }
     });
   }
 
   function remove(id: string, label: string) {
-    if (!confirm(`Supprimer le compte ${label} ?`)) return;
+    if (!confirm(t("admin.usersManager.deleteConfirm", { label }))) return;
     startTransition(async () => {
       const res = await deleteStaffUserAction(id);
-      if (!res.ok) setError(res.error ?? "Erreur.");
+      if (!res.ok) setError(res.error ?? t("admin.usersManager.error"));
       else router.refresh();
     });
   }
@@ -68,7 +70,7 @@ export function UsersManager({ users, currentUserId }: { users: StaffUser[]; cur
         setEditing(null);
         router.refresh();
       } else {
-        setEError(res.error ?? "Erreur.");
+        setEError(res.error ?? t("admin.usersManager.error"));
       }
     });
   }
@@ -84,7 +86,7 @@ export function UsersManager({ users, currentUserId }: { users: StaffUser[]; cur
         className="h-fit rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
       >
         <h2 className="flex items-center gap-2 font-display font-bold text-ink">
-          <UserPlus className="h-5 w-5 text-brand-500" /> Nouveau membre
+          <UserPlus className="h-5 w-5 text-brand-500" /> {t("admin.usersManager.newMember")}
         </h2>
 
         {error && (
@@ -94,41 +96,41 @@ export function UsersManager({ users, currentUserId }: { users: StaffUser[]; cur
           <div className="mt-3 rounded-xl bg-emerald-50 px-3 py-2 text-sm text-emerald-700">{okMsg}</div>
         )}
 
-        <label className="mt-4 block text-sm font-medium text-ink">Rôle</label>
+        <label className="mt-4 block text-sm font-medium text-ink">{t("admin.usersManager.roleLabel")}</label>
         <select
           value={form.role}
           onChange={(e) => setForm({ ...form, role: e.target.value })}
           className={`${input} mt-1`}
         >
-          <option value="confirmateur">Confirmateur (confirme les commandes)</option>
-          <option value="plombier">Plombier (installe les filtres)</option>
-          <option value="admin">Administrateur (accès total)</option>
+          <option value="confirmateur">{t("admin.usersManager.roleOption.confirmateur")}</option>
+          <option value="plombier">{t("admin.usersManager.roleOption.technicien")}</option>
+          <option value="admin">{t("admin.usersManager.roleOption.admin")}</option>
         </select>
 
-        <label className="mt-3 block text-sm font-medium text-ink">Nom</label>
+        <label className="mt-3 block text-sm font-medium text-ink">{t("admin.usersManager.nameLabel")}</label>
         <input
           value={form.name}
           onChange={(e) => setForm({ ...form, name: e.target.value })}
           className={`${input} mt-1`}
-          placeholder="Ex : Youssef"
+          placeholder={t("admin.usersManager.namePlaceholder")}
         />
 
         {form.role === "plombier" && (
           <>
-            <label className="mt-3 block text-sm font-medium text-ink">Ville / zone</label>
+            <label className="mt-3 block text-sm font-medium text-ink">{t("admin.usersManager.cityLabel")}</label>
             <input
               value={form.city}
               onChange={(e) => setForm({ ...form, city: e.target.value })}
               className={`${input} mt-1`}
-              placeholder="Ex : Agadir"
+              placeholder={t("admin.usersManager.cityPlaceholder")}
             />
             <p className="mt-1 text-xs text-ink-soft">
-              Sert à proposer ce plombier pour les commandes de cette ville.
+              {t("admin.usersManager.cityHelp")}
             </p>
           </>
         )}
 
-        <label className="mt-3 block text-sm font-medium text-ink">Email (identifiant)</label>
+        <label className="mt-3 block text-sm font-medium text-ink">{t("admin.usersManager.emailLabel")}</label>
         <input
           type="email"
           required
@@ -138,17 +140,17 @@ export function UsersManager({ users, currentUserId }: { users: StaffUser[]; cur
           placeholder="nom@exemple.com"
         />
 
-        <label className="mt-3 block text-sm font-medium text-ink">Mot de passe</label>
+        <label className="mt-3 block text-sm font-medium text-ink">{t("admin.usersManager.passwordLabel")}</label>
         <input
           type="text"
           required
           value={form.password}
           onChange={(e) => setForm({ ...form, password: e.target.value })}
           className={`${input} mt-1`}
-          placeholder="8 caractères minimum"
+          placeholder={t("admin.usersManager.passwordPlaceholder")}
         />
         <p className="mt-1 text-xs text-ink-soft">
-          Communiquez ce mot de passe à la personne — elle se connecte avec son email.
+          {t("admin.usersManager.passwordHelp")}
         </p>
 
         <button
@@ -156,14 +158,14 @@ export function UsersManager({ users, currentUserId }: { users: StaffUser[]; cur
           disabled={pending}
           className="mt-4 w-full rounded-full bg-brand-600 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700 disabled:opacity-60"
         >
-          {pending ? "Création…" : "Créer le compte"}
+          {pending ? t("admin.usersManager.creating") : t("admin.usersManager.createAccount")}
         </button>
       </form>
 
       {/* List */}
       <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
         <h2 className="border-b border-slate-200 px-5 py-4 font-display font-bold text-ink">
-          Équipe ({users.length})
+          {t("admin.usersManager.team", { count: users.length })}
         </h2>
         <div className="divide-y divide-slate-100">
           {users.map((u) => {
@@ -181,7 +183,7 @@ export function UsersManager({ users, currentUserId }: { users: StaffUser[]; cur
                   <p className="font-medium text-ink">
                     {u.name || u.email}
                     {u.id === currentUserId && (
-                      <span className="ms-2 text-xs font-normal text-ink-soft">(vous)</span>
+                      <span className="ms-2 text-xs font-normal text-ink-soft">{t("admin.usersManager.you")}</span>
                     )}
                   </p>
                   <p className="truncate text-xs text-ink-soft">
@@ -190,13 +192,13 @@ export function UsersManager({ users, currentUserId }: { users: StaffUser[]; cur
                   </p>
                 </div>
                 <span className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-semibold ${meta.className}`}>
-                  {meta.label}
+                  {t(meta.labelKey)}
                 </span>
                 <button
                   onClick={(e) => { e.stopPropagation(); openEdit(u); }}
                   disabled={pending}
                   className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-ink-soft transition hover:bg-brand-50 hover:text-brand-600 disabled:opacity-50"
-                  aria-label="Modifier"
+                  aria-label={t("admin.usersManager.edit")}
                 >
                   <Pencil className="h-4 w-4" />
                 </button>
@@ -205,7 +207,7 @@ export function UsersManager({ users, currentUserId }: { users: StaffUser[]; cur
                     onClick={(e) => { e.stopPropagation(); remove(u.id, u.name || u.email); }}
                     disabled={pending}
                     className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-ink-soft transition hover:bg-rose-50 hover:text-rose-600 disabled:opacity-50"
-                    aria-label="Supprimer"
+                    aria-label={t("admin.usersManager.delete")}
                   >
                     <Trash2 className="h-4 w-4" />
                   </button>
@@ -227,7 +229,7 @@ export function UsersManager({ users, currentUserId }: { users: StaffUser[]; cur
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mb-3 flex items-center justify-between">
-              <h3 className="font-display font-bold text-ink">Modifier le membre</h3>
+              <h3 className="font-display font-bold text-ink">{t("admin.usersManager.editMember")}</h3>
               <button onClick={() => setEditing(null)} className="text-ink-soft hover:text-ink">
                 <X className="h-5 w-5" />
               </button>
@@ -236,24 +238,24 @@ export function UsersManager({ users, currentUserId }: { users: StaffUser[]; cur
               <div className="mb-3 rounded-xl bg-rose-50 px-3 py-2 text-sm text-rose-600">{eError}</div>
             )}
 
-            <label className="block text-sm font-medium text-ink">Rôle</label>
+            <label className="block text-sm font-medium text-ink">{t("admin.usersManager.roleLabel")}</label>
             <select
               value={eForm.role}
               onChange={(e) => setEForm({ ...eForm, role: e.target.value })}
               disabled={editing.id === currentUserId}
               className={`${input} mt-1 disabled:opacity-60`}
             >
-              <option value="confirmateur">Confirmateur</option>
-              <option value="plombier">Plombier</option>
-              <option value="admin">Administrateur</option>
+              <option value="confirmateur">{t("admin.usersManager.role.confirmateur")}</option>
+              <option value="plombier">{t("admin.usersManager.role.technicien")}</option>
+              <option value="admin">{t("admin.usersManager.role.admin")}</option>
             </select>
             {editing.id === currentUserId && (
               <p className="mt-1 text-xs text-ink-soft">
-                Vous ne pouvez pas changer votre propre rôle.
+                {t("admin.usersManager.cannotChangeOwnRole")}
               </p>
             )}
 
-            <label className="mt-3 block text-sm font-medium text-ink">Nom</label>
+            <label className="mt-3 block text-sm font-medium text-ink">{t("admin.usersManager.nameLabel")}</label>
             <input
               value={eForm.name}
               onChange={(e) => setEForm({ ...eForm, name: e.target.value })}
@@ -262,17 +264,17 @@ export function UsersManager({ users, currentUserId }: { users: StaffUser[]; cur
 
             {eForm.role === "plombier" && (
               <>
-                <label className="mt-3 block text-sm font-medium text-ink">Ville / zone</label>
+                <label className="mt-3 block text-sm font-medium text-ink">{t("admin.usersManager.cityLabel")}</label>
                 <input
                   value={eForm.city}
                   onChange={(e) => setEForm({ ...eForm, city: e.target.value })}
                   className={`${input} mt-1`}
-                  placeholder="Ex : Agadir"
+                  placeholder={t("admin.usersManager.cityPlaceholder")}
                 />
               </>
             )}
 
-            <label className="mt-3 block text-sm font-medium text-ink">Email (identifiant)</label>
+            <label className="mt-3 block text-sm font-medium text-ink">{t("admin.usersManager.emailLabel")}</label>
             <input
               type="email"
               value={eForm.email}
@@ -280,12 +282,12 @@ export function UsersManager({ users, currentUserId }: { users: StaffUser[]; cur
               className={`${input} mt-1`}
             />
 
-            <label className="mt-3 block text-sm font-medium text-ink">Nouveau mot de passe</label>
+            <label className="mt-3 block text-sm font-medium text-ink">{t("admin.usersManager.newPasswordLabel")}</label>
             <input
               type="text"
               value={eForm.password}
               onChange={(e) => setEForm({ ...eForm, password: e.target.value })}
-              placeholder="Laisser vide pour ne pas changer"
+              placeholder={t("admin.usersManager.newPasswordPlaceholder")}
               className={`${input} mt-1`}
             />
 
@@ -294,14 +296,14 @@ export function UsersManager({ users, currentUserId }: { users: StaffUser[]; cur
                 onClick={() => setEditing(null)}
                 className="flex-1 rounded-full border border-slate-200 py-2.5 text-sm font-semibold text-ink-soft transition hover:bg-slate-50"
               >
-                Annuler
+                {t("admin.usersManager.cancel")}
               </button>
               <button
                 onClick={saveEdit}
                 disabled={pending}
                 className="flex-1 rounded-full bg-brand-600 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700 disabled:opacity-60"
               >
-                {pending ? "Enregistrement…" : "Enregistrer"}
+                {pending ? t("admin.usersManager.saving") : t("admin.usersManager.save")}
               </button>
             </div>
           </div>

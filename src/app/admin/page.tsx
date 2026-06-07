@@ -18,10 +18,12 @@ import {
 import { StatusBadge } from "@/components/admin/status-badge";
 import { STATUS_META, STATUS_ORDER } from "@/lib/order-status";
 import { formatMAD } from "@/lib/utils";
+import { getT } from "@/i18n/server";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminDashboard() {
+  const { t } = await getT();
   const {
     total: totalOrders,
     pending,
@@ -37,8 +39,10 @@ export default async function AdminDashboard() {
   const maxRev = Math.max(...trend7d.map((d) => d.revenue), 0);
   const ordersHint =
     ordersMoMPct !== null
-      ? `${ordersMoMPct >= 0 ? "+" : ""}${ordersMoMPct}% ce mois`
-      : `${ordersThisMonth} ce mois-ci`;
+      ? t("admin.dash.ordersHintMoM", {
+          pct: `${ordersMoMPct >= 0 ? "+" : ""}${ordersMoMPct}`,
+        })
+      : t("admin.dash.ordersHintMonth", { n: ordersThisMonth });
   const maintenanceDue = await getMaintenanceDue();
   const [lowStock, topSellers] = await Promise.all([
     getLowStockProducts(5, 6),
@@ -47,32 +51,32 @@ export default async function AdminDashboard() {
 
   const stats = [
     {
-      label: "Commandes",
+      label: t("admin.dash.statOrders"),
       value: String(totalOrders),
       icon: ShoppingBag,
       tone: "bg-brand-50 text-brand-600",
       hint: ordersHint,
     },
     {
-      label: "À confirmer",
+      label: t("admin.dash.statToConfirm"),
       value: String(pending),
       icon: Clock,
       tone: "bg-amber-50 text-amber-600",
-      hint: "Appels en attente",
+      hint: t("admin.dash.statToConfirmHint"),
     },
     {
-      label: "Chiffre d'affaires",
+      label: t("admin.dash.statRevenue"),
       value: formatMAD(revenue),
       icon: Banknote,
       tone: "bg-emerald-50 text-emerald-600",
-      hint: "Commandes validées",
+      hint: t("admin.dash.statRevenueHint"),
     },
     {
-      label: "Produits",
+      label: t("admin.dash.statProducts"),
       value: String(products),
       icon: Package,
       tone: "bg-indigo-50 text-indigo-600",
-      hint: "En catalogue",
+      hint: t("admin.dash.statProductsHint"),
     },
   ];
 
@@ -82,10 +86,10 @@ export default async function AdminDashboard() {
     <div>
       <div className="mb-6">
         <h1 className="font-display text-2xl font-bold text-ink">
-          Tableau de bord
+          {t("admin.dash.title")}
         </h1>
         <p className="text-sm text-ink-soft">
-          Bonjour 👋 Voici un aperçu de votre boutique aujourd&apos;hui.
+          {t("admin.dash.subtitle")}
         </p>
       </div>
 
@@ -121,10 +125,12 @@ export default async function AdminDashboard() {
           </span>
           <span className="flex-1">
             <span className="block font-display font-bold text-ink">
-              {maintenanceDue.length} entretien{maintenanceDue.length > 1 ? "s" : ""} à prévoir
+              {maintenanceDue.length > 1
+                ? t("admin.dash.maintenanceTitlePlural", { n: maintenanceDue.length })
+                : t("admin.dash.maintenanceTitle", { n: maintenanceDue.length })}
             </span>
             <span className="block text-sm text-ink-soft">
-              Des filtres arrivent à 6 mois — planifiez le passage du plombier.
+              {t("admin.dash.maintenanceDesc")}
             </span>
           </span>
           <ArrowUpRight className="h-5 w-5 text-orange-600" />
@@ -134,12 +140,12 @@ export default async function AdminDashboard() {
       {/* Orders by status */}
       <div className="mt-6">
         <div className="mb-3 flex items-center justify-between">
-          <h2 className="font-display font-bold text-ink">Commandes par statut</h2>
+          <h2 className="font-display font-bold text-ink">{t("admin.dash.ordersByStatus")}</h2>
           <Link
             href="/admin/orders"
             className="flex items-center gap-1 text-sm font-semibold text-brand-600 hover:text-brand-700"
           >
-            Tout voir <ArrowUpRight className="h-4 w-4" />
+            {t("admin.dash.seeAll")} <ArrowUpRight className="h-4 w-4" />
           </Link>
         </div>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-6">
@@ -170,22 +176,22 @@ export default async function AdminDashboard() {
         {/* Recent orders */}
         <div className="rounded-2xl border border-slate-200 bg-white shadow-sm">
           <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4">
-            <h2 className="font-display font-bold text-ink">Commandes récentes</h2>
+            <h2 className="font-display font-bold text-ink">{t("admin.dash.recentOrders")}</h2>
             <Link
               href="/admin/orders"
               className="flex items-center gap-1 text-sm font-semibold text-brand-600 hover:text-brand-700"
             >
-              Tout voir <ArrowUpRight className="h-4 w-4" />
+              {t("admin.dash.seeAll")} <ArrowUpRight className="h-4 w-4" />
             </Link>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
               <thead>
                 <tr className="text-xs uppercase tracking-wide text-ink-soft">
-                  <th className="px-5 py-3 font-semibold">Commande</th>
-                  <th className="px-5 py-3 font-semibold">Client</th>
-                  <th className="px-5 py-3 font-semibold">Total</th>
-                  <th className="px-5 py-3 font-semibold">Statut</th>
+                  <th className="px-5 py-3 font-semibold">{t("admin.dash.thOrder")}</th>
+                  <th className="px-5 py-3 font-semibold">{t("admin.dash.thCustomer")}</th>
+                  <th className="px-5 py-3 font-semibold">{t("admin.dash.thTotal")}</th>
+                  <th className="px-5 py-3 font-semibold">{t("admin.dash.thStatus")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -224,7 +230,7 @@ export default async function AdminDashboard() {
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2">
               <TrendingUp className="h-5 w-5 text-brand-500" />
-              <h2 className="font-display font-bold text-ink">Ventes (7 jours)</h2>
+              <h2 className="font-display font-bold text-ink">{t("admin.dash.weeklySales")}</h2>
             </div>
             <span className="font-display text-sm font-bold text-ink">
               {formatMAD(weekTotal)}
@@ -232,7 +238,7 @@ export default async function AdminDashboard() {
           </div>
           {weekTotal === 0 ? (
             <p className="py-16 text-center text-sm text-ink-soft">
-              Aucune vente sur les 7 derniers jours.
+              {t("admin.dash.noSales7d")}
             </p>
           ) : (
             <div className="mt-6 flex h-44 items-end justify-between gap-2">
@@ -265,18 +271,18 @@ export default async function AdminDashboard() {
               <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-50 text-amber-600">
                 <Package className="h-4 w-4" />
               </span>
-              <h2 className="font-display font-bold text-ink">Stock faible</h2>
+              <h2 className="font-display font-bold text-ink">{t("admin.dash.lowStock")}</h2>
             </div>
             <Link
               href="/admin/products"
               className="text-sm font-semibold text-brand-600 hover:text-brand-700"
             >
-              Gérer l&apos;inventaire
+              {t("admin.dash.manageInventory")}
             </Link>
           </div>
           {lowStock.length === 0 ? (
             <p className="px-5 py-12 text-center text-sm text-ink-soft">
-              Tout est bien approvisionné ✅
+              {t("admin.dash.stockOk")}
             </p>
           ) : (
             <div className="divide-y divide-slate-100">
@@ -302,7 +308,9 @@ export default async function AdminDashboard() {
                         : "bg-amber-50 text-amber-700"
                     }`}
                   >
-                    {p.stock} restant{p.stock > 1 ? "s" : ""}
+                    {p.stock > 1
+                      ? t("admin.dash.stockRemainingPlural", { n: p.stock })
+                      : t("admin.dash.stockRemaining", { n: p.stock })}
                   </span>
                 </Link>
               ))}
@@ -317,18 +325,18 @@ export default async function AdminDashboard() {
               <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-50 text-brand-600">
                 <TrendingUp className="h-4 w-4" />
               </span>
-              <h2 className="font-display font-bold text-ink">Meilleures ventes</h2>
+              <h2 className="font-display font-bold text-ink">{t("admin.dash.topSellers")}</h2>
             </div>
             <Link
               href="/admin/products"
               className="text-sm font-semibold text-brand-600 hover:text-brand-700"
             >
-              Produits
+              {t("admin.dash.products")}
             </Link>
           </div>
           {topSellers.length === 0 ? (
             <p className="px-5 py-12 text-center text-sm text-ink-soft">
-              Aucune vente pour l&apos;instant.
+              {t("admin.dash.noSalesYet")}
             </p>
           ) : (
             <div className="space-y-4 px-5 py-5">
@@ -342,7 +350,9 @@ export default async function AdminDashboard() {
                         <span className="text-ink-soft">{i + 1}.</span> {p.name}
                       </span>
                       <span className="shrink-0 text-xs font-semibold text-ink-soft">
-                        {p.units} unité{p.units > 1 ? "s" : ""}
+                        {p.units > 1
+                          ? t("admin.dash.unitsPlural", { n: p.units })
+                          : t("admin.dash.units", { n: p.units })}
                       </span>
                     </div>
                     <div className="h-2 w-full overflow-hidden rounded-full bg-slate-100">

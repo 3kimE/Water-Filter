@@ -2,6 +2,7 @@ import { Phone, MessageCircle, MessageSquare, Check } from "lucide-react";
 import { getMessages } from "@/lib/data";
 import { markMessageReadAction } from "@/lib/contact-actions";
 import { formatDate } from "@/lib/utils";
+import { getT } from "@/i18n/server";
 
 export const dynamic = "force-dynamic";
 
@@ -14,18 +15,19 @@ function waNumber(phone: string): string {
 }
 
 export default async function AdminMessagesPage() {
+  const { t } = await getT();
   const messages = await getMessages();
   const unread = messages.filter((m) => !m.read).length;
 
   return (
     <div>
       <div className="mb-6">
-        <h1 className="font-display text-2xl font-bold text-ink">Messages</h1>
+        <h1 className="font-display text-2xl font-bold text-ink">{t("admin.messages.title")}</h1>
         <p className="text-sm text-ink-soft">
-          Messages reçus depuis le formulaire de contact
+          {t("admin.messages.subtitle")}
           {unread > 0 && (
             <span className="ms-2 inline-flex items-center rounded-full bg-brand-100 px-2 py-0.5 text-xs font-bold text-brand-700">
-              {unread} non lu{unread > 1 ? "s" : ""}
+              {t(unread > 1 ? "admin.messages.unreadBadge.plural" : "admin.messages.unreadBadge.one", { count: unread })}
             </span>
           )}
         </p>
@@ -37,10 +39,10 @@ export default async function AdminMessagesPage() {
             <MessageSquare className="h-7 w-7" />
           </div>
           <p className="mt-4 font-display text-lg font-semibold text-ink">
-            Aucun message
+            {t("admin.messages.empty.title")}
           </p>
           <p className="mt-1 text-sm text-ink-soft">
-            Les messages envoyés via la page Contact apparaîtront ici.
+            {t("admin.messages.empty.body")}
           </p>
         </div>
       ) : (
@@ -92,7 +94,7 @@ export default async function AdminMessagesPage() {
                   href={`tel:${m.phone.replace(/\s/g, "")}`}
                   className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-ink-soft transition hover:bg-slate-50"
                 >
-                  <Phone className="h-4 w-4" /> Appeler
+                  <Phone className="h-4 w-4" /> {t("admin.messages.call")}
                 </a>
                 {!m.read && (
                   <form action={markMessageReadAction.bind(null, m.id)} className="ms-auto">
@@ -100,7 +102,7 @@ export default async function AdminMessagesPage() {
                       type="submit"
                       className="inline-flex items-center gap-1.5 rounded-full border border-brand-200 bg-white px-4 py-2 text-sm font-semibold text-brand-700 transition hover:bg-brand-50"
                     >
-                      <Check className="h-4 w-4" /> Marquer comme lu
+                      <Check className="h-4 w-4" /> {t("admin.messages.markRead")}
                     </button>
                   </form>
                 )}
