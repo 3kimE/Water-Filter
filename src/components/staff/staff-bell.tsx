@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from "react";
 import { Bell } from "lucide-react";
 import { fetchStaffNotificationsAction } from "@/lib/notifications-actions";
 import type { StaffNotif } from "@/lib/data";
+import { useI18n } from "@/i18n/i18n-context";
 
 export function StaffBell({
   area,
@@ -13,6 +14,7 @@ export function StaffBell({
   area: "confirmation" | "plombier";
   initial: StaffNotif;
 }) {
+  const { t } = useI18n();
   const [notif, setNotif] = useState<StaffNotif>(initial);
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -33,14 +35,14 @@ export function StaffBell({
     return () => document.removeEventListener("mousedown", onClick);
   }, []);
 
-  const label = area === "confirmation" ? "Commandes à confirmer" : "Installations à faire";
+  const label = area === "confirmation" ? t("staff.bell.ordersToConfirm") : t("staff.bell.installationsToDo");
 
   return (
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen((v) => !v)}
         className="relative flex h-10 w-10 items-center justify-center rounded-full text-ink hover:bg-neutral-100"
-        aria-label="Notifications"
+        aria-label={t("staff.bell.notificationsAria")}
       >
         <Bell className="h-5 w-5" />
         {notif.count > 0 && (
@@ -55,7 +57,7 @@ export function StaffBell({
           <div className="border-b border-line px-4 py-3 font-display font-semibold text-ink">{label}</div>
           <div className="max-h-96 overflow-y-auto">
             {notif.items.length === 0 ? (
-              <div className="px-4 py-10 text-center text-sm text-ink-soft">Rien pour le moment 🎉</div>
+              <div className="px-4 py-10 text-center text-sm text-ink-soft">{t("staff.bell.empty")}</div>
             ) : (
               notif.items.map((it) => (
                 <Link

@@ -292,6 +292,88 @@ export const DICT: Record<string, Record<Locale, string>> = {
 
   "tech.space": { fr: "Espace Technicien", ar: "مساحة الفني", en: "Technician area" },
   "tech.title": { fr: "Mes installations", ar: "تركيباتي", en: "My installations" },
+  "tech.empty.title": { fr: "Aucune installation pour le moment", ar: "لا توجد تركيبات حالياً", en: "No installations yet" },
+  "tech.empty.subtitle": { fr: "Vous serez notifié dès qu'une installation vous est assignée.", ar: "سيتم إشعارك فور إسناد تركيب إليك.", en: "You'll be notified as soon as an installation is assigned to you." },
+
+  // ---- confirmation board ----
+  "conf.board.noTechnicianWarning": { fr: "Aucun technicien configuré. Les commandes seront confirmées mais pas assignées — demandez à l'administrateur de créer un compte technicien.", ar: "لم يتم إعداد أي فني. سيتم تأكيد الطلبات دون إسنادها — اطلب من المدير إنشاء حساب فني.", en: "No technician configured. Orders will be confirmed but not assigned — ask the administrator to create a technician account." },
+  "conf.board.searchPlaceholder": { fr: "Rechercher (nom, téléphone, n° de commande)…", ar: "بحث (الاسم، الهاتف، رقم الطلب)…", en: "Search (name, phone, order no.)…" },
+  "conf.board.emptyTitle": { fr: "Aucune commande à confirmer", ar: "لا توجد طلبات للتأكيد", en: "No orders to confirm" },
+  "conf.board.noResultsTitle": { fr: "Aucun résultat", ar: "لا توجد نتائج", en: "No results" },
+  "conf.board.emptyHint": { fr: "Les nouvelles commandes apparaîtront ici.", ar: "ستظهر الطلبات الجديدة هنا.", en: "New orders will appear here." },
+  "conf.board.noResultsHint": { fr: "Essayez un autre mot-clé.", ar: "جرّب كلمة مفتاحية أخرى.", en: "Try another keyword." },
+  "conf.board.confirmedUpcoming": { fr: "Confirmées · à venir ({count})", ar: "مؤكدة · قادمة ({count})", en: "Confirmed · upcoming ({count})" },
+
+  // ---- confirm-order card ----
+  "conf.card.errNoDate": { fr: "Choisissez une date d'installation.", ar: "اختر تاريخ التركيب.", en: "Choose an installation date." },
+  "conf.card.errNoTechnician": { fr: "Choisissez un technicien.", ar: "اختر فنيًا.", en: "Choose a technician." },
+  "conf.card.errGeneric": { fr: "Erreur.", ar: "خطأ.", en: "Error." },
+  "conf.card.statusToConfirm": { fr: "À confirmer", ar: "بانتظار التأكيد", en: "To confirm" },
+  "conf.card.sourcePhone": { fr: "téléphone", ar: "هاتف", en: "phone" },
+  "conf.card.requestedProducts": { fr: "Produits demandés", ar: "المنتجات المطلوبة", en: "Requested products" },
+  "conf.card.totalAmount": { fr: "Montant total", ar: "المبلغ الإجمالي", en: "Total amount" },
+  "conf.card.call": { fr: "Appeler", ar: "اتصال", en: "Call" },
+  "conf.card.processingTitle": { fr: "Traitement de la commande", ar: "معالجة الطلب", en: "Order processing" },
+  "conf.card.assignedTechnician": { fr: "Technicien assigné", ar: "الفني المكلَّف", en: "Assigned technician" },
+  "conf.card.plannedInstallDate": { fr: "Date d'installation prévue", ar: "تاريخ التركيب المقرَّر", en: "Planned installation date" },
+  "conf.card.notePlaceholder": { fr: "Note (optionnel) — ex : livrer le matin", ar: "ملاحظة (اختياري) — مثال: التسليم صباحًا", en: "Note (optional) — e.g. deliver in the morning" },
+  "conf.card.toCallBack": { fr: "À rappeler", ar: "معاودة الاتصال", en: "Call back" },
+  "conf.card.noAnswer": { fr: "Pas de réponse", ar: "لا يوجد رد", en: "No answer" },
+  "conf.card.cancel": { fr: "Annuler", ar: "إلغاء", en: "Cancel" },
+  "conf.card.confirmAndSchedule": { fr: "Confirmer & planifier", ar: "تأكيد وجدولة", en: "Confirm & schedule" },
+
+  // ---- confirmed-order card ----
+  "conf.confirmed.toSchedule": { fr: "À planifier", ar: "للتحديد", en: "To schedule" },
+  "conf.confirmed.cancelConfirm": { fr: "Annuler la commande {id} ?", ar: "إلغاء الطلب {id}؟", en: "Cancel order {id}?" },
+  "conf.confirmed.genericError": { fr: "Erreur.", ar: "خطأ.", en: "Error." },
+  "conf.confirmed.call": { fr: "Appeler", ar: "اتصال", en: "Call" },
+  "conf.confirmed.cancelling": { fr: "Annulation…", ar: "جارٍ الإلغاء…", en: "Cancelling…" },
+  "conf.confirmed.cancelOrder": { fr: "Annuler la commande", ar: "إلغاء الطلب", en: "Cancel order" },
+
+  // ---- phone-order form ----
+  "conf.phone.errorNoProduct": { fr: "Ajoutez au moins un produit.", ar: "أضف منتجاً واحداً على الأقل.", en: "Add at least one product." },
+  "conf.phone.orderCreated": { fr: "Commande {id} créée — elle apparaît dans la liste à confirmer.", ar: "تم إنشاء الطلب {id} — يظهر في قائمة الطلبات المراد تأكيدها.", en: "Order {id} created — it appears in the list to confirm." },
+  "conf.phone.errorGeneric": { fr: "Erreur.", ar: "خطأ.", en: "Error." },
+  "conf.phone.addOrderButton": { fr: "Ajouter une commande (téléphone)", ar: "إضافة طلب (هاتف)", en: "Add an order (phone)" },
+  "conf.phone.title": { fr: "Commande par téléphone", ar: "طلب عبر الهاتف", en: "Phone order" },
+  "conf.phone.customerNamePlaceholder": { fr: "Nom du client", ar: "اسم الزبون", en: "Customer name" },
+  "conf.phone.phonePlaceholder": { fr: "Téléphone (0XXXXXXXXX)", ar: "الهاتف (0XXXXXXXXX)", en: "Phone (0XXXXXXXXX)" },
+  "conf.phone.cityPlaceholder": { fr: "Ville", ar: "المدينة", en: "City" },
+  "conf.phone.addressPlaceholder": { fr: "Adresse", ar: "العنوان", en: "Address" },
+  "conf.phone.notePlaceholder": { fr: "Note (optionnel)", ar: "ملاحظة (اختياري)", en: "Note (optional)" },
+  "conf.phone.productsLabel": { fr: "Produits", ar: "المنتجات", en: "Products" },
+  "conf.phone.productOptionPlaceholder": { fr: "— produit —", ar: "— منتج —", en: "— product —" },
+  "conf.phone.addProductButton": { fr: "Ajouter un produit", ar: "إضافة منتج", en: "Add a product" },
+  "conf.phone.subtotalLabel": { fr: "Sous-total produits :", ar: "المجموع الفرعي للمنتجات:", en: "Products subtotal:" },
+  "conf.phone.deliveryNote": { fr: "Livraison calculée automatiquement.", ar: "يتم احتساب التوصيل تلقائياً.", en: "Delivery calculated automatically." },
+  "conf.phone.submitting": { fr: "Création…", ar: "جارٍ الإنشاء…", en: "Creating…" },
+  "conf.phone.submitButton": { fr: "Créer la commande", ar: "إنشاء الطلب", en: "Create order" },
+
+  // ---- technician job card ----
+  "tech.job.toSchedule": { fr: "À planifier", ar: "بانتظار الجدولة", en: "To schedule" },
+  "tech.job.maintenance": { fr: "Entretien", ar: "صيانة", en: "Maintenance" },
+  "tech.job.products": { fr: "Produits", ar: "المنتجات", en: "Products" },
+  "tech.job.navigate": { fr: "Naviguer", ar: "التنقل", en: "Navigate" },
+  "tech.job.call": { fr: "Appeler", ar: "اتصال", en: "Call" },
+  "tech.job.stepEnroute": { fr: "En route", ar: "في الطريق", en: "On the way" },
+  "tech.job.stepArrived": { fr: "Arrivé", ar: "وصل", en: "Arrived" },
+  "tech.job.stepDone": { fr: "Terminé", ar: "منتهي", en: "Done" },
+  "tech.job.imEnroute": { fr: "Je suis en route", ar: "أنا في الطريق", en: "I'm on the way" },
+  "tech.job.imArrived": { fr: "Je suis arrivé", ar: "لقد وصلت", en: "I've arrived" },
+
+  // ---- complete-job form ----
+  "tech.complete.errorNoPhoto": { fr: "Ajoutez une photo de l'installation terminée.", ar: "أضف صورة للتركيب المنجز.", en: "Add a photo of the completed installation." },
+  "tech.complete.errorGeneric": { fr: "Erreur.", ar: "خطأ.", en: "Error." },
+  "tech.complete.changePhoto": { fr: "Changer la photo", ar: "تغيير الصورة", en: "Change photo" },
+  "tech.complete.installationPhoto": { fr: "Photo de l'installation", ar: "صورة التركيب", en: "Installation photo" },
+  "tech.complete.sending": { fr: "Envoi…", ar: "جارٍ الإرسال…", en: "Sending…" },
+  "tech.complete.markInstalled": { fr: "Marquer comme installé", ar: "وضع علامة كمُركَّب", en: "Mark as installed" },
+
+  // ---- staff notifications bell ----
+  "staff.bell.ordersToConfirm": { fr: "Commandes à confirmer", ar: "طلبات بانتظار التأكيد", en: "Orders to confirm" },
+  "staff.bell.installationsToDo": { fr: "Installations à faire", ar: "عمليات تركيب يجب إنجازها", en: "Installations to do" },
+  "staff.bell.notificationsAria": { fr: "Notifications", ar: "الإشعارات", en: "Notifications" },
+  "staff.bell.empty": { fr: "Rien pour le moment 🎉", ar: "لا شيء حتى الآن 🎉", en: "Nothing for now 🎉" },
 };
 
 /** Translate a key for a locale, with {var} interpolation. */

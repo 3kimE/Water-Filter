@@ -2,11 +2,13 @@ import { Wrench } from "lucide-react";
 import { getSession } from "@/lib/auth";
 import { getPlombierJobs, getActiveInstalls } from "@/lib/data";
 import { PlombierJobCard } from "@/components/staff/plombier-job-card";
+import { getT } from "@/i18n/server";
 
 export const dynamic = "force-dynamic";
 
 export default async function PlombierPage() {
   const session = await getSession();
+  const { t } = await getT();
   // The plombier sees only his own jobs; the admin sees every active install.
   const jobs =
     session?.role === "plombier" && session?.email
@@ -20,10 +22,10 @@ export default async function PlombierPage() {
           <Wrench className="h-7 w-7" />
         </div>
         <p className="mt-4 font-display text-lg font-semibold text-ink">
-          Aucune installation pour le moment
+          {t("tech.empty.title")}
         </p>
         <p className="mt-1 text-sm text-ink-soft">
-          Vous serez notifié dès qu&apos;une installation vous est assignée.
+          {t("tech.empty.subtitle")}
         </p>
       </div>
     );

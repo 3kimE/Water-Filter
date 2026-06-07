@@ -6,6 +6,7 @@ import { ConfirmOrderCard } from "./confirm-order-card";
 import { ConfirmedOrderCard } from "./confirmed-order-card";
 import { PhoneOrderForm } from "./phone-order-form";
 import type { Order } from "@/lib/types";
+import { useI18n } from "@/i18n/i18n-context";
 
 type PickItem = { id: string; name: string; price: number };
 
@@ -32,6 +33,7 @@ export function ConfirmationBoard({
   hasPlombier: boolean;
 }) {
   const [q, setQ] = useState("");
+  const { t } = useI18n();
   const s = q.trim().toLowerCase();
   const filtered = orders.filter((o) => matches(o, s));
   const filteredConfirmed = confirmed.filter((o) => matches(o, s));
@@ -41,8 +43,7 @@ export function ConfirmationBoard({
       {!hasPlombier && (
         <div className="flex items-center gap-2 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
           <AlertTriangle className="h-5 w-5 shrink-0" />
-          Aucun plombier configuré. Les commandes seront confirmées mais pas assignées — demandez à
-          l&apos;administrateur de créer un compte plombier.
+          {t("conf.board.noTechnicianWarning")}
         </div>
       )}
 
@@ -53,7 +54,7 @@ export function ConfirmationBoard({
         <input
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder="Rechercher (nom, téléphone, n° de commande)…"
+          placeholder={t("conf.board.searchPlaceholder")}
           className="h-12 w-full rounded-xl border border-slate-200 bg-white ps-10 pe-4 text-sm outline-none focus:border-brand-300 focus:ring-4 focus:ring-brand-100"
         />
       </div>
@@ -64,12 +65,12 @@ export function ConfirmationBoard({
             <Inbox className="h-7 w-7" />
           </div>
           <p className="mt-4 font-display text-lg font-semibold text-ink">
-            {orders.length === 0 ? "Aucune commande à confirmer" : "Aucun résultat"}
+            {orders.length === 0 ? t("conf.board.emptyTitle") : t("conf.board.noResultsTitle")}
           </p>
           <p className="mt-1 text-sm text-ink-soft">
             {orders.length === 0
-              ? "Les nouvelles commandes apparaîtront ici."
-              : "Essayez un autre mot-clé."}
+              ? t("conf.board.emptyHint")
+              : t("conf.board.noResultsHint")}
           </p>
         </div>
       ) : (
@@ -85,7 +86,7 @@ export function ConfirmationBoard({
         <div className="pt-2">
           <h2 className="mb-3 flex items-center gap-2 font-display font-bold text-ink">
             <CalendarCheck className="h-5 w-5 text-emerald-500" />
-            Confirmées · à venir ({filteredConfirmed.length})
+            {t("conf.board.confirmedUpcoming", { count: filteredConfirmed.length })}
           </h2>
           <div className="grid gap-4 xl:grid-cols-2">
             {filteredConfirmed.map((o) => (

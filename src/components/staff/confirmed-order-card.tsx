@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Phone, MessageCircle, MapPin, CalendarClock, X, User } from "lucide-react";
 import { recordCallOutcomeAction } from "@/lib/order-actions";
 import { formatMAD } from "@/lib/utils";
+import { useI18n } from "@/i18n/i18n-context";
 import type { Order } from "@/lib/types";
 
 function waNumber(phone: string): string {
@@ -14,8 +15,8 @@ function waNumber(phone: string): string {
   return d;
 }
 
-function formatWhen(iso?: string): string {
-  if (!iso) return "À planifier";
+function formatWhen(iso: string | undefined, t: (key: string) => string): string {
+  if (!iso) return t("conf.confirmed.toSchedule");
   return new Date(iso).toLocaleString("fr-MA", {
     weekday: "long",
     day: "numeric",
@@ -30,15 +31,16 @@ export function ConfirmedOrderCard({ order }: { order: Order }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
+  const { t } = useI18n();
   const tel = order.phone.replace(/\s/g, "");
 
   function cancel() {
-    if (!confirm(`Annuler la commande ${order.id} ?`)) return;
+    if (!confirm(t("conf.confirmed.cancelConfirm", { id: order.id }))) return;
     setError(null);
     startTransition(async () => {
       const res = await recordCallOutcomeAction(order.id, "annuler");
       if (res.ok) router.refresh();
-      else setError(res.error ?? "Erreur.");
+      else setError(res.error ?? t("conf.confirmed.genericError"));
     });
   }
 
@@ -52,7 +54,7 @@ export function ConfirmedOrderCard({ order }: { order: Order }) {
       </div>
 
       <p className="mt-2 flex items-center gap-1.5 rounded-xl bg-brand-50 px-3 py-2 text-sm font-medium text-brand-800">
-        <CalendarClock className="h-4 w-4 shrink-0" /> {formatWhen(order.installDate)}
+        <CalendarClock className="h-4 w-4 shrink-0" /> {formatWhen(order.installDate, t)}
       </p>
 
       <div className="mt-3 space-y-1 text-sm">
@@ -81,7 +83,7 @@ export function ConfirmedOrderCard({ order }: { order: Order }) {
           href={`tel:${tel}`}
           className="flex items-center justify-center gap-1.5 rounded-full border border-slate-200 py-2.5 text-sm font-semibold text-ink transition hover:bg-slate-50"
         >
-          <Phone className="h-4 w-4" /> Appeler
+          <Phone className="h-4 w-4" /> {t("conf.confirmed.call")}
         </a>
         <a
           href={`https://wa.me/${waNumber(order.phone)}`}
@@ -98,7 +100,7 @@ export function ConfirmedOrderCard({ order }: { order: Order }) {
         disabled={pending}
         className="mt-2 flex w-full items-center justify-center gap-1.5 rounded-full border border-rose-200 bg-white py-2.5 text-sm font-semibold text-rose-600 transition hover:bg-rose-50 disabled:opacity-60"
       >
-        <X className="h-4 w-4" /> {pending ? "Annulation…" : "Annuler la commande"}
+        <X className="h-4 w-4" /> {pending ? t("conf.confirmed.cancelling") : t("conf.confirmed.cancelOrder")}
       </button>
     </div>
   );

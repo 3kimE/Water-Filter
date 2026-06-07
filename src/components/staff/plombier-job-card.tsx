@@ -15,6 +15,7 @@ import {
 import { setJobStageAction } from "@/lib/order-actions";
 import { CompleteJobForm } from "./complete-job-form";
 import { formatMAD } from "@/lib/utils";
+import { useI18n } from "@/i18n/i18n-context";
 import type { Order } from "@/lib/types";
 
 function waNumber(phone: string): string {
@@ -24,8 +25,8 @@ function waNumber(phone: string): string {
   return d;
 }
 
-function formatWhen(iso?: string): string {
-  if (!iso) return "À planifier";
+function formatWhen(iso: string | undefined, t: (key: string) => string): string {
+  if (!iso) return t("tech.job.toSchedule");
   return new Date(iso).toLocaleString("fr-MA", {
     weekday: "long",
     day: "numeric",
@@ -36,11 +37,12 @@ function formatWhen(iso?: string): string {
   });
 }
 
-const STEPS = ["En route", "Arrivé", "Terminé"] as const;
+const STEP_KEYS = ["tech.job.stepEnroute", "tech.job.stepArrived", "tech.job.stepDone"] as const;
 
 export function PlombierJobCard({ order }: { order: Order }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
+  const { t } = useI18n();
   const tel = order.phone.replace(/\s/g, "");
   const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
     `${order.address}, ${order.city}`,
@@ -61,11 +63,11 @@ export function PlombierJobCard({ order }: { order: Order }) {
       {/* date + type/price */}
       <div className="flex items-center justify-between gap-3">
         <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-50 px-3 py-1.5 text-sm font-semibold text-brand-700">
-          <CalendarClock className="h-4 w-4" /> {formatWhen(order.installDate)}
+          <CalendarClock className="h-4 w-4" /> {formatWhen(order.installDate, t)}
         </span>
         {order.kind === "maintenance" ? (
           <span className="inline-flex items-center gap-1.5 rounded-full bg-orange-100 px-3 py-1 text-xs font-bold text-orange-700">
-            <Wrench className="h-3.5 w-3.5" /> Entretien
+            <Wrench className="h-3.5 w-3.5" /> {t("tech.job.maintenance")}
           </span>
         ) : (
           <span className="font-display text-lg font-extrabold text-brand-700">{formatMAD(order.total)}</span>
@@ -78,7 +80,7 @@ export function PlombierJobCard({ order }: { order: Order }) {
       </p>
 
       <div className="mt-3">
-        <p className="mb-1 text-xs font-medium text-ink-soft">Produits</p>
+        <p className="mb-1 text-xs font-medium text-ink-soft">{t("tech.job.products")}</p>
         <div className="flex flex-wrap gap-1.5">
           {order.items.map((it, i) => (
             <span key={i} className="rounded-lg bg-slate-50 px-2 py-1 text-xs text-ink" dir="auto">
@@ -102,13 +104,13 @@ export function PlombierJobCard({ order }: { order: Order }) {
           rel="noopener noreferrer"
           className="flex items-center justify-center gap-1.5 rounded-full bg-brand-600 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700"
         >
-          <Navigation className="h-4 w-4" /> Naviguer
+          <Navigation className="h-4 w-4" /> {t("tech.job.navigate")}
         </a>
         <a
           href={`tel:${tel}`}
           className="flex items-center justify-center gap-1.5 rounded-full border border-slate-200 py-2.5 text-sm font-semibold text-ink transition hover:bg-slate-50"
         >
-          <Phone className="h-4 w-4" /> Appeler
+          <Phone className="h-4 w-4" /> {t("tech.job.call")}
         </a>
         <a
           href={`https://wa.me/${waNumber(order.phone)}`}
@@ -122,7 +124,7 @@ export function PlombierJobCard({ order }: { order: Order }) {
 
       {/* progress stepper */}
       <div className="mt-5 flex items-center">
-        {STEPS.map((label, i) => {
+        {STEP_KEYS.map((label, i) => {
           const done = i < reached;
           const active = i === reached;
           return (
@@ -140,10 +142,10 @@ export function PlombierJobCard({ order }: { order: Order }) {
                   {done ? <Check className="h-4 w-4" /> : i + 1}
                 </span>
                 <span className={`mt-1 text-[11px] ${active || done ? "font-semibold text-ink" : "text-ink-soft"}`}>
-                  {label}
+                  {t(label)}
                 </span>
               </div>
-              {i < STEPS.length - 1 && (
+              {i < STEP_KEYS.length - 1 && (
                 <span className={`mx-1 h-0.5 flex-1 rounded ${i < reached ? "bg-brand-500" : "bg-slate-200"}`} />
               )}
             </div>
@@ -159,7 +161,7 @@ export function PlombierJobCard({ order }: { order: Order }) {
           className="mt-4 flex w-full items-center justify-center gap-2 rounded-full border border-brand-200 bg-brand-50 py-2.5 text-sm font-semibold text-brand-700 transition hover:bg-brand-100 disabled:opacity-60"
         >
           <Truck className="h-4 w-4" />
-          {pending ? "…" : reached === 0 ? "Je suis en route" : "Je suis arrivé"}
+          {pending ? "…" : reached === 0 ? t("tech.job.imEnroute") : t("tech.job.imArrived")}
         </button>
       )}
 

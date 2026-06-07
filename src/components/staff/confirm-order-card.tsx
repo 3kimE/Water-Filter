@@ -15,6 +15,7 @@ import {
 import { confirmOrderAction, recordCallOutcomeAction } from "@/lib/order-actions";
 import { formatMAD, formatDate } from "@/lib/utils";
 import type { Order } from "@/lib/types";
+import { useI18n } from "@/i18n/i18n-context";
 
 function waNumber(phone: string): string {
   const d = phone.replace(/\D/g, "");
@@ -31,6 +32,7 @@ export function ConfirmOrderCard({
   plombiers: { email: string; name: string | null; city: string | null }[];
 }) {
   const router = useRouter();
+  const { t } = useI18n();
   const [pending, startTransition] = useTransition();
   const [date, setDate] = useState("");
   const [note, setNote] = useState("");
@@ -45,11 +47,11 @@ export function ConfirmOrderCard({
   function confirm() {
     setError(null);
     if (!date) {
-      setError("Choisissez une date d'installation.");
+      setError(t("conf.card.errNoDate"));
       return;
     }
     if (plombiers.length > 0 && !assignedTo) {
-      setError("Choisissez un plombier.");
+      setError(t("conf.card.errNoTechnician"));
       return;
     }
     startTransition(async () => {
@@ -60,7 +62,7 @@ export function ConfirmOrderCard({
         assignedTo: assignedTo || undefined,
       });
       if (res.ok) router.refresh();
-      else setError(res.error ?? "Erreur.");
+      else setError(res.error ?? t("conf.card.errGeneric"));
     });
   }
 
@@ -69,7 +71,7 @@ export function ConfirmOrderCard({
     startTransition(async () => {
       const res = await recordCallOutcomeAction(order.id, o);
       if (res.ok) router.refresh();
-      else setError(res.error ?? "Erreur.");
+      else setError(res.error ?? t("conf.card.errGeneric"));
     });
   }
 
@@ -80,11 +82,11 @@ export function ConfirmOrderCard({
         <div className="flex items-center gap-2">
           <span className="font-display font-bold text-ink">{order.id}</span>
           <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-semibold text-amber-700">
-            À confirmer
+            {t("conf.card.statusToConfirm")}
           </span>
           {order.source === "phone" && (
             <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-ink-soft">
-              téléphone
+              {t("conf.card.sourcePhone")}
             </span>
           )}
         </div>
@@ -105,7 +107,7 @@ export function ConfirmOrderCard({
           </p>
         </div>
         <div className="sm:text-right">
-          <p className="mb-1 text-xs text-ink-soft">Produits demandés</p>
+          <p className="mb-1 text-xs text-ink-soft">{t("conf.card.requestedProducts")}</p>
           <div className="flex flex-wrap gap-1.5 sm:justify-end">
             {order.items.map((it, i) => (
               <span key={i} className="rounded-lg bg-slate-50 px-2 py-1 text-xs text-ink" dir="auto">
@@ -113,7 +115,7 @@ export function ConfirmOrderCard({
               </span>
             ))}
           </div>
-          <p className="mt-3 text-xs text-ink-soft">Montant total</p>
+          <p className="mt-3 text-xs text-ink-soft">{t("conf.card.totalAmount")}</p>
           <p className="font-display text-2xl font-extrabold text-brand-700">{formatMAD(order.total)}</p>
         </div>
       </div>
@@ -133,7 +135,7 @@ export function ConfirmOrderCard({
           href={`tel:${tel}`}
           className="flex items-center justify-center gap-2 rounded-full border border-slate-200 py-2.5 text-sm font-semibold text-ink transition hover:bg-slate-50"
         >
-          <Phone className="h-4 w-4" /> Appeler
+          <Phone className="h-4 w-4" /> {t("conf.card.call")}
         </a>
         <a
           href={`https://wa.me/${waNumber(order.phone)}`}
@@ -147,11 +149,11 @@ export function ConfirmOrderCard({
 
       {/* Treatment */}
       <div className="mt-4 border-t border-slate-100 bg-slate-50/60 px-5 py-4">
-        <p className="mb-2 text-sm font-semibold text-ink">Traitement de la commande</p>
+        <p className="mb-2 text-sm font-semibold text-ink">{t("conf.card.processingTitle")}</p>
 
         {plombiers.length > 0 && (
           <>
-            <label className="mb-1 block text-xs font-medium text-ink-soft">Plombier assigné</label>
+            <label className="mb-1 block text-xs font-medium text-ink-soft">{t("conf.card.assignedTechnician")}</label>
             <select
               value={assignedTo}
               onChange={(e) => setAssignedTo(e.target.value)}
@@ -170,7 +172,7 @@ export function ConfirmOrderCard({
           </>
         )}
 
-        <label className="mb-1 block text-xs font-medium text-ink-soft">Date d&apos;installation prévue</label>
+        <label className="mb-1 block text-xs font-medium text-ink-soft">{t("conf.card.plannedInstallDate")}</label>
         <input
           type="datetime-local"
           value={date}
@@ -180,7 +182,7 @@ export function ConfirmOrderCard({
         <input
           value={note}
           onChange={(e) => setNote(e.target.value)}
-          placeholder="Note (optionnel) — ex : livrer le matin"
+          placeholder={t("conf.card.notePlaceholder")}
           className="mt-2 h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm outline-none focus:border-brand-300 focus:ring-4 focus:ring-brand-100"
         />
         {error && <p className="mt-2 text-sm text-rose-600">{error}</p>}
@@ -191,28 +193,28 @@ export function ConfirmOrderCard({
             disabled={pending}
             className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-ink-soft transition hover:bg-slate-50 disabled:opacity-60"
           >
-            <RotateCcw className="h-3.5 w-3.5" /> À rappeler
+            <RotateCcw className="h-3.5 w-3.5" /> {t("conf.card.toCallBack")}
           </button>
           <button
             onClick={() => outcome("pas_reponse")}
             disabled={pending}
             className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-ink-soft transition hover:bg-slate-50 disabled:opacity-60"
           >
-            <PhoneOff className="h-3.5 w-3.5" /> Pas de réponse
+            <PhoneOff className="h-3.5 w-3.5" /> {t("conf.card.noAnswer")}
           </button>
           <button
             onClick={() => outcome("annuler")}
             disabled={pending}
             className="inline-flex items-center gap-1.5 rounded-full border border-rose-200 bg-white px-3 py-2 text-xs font-semibold text-rose-600 transition hover:bg-rose-50 disabled:opacity-60"
           >
-            <X className="h-3.5 w-3.5" /> Annuler
+            <X className="h-3.5 w-3.5" /> {t("conf.card.cancel")}
           </button>
           <button
             onClick={confirm}
             disabled={pending}
             className="ms-auto inline-flex items-center gap-1.5 rounded-full bg-emerald-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-600 disabled:opacity-60"
           >
-            <Check className="h-4 w-4" /> {pending ? "…" : "Confirmer & planifier"}
+            <Check className="h-4 w-4" /> {pending ? "…" : t("conf.card.confirmAndSchedule")}
           </button>
         </div>
       </div>
