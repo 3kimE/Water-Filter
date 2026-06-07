@@ -657,7 +657,7 @@ export async function getPlombierNotifications(email: string | null, all: boolea
       subtitle: o.installDate
         ? new Date(o.installDate).toLocaleDateString("fr-MA", { timeZone: "Africa/Casablanca" })
         : "à planifier",
-      href: "/plombier",
+      href: "/technicien",
     })),
   };
 }

@@ -178,7 +178,7 @@ export async function notifyPlombierAssignment(
         <p style="margin:0 0 4px;">📞 <a href="tel:${esc(job.phone)}" style="color:#1273b6;">${esc(job.phone)}</a></p>
         <p style="margin:0 0 4px;">📍 ${esc(job.address)}, ${esc(job.city)}</p>
         <p style="margin:10px 0 0;">🗓️ <b>Rendez-vous :</b> ${esc(when)}</p>
-        <p style="margin-top:18px;"><a href="${appUrl}/plombier" style="background:#1273b6;color:#fff;text-decoration:none;font-weight:bold;padding:10px 22px;border-radius:999px;display:inline-block;">Voir mes installations →</a></p>
+        <p style="margin-top:18px;"><a href="${appUrl}/technicien" style="background:#1273b6;color:#fff;text-decoration:none;font-weight:bold;padding:10px 22px;border-radius:999px;display:inline-block;">Voir mes installations →</a></p>
       </div>
     </div>`;
 

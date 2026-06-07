@@ -14,7 +14,7 @@ export default async function PlombierLayout({ children }: { children: React.Rea
     <div className="min-h-screen bg-neutral-50">
       {/* Sidebar (desktop) */}
       <aside className="fixed inset-y-0 left-0 hidden w-64 flex-col border-r border-line bg-white lg:flex">
-        <Link href="/plombier" className="flex items-center gap-2 px-5 py-5">
+        <Link href="/technicien" className="flex items-center gap-2 px-5 py-5">
           <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-600 text-white">
             <Wrench className="h-5 w-5" />
           </span>
@@ -45,7 +45,7 @@ export default async function PlombierLayout({ children }: { children: React.Rea
       {/* Content */}
       <div className="lg:pl-64">
         <header className="sticky top-0 z-40 flex h-16 items-center gap-3 border-b border-line bg-white/85 px-4 backdrop-blur lg:px-8">
-          <Link href="/plombier" className="font-display font-extrabold text-ink lg:hidden">
+          <Link href="/technicien" className="font-display font-extrabold text-ink lg:hidden">
             Filtre<span className="text-brand-600">Maroc</span>
           </Link>
           <h1 className="hidden font-display text-lg font-bold text-ink lg:block">Mes installations</h1>

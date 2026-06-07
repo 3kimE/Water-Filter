@@ -10,7 +10,7 @@ const secret = new TextEncoder().encode(AUTH_SECRET);
 
 function homeFor(role: string): string {
   if (role === "confirmateur") return "/confirmation";
-  if (role === "plombier") return "/plombier";
+  if (role === "plombier") return "/technicien";
   return "/admin";
 }
 
@@ -42,7 +42,7 @@ export async function middleware(req: NextRequest) {
   const denied =
     (pathname.startsWith("/admin") && role !== "admin") ||
     (pathname.startsWith("/confirmation") && role !== "confirmateur" && role !== "admin") ||
-    (pathname.startsWith("/plombier") && role !== "plombier" && role !== "admin");
+    (pathname.startsWith("/technicien") && role !== "plombier" && role !== "admin");
 
   if (denied) {
     const url = req.nextUrl.clone();
@@ -54,5 +54,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/confirmation/:path*", "/plombier/:path*"],
+  matcher: ["/admin/:path*", "/confirmation/:path*", "/technicien/:path*"],
 };

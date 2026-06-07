@@ -144,7 +144,7 @@ export async function confirmOrderAction(input: {
   await notifyOrderConfirmed(order, plombier); // keep the owner in the loop
 
   revalidatePath("/confirmation");
-  revalidatePath("/plombier");
+  revalidatePath("/technicien");
   revalidatePath("/admin/orders");
   revalidatePath("/admin");
   return { ok: true };
@@ -200,7 +200,7 @@ export async function setJobStageAction(
     return { ok: false, error: "Cette installation n'est plus en cours." };
   }
   await setJobStage(id, stage);
-  revalidatePath("/plombier");
+  revalidatePath("/technicien");
   revalidatePath("/admin");
   return { ok: true };
 }
@@ -245,7 +245,7 @@ export async function completeInstallationAction(
     return { ok: false, error: "Cette commande a déjà été installée." };
   }
   await notifyOrderInstalled(updated); // keep the owner in the loop
-  revalidatePath("/plombier");
+  revalidatePath("/technicien");
   revalidatePath("/admin/orders");
   revalidatePath(`/admin/orders/${id}`);
   revalidatePath("/admin");
@@ -277,7 +277,7 @@ export async function scheduleMaintenanceAction(input: {
     });
   }
   revalidatePath("/admin/clients");
-  revalidatePath("/plombier");
+  revalidatePath("/technicien");
   revalidatePath("/admin/orders");
   revalidatePath("/admin");
   return { ok: true };

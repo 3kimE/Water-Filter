@@ -37,7 +37,7 @@ export async function requireRole(
 /** Where each role lands after login / when redirected out of a forbidden area. */
 export function roleHome(role: string | undefined): string {
   if (role === "confirmateur") return "/confirmation";
-  if (role === "plombier") return "/plombier";
+  if (role === "plombier") return "/technicien";
   return "/admin";
 }
 
