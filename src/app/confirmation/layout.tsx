@@ -1,10 +1,13 @@
 import Link from "next/link";
 import { PhoneCall, LogOut } from "lucide-react";
 import { logoutAction } from "@/lib/auth-actions";
+import { getConfirmationNotifications } from "@/lib/data";
+import { StaffBell } from "@/components/staff/staff-bell";
 
 export const dynamic = "force-dynamic";
 
-export default function ConfirmationLayout({ children }: { children: React.ReactNode }) {
+export default async function ConfirmationLayout({ children }: { children: React.ReactNode }) {
+  const notif = await getConfirmationNotifications();
   return (
     <div className="min-h-screen bg-neutral-50">
       {/* Sidebar (desktop) */}
@@ -46,13 +49,16 @@ export default function ConfirmationLayout({ children }: { children: React.React
           <h1 className="hidden font-display text-lg font-bold text-ink lg:block">
             Commandes à confirmer
           </h1>
-          <form action={logoutAction} className="ms-auto lg:hidden">
-            <button type="submit" className="flex h-10 w-10 items-center justify-center rounded-full text-ink-soft hover:bg-neutral-100">
-              <LogOut className="h-5 w-5" />
-            </button>
-          </form>
-          <div className="ms-auto hidden h-9 w-9 items-center justify-center rounded-full bg-brand-600 text-sm font-bold text-white lg:flex">
-            C
+          <div className="ms-auto flex items-center gap-2">
+            <StaffBell area="confirmation" initial={notif} />
+            <form action={logoutAction} className="lg:hidden">
+              <button type="submit" className="flex h-10 w-10 items-center justify-center rounded-full text-ink-soft hover:bg-neutral-100">
+                <LogOut className="h-5 w-5" />
+              </button>
+            </form>
+            <div className="hidden h-9 w-9 items-center justify-center rounded-full bg-brand-600 text-sm font-bold text-white lg:flex">
+              C
+            </div>
           </div>
         </header>
         <main className="mx-auto max-w-5xl p-4 lg:p-8">

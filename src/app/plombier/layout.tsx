@@ -1,10 +1,15 @@
 import Link from "next/link";
 import { Wrench, LogOut } from "lucide-react";
 import { logoutAction } from "@/lib/auth-actions";
+import { getSession } from "@/lib/auth";
+import { getPlombierNotifications } from "@/lib/data";
+import { StaffBell } from "@/components/staff/staff-bell";
 
 export const dynamic = "force-dynamic";
 
-export default function PlombierLayout({ children }: { children: React.ReactNode }) {
+export default async function PlombierLayout({ children }: { children: React.ReactNode }) {
+  const session = await getSession();
+  const notif = await getPlombierNotifications(session?.email ?? null, session?.role !== "plombier");
   return (
     <div className="min-h-screen bg-neutral-50">
       {/* Sidebar (desktop) */}
@@ -44,13 +49,16 @@ export default function PlombierLayout({ children }: { children: React.ReactNode
             Filtre<span className="text-brand-600">Maroc</span>
           </Link>
           <h1 className="hidden font-display text-lg font-bold text-ink lg:block">Mes installations</h1>
-          <form action={logoutAction} className="ms-auto lg:hidden">
-            <button type="submit" className="flex h-10 w-10 items-center justify-center rounded-full text-ink-soft hover:bg-neutral-100">
-              <LogOut className="h-5 w-5" />
-            </button>
-          </form>
-          <div className="ms-auto hidden h-9 w-9 items-center justify-center rounded-full bg-brand-600 text-sm font-bold text-white lg:flex">
-            P
+          <div className="ms-auto flex items-center gap-2">
+            <StaffBell area="plombier" initial={notif} />
+            <form action={logoutAction} className="lg:hidden">
+              <button type="submit" className="flex h-10 w-10 items-center justify-center rounded-full text-ink-soft hover:bg-neutral-100">
+                <LogOut className="h-5 w-5" />
+              </button>
+            </form>
+            <div className="hidden h-9 w-9 items-center justify-center rounded-full bg-brand-600 text-sm font-bold text-white lg:flex">
+              P
+            </div>
           </div>
         </header>
         <main className="mx-auto max-w-6xl p-4 lg:p-8">

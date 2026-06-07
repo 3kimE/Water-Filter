@@ -534,6 +534,50 @@ export async function getPlombiers(): Promise<{ email: string; name: string | nu
   });
 }
 
+/* ---------- staff notifications (bell) ---------- */
+
+export type StaffNotif = {
+  count: number;
+  items: { id: string; title: string; subtitle: string; href: string }[];
+};
+
+/** Confirmateur bell: orders waiting to be confirmed. */
+export async function getConfirmationNotifications(): Promise<StaffNotif> {
+  const [count, rows] = await Promise.all([
+    prisma.order.count({ where: { status: "pending" } }),
+    prisma.order.findMany({ where: { status: "pending" }, orderBy: { createdAt: "desc" }, take: 8 }),
+  ]);
+  return {
+    count,
+    items: rows.map((o) => ({
+      id: o.id,
+      title: `${o.id} · ${o.customerName}`,
+      subtitle: o.city,
+      href: "/confirmation",
+    })),
+  };
+}
+
+/** Plombier bell: installations to do (his own, or all when viewed by an admin). */
+export async function getPlombierNotifications(email: string | null, all: boolean): Promise<StaffNotif> {
+  const where = all
+    ? { status: "confirmed" as const }
+    : { status: "confirmed" as const, assignedTo: email ?? "__none__" };
+  const [count, rows] = await Promise.all([
+    prisma.order.count({ where }),
+    prisma.order.findMany({ where, orderBy: { installDate: "asc" }, take: 8 }),
+  ]);
+  return {
+    count,
+    items: rows.map((o) => ({
+      id: o.id,
+      title: `${o.id} · ${o.customerName}`,
+      subtitle: o.installDate ? new Date(o.installDate).toLocaleDateString("fr-MA") : "à planifier",
+      href: "/plombier",
+    })),
+  };
+}
+
 /** Plombier marks an installation done: records the completion photo + time. */
 export async function completeInstallation(id: string, photoUrl: string): Promise<Order> {
   const row = await prisma.order.update({
