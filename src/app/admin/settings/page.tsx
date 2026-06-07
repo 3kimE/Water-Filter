@@ -8,13 +8,14 @@ export const dynamic = "force-dynamic";
 const label = "mb-1.5 block text-sm font-semibold text-ink";
 const input =
   "h-11 w-full rounded-xl border border-line bg-white px-4 text-sm outline-none transition-all focus:border-brand-400 focus:ring-2 focus:ring-brand-100";
+const card = "rounded-2xl border border-line bg-white p-6 shadow-sm";
 
 export default async function AdminSettingsPage() {
   const s = await getSettings();
   const session = await getSession();
 
   return (
-    <div>
+    <div className="mx-auto max-w-6xl">
       <div className="mb-6">
         <h1 className="font-display text-2xl font-bold text-ink">Paramètres</h1>
         <p className="text-sm text-ink-soft">
@@ -23,9 +24,9 @@ export default async function AdminSettingsPage() {
         </p>
       </div>
 
-      <form action={updateSettingsAction} className="max-w-3xl space-y-6">
-        {/* Identity */}
-        <section className="rounded-2xl border border-line bg-white p-6 shadow-sm">
+      <form action={updateSettingsAction} className="grid items-start gap-6 lg:grid-cols-2">
+        {/* Identity — full width */}
+        <section className={`${card} lg:col-span-2`}>
           <h2 className="font-display font-bold text-ink">Identité</h2>
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
             <div>
@@ -50,7 +51,7 @@ export default async function AdminSettingsPage() {
         </section>
 
         {/* Contact */}
-        <section className="rounded-2xl border border-line bg-white p-6 shadow-sm">
+        <section className={card}>
           <h2 className="font-display font-bold text-ink">Contact</h2>
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
             <div>
@@ -62,8 +63,8 @@ export default async function AdminSettingsPage() {
               <input name="phone2" defaultValue={s.phone2 ?? ""} className={input} />
             </div>
             <div>
-              <label className={label}>WhatsApp (format international, ex 212660781919)</label>
-              <input name="whatsapp" defaultValue={s.whatsapp ?? ""} className={input} />
+              <label className={label}>WhatsApp</label>
+              <input name="whatsapp" defaultValue={s.whatsapp ?? ""} className={input} placeholder="212660781919" />
             </div>
             <div>
               <label className={label}>Email</label>
@@ -73,7 +74,7 @@ export default async function AdminSettingsPage() {
         </section>
 
         {/* Location */}
-        <section className="rounded-2xl border border-line bg-white p-6 shadow-sm">
+        <section className={card}>
           <h2 className="font-display font-bold text-ink">Localisation</h2>
           <div className="mt-4 space-y-4">
             <div>
@@ -94,10 +95,10 @@ export default async function AdminSettingsPage() {
         </section>
 
         {/* Socials */}
-        <section className="rounded-2xl border border-line bg-white p-6 shadow-sm">
+        <section className={card}>
           <h2 className="font-display font-bold text-ink">Réseaux sociaux</h2>
           <p className="mt-1 text-xs text-ink-soft">Laissez vide pour masquer un réseau.</p>
-          <div className="mt-4 grid gap-4 sm:grid-cols-3">
+          <div className="mt-4 space-y-4">
             <div>
               <label className={label}>Facebook</label>
               <input name="facebook" defaultValue={s.facebook ?? ""} className={input} placeholder="https://facebook.com/..." />
@@ -114,9 +115,9 @@ export default async function AdminSettingsPage() {
         </section>
 
         {/* Delivery */}
-        <section className="rounded-2xl border border-line bg-white p-6 shadow-sm">
+        <section className={card}>
           <h2 className="font-display font-bold text-ink">Livraison</h2>
-          <div className="mt-4 grid max-w-md gap-4 sm:grid-cols-2">
+          <div className="mt-4 grid items-end gap-4 sm:grid-cols-2">
             <div>
               <label className={label}>Frais de livraison (MAD)</label>
               <input name="deliveryFee" type="number" min={0} defaultValue={s.deliveryFee} className={input} />
@@ -131,15 +132,17 @@ export default async function AdminSettingsPage() {
           </p>
         </section>
 
-        <button
-          type="submit"
-          className="rounded-full bg-brand-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-brand-700"
-        >
-          Enregistrer les paramètres
-        </button>
+        <div className="lg:col-span-2">
+          <button
+            type="submit"
+            className="rounded-full bg-brand-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-brand-700"
+          >
+            Enregistrer les paramètres
+          </button>
+        </div>
       </form>
 
-      <div className="mt-6 max-w-3xl">
+      <div className="mt-6">
         <AdminAccountForm currentEmail={session?.email ?? ""} />
       </div>
     </div>
