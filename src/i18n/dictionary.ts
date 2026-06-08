@@ -25,6 +25,8 @@ export const DICT: Record<string, Record<Locale, string>> = {
   "common.subtotal": { fr: "Sous-total", ar: "المجموع الفرعي", en: "Subtotal" },
   "common.continue": { fr: "Continuer mes achats", ar: "متابعة التسوق", en: "Continue shopping" },
   "common.loading": { fr: "Chargement…", ar: "جاري التحميل…", en: "Loading…" },
+  "common.showPassword": { fr: "Afficher le mot de passe", ar: "إظهار كلمة المرور", en: "Show password" },
+  "common.hidePassword": { fr: "Masquer le mot de passe", ar: "إخفاء كلمة المرور", en: "Hide password" },
   "common.dow.0": { fr: "Dim", ar: "الأحد", en: "Sun" },
   "common.dow.1": { fr: "Lun", ar: "الإثنين", en: "Mon" },
   "common.dow.2": { fr: "Mar", ar: "الثلاثاء", en: "Tue" },
