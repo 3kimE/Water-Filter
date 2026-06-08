@@ -17,43 +17,22 @@ import { StarRating } from "@/components/star-rating";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { CATEGORIES } from "@/lib/mock-data";
-import { getBestSellers, getSettings } from "@/lib/data";
+import {
+  getBestSellers,
+  getSettings,
+  getLatestApprovedReviews,
+  getOverallReviewStats,
+} from "@/lib/data";
 import { getT } from "@/i18n/server";
 
 export default async function HomePage() {
   const { t } = await getT();
   const bestSellers = await getBestSellers();
   const settings = await getSettings();
-
-  const TESTIMONIALS = [
-    {
-      id: "t1",
-      author: "Yassine B.",
-      city: "Casablanca",
-      rating: 5,
-      title: t("home.reviews.t1.title"),
-      body: t("home.reviews.t1.body"),
-      product: t("home.reviews.t1.role"),
-    },
-    {
-      id: "t2",
-      author: "Fatima Z.",
-      city: "Rabat",
-      rating: 5,
-      title: t("home.reviews.t2.title"),
-      body: t("home.reviews.t2.body"),
-      product: t("home.reviews.t2.role"),
-    },
-    {
-      id: "t3",
-      author: "Café Atlas",
-      city: "Marrakech",
-      rating: 5,
-      title: t("home.reviews.t3.title"),
-      body: t("home.reviews.t3.body"),
-      product: t("home.reviews.t3.role"),
-    },
-  ];
+  const [reviews, reviewStats] = await Promise.all([
+    getLatestApprovedReviews(3),
+    getOverallReviewStats(),
+  ]);
 
   const COD_STEPS = [
     {
@@ -264,40 +243,43 @@ export default async function HomePage() {
       </section>
 
       {/* ============ REVIEWS ============ */}
-      <section className="container-page pb-16">
-        <div className="mb-9 text-center">
-          <h2 className="font-display text-3xl font-bold text-ink">
-            {t("home.reviews.title")}
-          </h2>
-          <div className="mt-3 flex items-center justify-center gap-2">
-            <StarRating value={4.8} size={20} />
-            <span className="font-semibold text-ink">{t("home.reviews.score")}</span>
-            <span className="text-ink-soft">{t("home.reviews.count")}</span>
+      {reviewStats.count > 0 && (
+        <section className="container-page pb-16">
+          <div className="mb-9 text-center">
+            <h2 className="font-display text-3xl font-bold text-ink">
+              {t("home.reviews.title")}
+            </h2>
+            <div className="mt-3 flex items-center justify-center gap-2">
+              <StarRating value={reviewStats.avg} size={20} />
+              <span className="font-semibold text-ink">{reviewStats.avg.toFixed(1)}/5</span>
+              <span className="text-ink-soft">
+                · {t("home.reviews.countDynamic", { count: reviewStats.count })}
+              </span>
+            </div>
           </div>
-        </div>
-        <div className="grid gap-6 md:grid-cols-3">
-          {TESTIMONIALS.map((r) => (
-            <div key={r.id} className="rounded-card border border-line bg-white p-6 shadow-soft">
-              <StarRating value={r.rating} size={16} />
-              <h3 className="mt-3 font-display font-semibold text-ink">
-                {r.title}
-              </h3>
-              <p className="mt-2 text-sm leading-relaxed text-ink-soft">
-                “{r.body}”
-              </p>
-              <div className="mt-4 flex items-center gap-3 border-t border-line pt-4">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-100 font-bold text-brand-700">
-                  {r.author.charAt(0)}
-                </div>
-                <div className="text-sm">
-                  <p className="font-semibold text-ink">{r.author}</p>
-                  <p className="text-ink-soft">{r.city} · {r.product}</p>
+          <div className="grid gap-6 md:grid-cols-3">
+            {reviews.map((r) => (
+              <div key={r.id} className="rounded-card border border-line bg-white p-6 shadow-soft">
+                <StarRating value={r.rating} size={16} />
+                <p dir="auto" className="mt-3 text-sm leading-relaxed text-ink-soft">
+                  “{r.comment}”
+                </p>
+                <div className="mt-4 flex items-center gap-3 border-t border-line pt-4">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-100 font-bold text-brand-700">
+                    {r.name.charAt(0)}
+                  </div>
+                  <div className="text-sm">
+                    <p className="font-semibold text-ink" dir="auto">{r.name}</p>
+                    {r.productName && (
+                      <p className="text-ink-soft" dir="auto">{r.productName}</p>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-      </section>
+            ))}
+          </div>
+        </section>
+      )}
     </>
   );
 }

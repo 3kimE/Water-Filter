@@ -206,6 +206,8 @@ export const DICT: Record<string, Record<Locale, string>> = {
   "confirmation.empty.cta": { fr: "Aller à la boutique →", ar: "الذهاب إلى المتجر →", en: "Go to the shop →" },
   "confirmation.keepBrowsing": { fr: "D'autres produits pourraient vous plaire", ar: "قد تعجبك منتجات أخرى", en: "You might like our other products" },
 
+  "home.reviews.countDynamic": { fr: "{count} avis clients", ar: "{count} تقييم عميل", en: "{count} customer reviews" },
+
   // ---- product reviews (storefront) ----
   "product.reviews.writeTitle": { fr: "Laisser un avis", ar: "اترك تقييماً", en: "Leave a review" },
   "product.reviews.ratingLabel": { fr: "Votre note", ar: "تقييمك", en: "Your rating" },

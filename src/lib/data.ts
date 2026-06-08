@@ -978,6 +978,34 @@ export async function getProductRating(productId: string): Promise<{ avg: number
   return { avg: agg._avg.rating ?? 0, count: agg._count };
 }
 
+/** Recent approved reviews across all products — homepage social proof. */
+export async function getLatestApprovedReviews(
+  limit = 3,
+): Promise<(Review & { productName: string | null })[]> {
+  const rows = await prisma.review.findMany({
+    where: { status: "approved" },
+    orderBy: { createdAt: "desc" },
+    take: limit,
+  });
+  const ids = [...new Set(rows.map((r) => r.productId))];
+  const products = await prisma.product.findMany({
+    where: { id: { in: ids } },
+    select: { id: true, name: true },
+  });
+  const nameById = new Map(products.map((p) => [p.id, p.name]));
+  return rows.map((r) => ({ ...toReview(r), productName: nameById.get(r.productId) ?? null }));
+}
+
+/** Overall approved-review stats (homepage rating). */
+export async function getOverallReviewStats(): Promise<{ avg: number; count: number }> {
+  const agg = await prisma.review.aggregate({
+    where: { status: "approved" },
+    _avg: { rating: true },
+    _count: true,
+  });
+  return { avg: agg._avg.rating ?? 0, count: agg._count };
+}
+
 /** Admin moderation: every review, pending first then newest, with product name. */
 export async function getReviewsForAdmin(): Promise<(Review & { productName: string | null })[]> {
   const rows = await prisma.review.findMany({ orderBy: { createdAt: "desc" } });
