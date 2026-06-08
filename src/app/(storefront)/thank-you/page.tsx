@@ -8,6 +8,8 @@ import {
   Truck,
   Banknote,
   MessageCircle,
+  Loader2,
+  ShoppingBag,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { formatMAD } from "@/lib/utils";
@@ -27,7 +29,7 @@ type LastOrder = {
   total: number;
 };
 
-export default function OrderConfirmationPage() {
+export default function ThankYouPage() {
   const { t } = useI18n();
   const settings = useSettings();
   const [order, setOrder] = useState<LastOrder | null>(null);
@@ -43,38 +45,48 @@ export default function OrderConfirmationPage() {
     setLoaded(true);
   }, []);
 
-  if (loaded && !order) {
+  // While reading the order from the browser, show a calm spinner (never an "empty" flash).
+  if (!loaded) {
     return (
-      <div className="container-page py-20 text-center">
-        <h1 className="font-display text-2xl font-bold text-ink">
-          {t("confirmation.empty.title")}
-        </h1>
-        <p className="mt-2 text-ink-soft">
-          {t("confirmation.empty.subtitle")}
-        </p>
-        <Link href="/shop" className="mt-6 inline-block font-semibold text-brand-600 hover:text-brand-700">
-          {t("confirmation.empty.cta")}
-        </Link>
+      <div className="container-page flex min-h-[60vh] items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-brand-400" aria-label={t("common.loading")} />
       </div>
     );
   }
 
   if (!order) {
-    return <div className="container-page py-24 text-center text-ink-soft">{t("common.loading")}</div>;
+    return (
+      <div className="container-page flex min-h-[60vh] flex-col items-center justify-center text-center">
+        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-neutral-100 text-ink-soft">
+          <ShoppingBag className="h-8 w-8" />
+        </div>
+        <h1 className="mt-6 font-display text-2xl font-bold text-ink">
+          {t("confirmation.empty.title")}
+        </h1>
+        <p className="mt-2 text-ink-soft">{t("confirmation.empty.subtitle")}</p>
+        <Button href="/shop" size="lg" className="mt-6">
+          {t("confirmation.empty.cta")}
+        </Button>
+      </div>
+    );
   }
 
   return (
     <div className="container-page py-12">
+      {/* Success hero */}
       <div className="mx-auto max-w-2xl text-center">
-        <div className="mx-auto flex h-20 w-20 animate-fade-up items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
-          <CheckCircle2 className="h-11 w-11" />
+        <div className="relative mx-auto flex h-24 w-24 items-center justify-center">
+          <span className="absolute inset-0 animate-ping rounded-full bg-emerald-200/60" />
+          <div className="relative flex h-24 w-24 animate-fade-up items-center justify-center rounded-full bg-emerald-100 text-emerald-600 ring-8 ring-emerald-50">
+            <CheckCircle2 className="h-12 w-12" />
+          </div>
         </div>
-        <h1 className="mt-6 font-display text-3xl font-bold text-ink">
+        <h1 className="mt-6 font-display text-3xl font-bold text-ink sm:text-4xl">
           {t("confirmation.thanks", { name: order.name.split(" ")[0] })} 🎉
         </h1>
-        <p className="mt-2 text-ink-soft">
+        <p className="mt-3 text-ink-soft">
           {t("confirmation.received.before")}{" "}
-          <strong className="text-brand-700">{order.id}</strong>{" "}
+          <strong className="rounded-lg bg-brand-50 px-2 py-0.5 font-mono text-brand-700">{order.id}</strong>{" "}
           {t("confirmation.received.after")}
         </p>
       </div>
@@ -139,18 +151,24 @@ export default function OrderConfirmationPage() {
         </div>
       </div>
 
-      <div className="mx-auto mt-8 flex max-w-2xl flex-wrap justify-center gap-3">
-        <Button href="/shop" size="lg">{t("confirmation.continueShopping")}</Button>
-        {settings.whatsapp && (
-          <a
-            href={`https://wa.me/${settings.whatsapp}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex h-14 items-center justify-center gap-2 rounded-full bg-[#25D366] px-8 font-semibold text-white transition hover:brightness-105"
-          >
-            <MessageCircle className="h-5 w-5" /> {t("confirmation.contactUs")}
-          </a>
-        )}
+      {/* Return hooks */}
+      <div className="mx-auto mt-8 flex max-w-2xl flex-col items-center gap-3">
+        <p className="text-sm text-ink-soft">{t("confirmation.keepBrowsing")}</p>
+        <div className="flex flex-wrap justify-center gap-3">
+          <Button href="/shop" size="lg">
+            <ShoppingBag className="h-5 w-5" /> {t("confirmation.continueShopping")}
+          </Button>
+          {settings.whatsapp && (
+            <a
+              href={`https://wa.me/${settings.whatsapp}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex h-14 items-center justify-center gap-2 rounded-full bg-[#25D366] px-8 font-semibold text-white transition hover:brightness-105"
+            >
+              <MessageCircle className="h-5 w-5" /> {t("confirmation.contactUs")}
+            </a>
+          )}
+        </div>
       </div>
     </div>
   );

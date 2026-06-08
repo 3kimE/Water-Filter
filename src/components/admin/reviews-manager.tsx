@@ -1,0 +1,113 @@
+"use client";
+
+import { useTransition, useState } from "react";
+import { useRouter } from "next/navigation";
+import { Star, Check, X, MessageSquare } from "lucide-react";
+import { approveReviewAction, rejectReviewAction } from "@/lib/review-actions";
+import { useI18n } from "@/i18n/i18n-context";
+import { formatDate, cn } from "@/lib/utils";
+
+type AdminReview = {
+  id: string;
+  name: string;
+  rating: number;
+  comment: string;
+  status: string;
+  createdAt: string;
+  productName: string | null;
+};
+
+const STATUS_STYLE: Record<string, string> = {
+  pending: "bg-amber-100 text-amber-700",
+  approved: "bg-emerald-100 text-emerald-700",
+  rejected: "bg-rose-100 text-rose-600",
+};
+
+export function ReviewsManager({ reviews }: { reviews: AdminReview[] }) {
+  const { t } = useI18n();
+  const router = useRouter();
+  const [pending, startTransition] = useTransition();
+  const [busy, setBusy] = useState<string | null>(null);
+
+  function act(id: string, fn: (id: string) => Promise<void>) {
+    setBusy(id);
+    startTransition(async () => {
+      await fn(id);
+      router.refresh();
+      setBusy(null);
+    });
+  }
+
+  const statusLabel = (s: string) =>
+    s === "approved"
+      ? t("admin.reviews.statusApproved")
+      : s === "rejected"
+        ? t("admin.reviews.statusRejected")
+        : t("admin.reviews.statusPending");
+
+  if (reviews.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-white py-20 text-center">
+        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-50 text-brand-500">
+          <MessageSquare className="h-7 w-7" />
+        </div>
+        <p className="mt-4 text-ink-soft">{t("admin.reviews.empty")}</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      {reviews.map((r) => (
+        <div key={r.id} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <div className="flex items-center gap-2">
+                <div className="flex">
+                  {[1, 2, 3, 4, 5].map((n) => (
+                    <Star
+                      key={n}
+                      className={cn("h-4 w-4", r.rating >= n ? "fill-amber-400 text-amber-400" : "text-neutral-300")}
+                    />
+                  ))}
+                </div>
+                <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${STATUS_STYLE[r.status] ?? STATUS_STYLE.pending}`}>
+                  {statusLabel(r.status)}
+                </span>
+              </div>
+              <p className="mt-1 text-xs text-ink-soft">
+                {t("admin.reviews.onProduct")}{" "}
+                <span className="font-medium text-ink" dir="auto">{r.productName ?? "—"}</span>
+              </p>
+            </div>
+            <span className="text-xs text-ink-soft">{formatDate(r.createdAt)}</span>
+          </div>
+
+          <p dir="auto" className="mt-3 text-sm leading-relaxed text-ink">“{r.comment}”</p>
+          <p className="mt-2 text-sm font-semibold text-ink" dir="auto">{r.name}</p>
+
+          <div className="mt-4 flex flex-wrap gap-2">
+            {r.status !== "approved" && (
+              <button
+                onClick={() => act(r.id, approveReviewAction)}
+                disabled={pending && busy === r.id}
+                className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-600 disabled:opacity-60"
+              >
+                <Check className="h-4 w-4" /> {t("admin.reviews.approve")}
+              </button>
+            )}
+            {r.status !== "rejected" && (
+              <button
+                onClick={() => act(r.id, rejectReviewAction)}
+                disabled={pending && busy === r.id}
+                className="inline-flex items-center gap-1.5 rounded-full border border-rose-200 bg-white px-4 py-2 text-sm font-semibold text-rose-600 transition hover:bg-rose-50 disabled:opacity-60"
+              >
+                <X className="h-4 w-4" /> {t("admin.reviews.reject")}
+              </button>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}

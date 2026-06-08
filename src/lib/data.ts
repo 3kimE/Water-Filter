@@ -279,6 +279,7 @@ export type AdminNotifications = {
   lowStockCount: number;
   unreadMessagesCount: number;
   maintenanceDueCount: number;
+  pendingReviewsCount: number;
   pendingOrders: { id: string; customerName: string; total: number; createdAt: string }[];
   lowStock: { id: string; name: string; stock: number }[];
   messages: { id: string; name: string; message: string; createdAt: string }[];
@@ -288,7 +289,7 @@ export type AdminNotifications = {
 export async function getAdminNotifications(): Promise<AdminNotifications> {
   const dueLimit = new Date();
   dueLimit.setDate(dueLimit.getDate() + 14);
-  const [pendingCount, pending, low, unreadMessagesCount, msgs, maintCount, maint] =
+  const [pendingCount, pending, low, unreadMessagesCount, msgs, maintCount, maint, pendingReviewsCount] =
     await Promise.all([
       prisma.order.count({ where: { status: "pending" } }),
       prisma.order.findMany({ where: { status: "pending" }, orderBy: { createdAt: "desc" }, take: 8 }),
@@ -303,12 +304,14 @@ export async function getAdminNotifications(): Promise<AdminNotifications> {
         orderBy: { nextMaintenanceAt: "asc" },
         take: 8,
       }),
+      prisma.review.count({ where: { status: "pending" } }),
     ]);
   return {
     pendingCount,
     lowStockCount: low.length,
     unreadMessagesCount,
     maintenanceDueCount: maintCount,
+    pendingReviewsCount,
     pendingOrders: pending.map((o) => ({
       id: o.id,
       customerName: o.customerName,
@@ -896,5 +899,115 @@ export async function updateSettings(data: Partial<SiteSettings>) {
     where: { id: "main" },
     update: data,
     create: { id: "main", ...DEFAULT_SETTINGS, ...data },
+  });
+}
+
+/* ---------- product reviews (with admin moderation) ---------- */
+
+export type Review = {
+  id: string;
+  productId: string;
+  name: string;
+  rating: number;
+  comment: string;
+  status: string;
+  createdAt: string;
+};
+
+type ReviewRow = {
+  id: string;
+  productId: string;
+  name: string;
+  rating: number;
+  comment: string;
+  status: string;
+  createdAt: Date;
+};
+
+function toReview(r: ReviewRow): Review {
+  return {
+    id: r.id,
+    productId: r.productId,
+    name: r.name,
+    rating: r.rating,
+    comment: r.comment,
+    status: r.status,
+    createdAt: r.createdAt.toISOString(),
+  };
+}
+
+/** Create a pending review (server-side validated). */
+export async function createReview(data: {
+  productId: string;
+  name: string;
+  rating: number;
+  comment: string;
+}): Promise<void> {
+  const name = (data.name ?? "").trim();
+  const comment = (data.comment ?? "").trim();
+  const rating = Math.round(Number(data.rating));
+  if (name.length < 2 || name.length > 60) throw new Error("INVALID_NAME");
+  if (!Number.isFinite(rating) || rating < 1 || rating > 5) throw new Error("INVALID_RATING");
+  if (comment.length < 3 || comment.length > 1000) throw new Error("INVALID_COMMENT");
+  const product = await prisma.product.findUnique({
+    where: { id: data.productId },
+    select: { id: true },
+  });
+  if (!product) throw new Error("PRODUCT_NOT_FOUND");
+  await prisma.review.create({
+    data: { productId: data.productId, name, rating, comment, status: "pending" },
+  });
+}
+
+/** Approved reviews for a product (newest first) — storefront. */
+export async function getApprovedReviews(productId: string): Promise<Review[]> {
+  const rows = await prisma.review.findMany({
+    where: { productId, status: "approved" },
+    orderBy: { createdAt: "desc" },
+  });
+  return rows.map(toReview);
+}
+
+/** Average rating + count from APPROVED reviews. */
+export async function getProductRating(productId: string): Promise<{ avg: number; count: number }> {
+  const agg = await prisma.review.aggregate({
+    where: { productId, status: "approved" },
+    _avg: { rating: true },
+    _count: true,
+  });
+  return { avg: agg._avg.rating ?? 0, count: agg._count };
+}
+
+/** Admin moderation: every review, pending first then newest, with product name. */
+export async function getReviewsForAdmin(): Promise<(Review & { productName: string | null })[]> {
+  const rows = await prisma.review.findMany({ orderBy: { createdAt: "desc" } });
+  const ids = [...new Set(rows.map((r) => r.productId))];
+  const products = await prisma.product.findMany({
+    where: { id: { in: ids } },
+    select: { id: true, name: true },
+  });
+  const nameById = new Map(products.map((p) => [p.id, p.name]));
+  const rank = (s: string) => (s === "pending" ? 0 : s === "approved" ? 1 : 2);
+  return rows
+    .map((r) => ({ ...toReview(r), productName: nameById.get(r.productId) ?? null }))
+    .sort((a, b) => rank(a.status) - rank(b.status));
+}
+
+export async function getPendingReviewCount(): Promise<number> {
+  return prisma.review.count({ where: { status: "pending" } });
+}
+
+export async function setReviewStatus(id: string, status: "approved" | "rejected"): Promise<void> {
+  const r = await prisma.review.update({
+    where: { id },
+    data: { status },
+    select: { productId: true },
+  });
+  // Keep the product's stored rating/count in sync with its approved reviews,
+  // so the stars show correctly everywhere (shop grid, product page) automatically.
+  const { avg, count } = await getProductRating(r.productId);
+  await prisma.product.update({
+    where: { id: r.productId },
+    data: { rating: Math.round(avg * 10) / 10, reviewCount: count },
   });
 }

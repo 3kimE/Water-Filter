@@ -120,3 +120,16 @@ model SiteSettings {
   deliveryFee            Int      @default(40)
   updatedAt              DateTime @updatedAt
 }
+
+model Review {
+  id        String   @id @default(cuid())
+  productId String
+  name      String
+  rating    Int // 1-5 stars
+  comment   String
+  status    String   @default("pending") // pending | approved | rejected
+  createdAt DateTime @default(now())
+
+  @@index([productId, status])
+  @@index([status])
+}

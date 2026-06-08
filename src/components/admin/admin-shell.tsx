@@ -16,6 +16,7 @@ import {
   MessageSquare,
   UserCog,
   Wrench,
+  Star,
 } from "lucide-react";
 import { cn, formatMAD } from "@/lib/utils";
 import { logoutAction } from "@/lib/auth-actions";
@@ -29,6 +30,7 @@ const NAV = [
   { labelKey: "admin.nav.products", href: "/admin/products", icon: Package },
   { labelKey: "admin.nav.orders", href: "/admin/orders", icon: ShoppingBag },
   { labelKey: "admin.nav.messages", href: "/admin/messages", icon: MessageSquare },
+  { labelKey: "admin.nav.reviews", href: "/admin/reviews", icon: Star },
   { labelKey: "admin.nav.clients", href: "/admin/clients", icon: Users },
   { labelKey: "admin.nav.users", href: "/admin/users", icon: UserCog },
   { labelKey: "admin.nav.settings", href: "/admin/settings", icon: Settings },
@@ -39,6 +41,7 @@ const EMPTY: AdminNotifications = {
   lowStockCount: 0,
   unreadMessagesCount: 0,
   maintenanceDueCount: 0,
+  pendingReviewsCount: 0,
   pendingOrders: [],
   lowStock: [],
   messages: [],
@@ -136,6 +139,11 @@ export function AdminShell({
               {item.href === "/admin/clients" && notifs.maintenanceDueCount > 0 && (
                 <span className="ms-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-orange-100 px-1 text-xs font-bold text-orange-700">
                   {notifs.maintenanceDueCount}
+                </span>
+              )}
+              {item.href === "/admin/reviews" && notifs.pendingReviewsCount > 0 && (
+                <span className="ms-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-amber-100 px-1 text-xs font-bold text-amber-700">
+                  {notifs.pendingReviewsCount}
                 </span>
               )}
             </Link>

@@ -98,7 +98,7 @@ export default function CheckoutPage() {
       };
       sessionStorage.setItem("fm_last_order", JSON.stringify(order));
       clear();
-      router.push("/order-confirmation");
+      router.push("/thank-you");
     } catch {
       setSubmitting(false);
       setFormError(t("checkout.error.generic"));

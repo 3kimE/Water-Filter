@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { CheckCircle2 } from "lucide-react";
 import { ProductView } from "@/components/product-view";
 import { ProductCard } from "@/components/product-card";
+import { ReviewForm } from "@/components/review-form";
 import { StarRating } from "@/components/star-rating";
 import { getCategoryBySlug } from "@/lib/mock-data";
-import { getProductBySlug, getRelatedProducts } from "@/lib/data";
+import { getProductBySlug, getRelatedProducts, getApprovedReviews } from "@/lib/data";
 import { formatDate } from "@/lib/utils";
 import { getT } from "@/i18n/server";
 
@@ -33,6 +33,7 @@ export default async function ProductPage({
 
   const category = getCategoryBySlug(product.categorySlug);
   const related = await getRelatedProducts(product);
+  const reviews = await getApprovedReviews(product.id);
 
   return (
     <div className="container-page py-8">
@@ -87,40 +88,36 @@ export default async function ProductPage({
           <h2 className="font-display text-2xl font-bold text-ink">
             {t("product.reviews.title")}
           </h2>
-          <div className="flex items-center gap-2">
-            <StarRating value={product.rating} size={18} />
-            <span className="font-semibold text-ink">{product.rating}</span>
-            <span className="text-ink-soft">({product.reviewCount})</span>
-          </div>
+          {product.reviewCount > 0 && (
+            <div className="flex items-center gap-2">
+              <StarRating value={product.rating} size={18} />
+              <span className="font-semibold text-ink">{product.rating}</span>
+              <span className="text-ink-soft">({product.reviewCount})</span>
+            </div>
+          )}
         </div>
 
-        {product.reviews.length > 0 ? (
+        {reviews.length > 0 ? (
           <div className="mt-6 grid gap-5 md:grid-cols-2">
-            {product.reviews.map((r) => (
+            {reviews.map((r) => (
               <div key={r.id} className="rounded-card border border-line bg-white p-5 shadow-soft">
                 <div className="flex items-center justify-between">
                   <StarRating value={r.rating} size={15} />
-                  <span className="text-xs text-ink-soft">{formatDate(r.date)}</span>
+                  <span className="text-xs text-ink-soft">{formatDate(r.createdAt)}</span>
                 </div>
-                <h3 className="mt-2 font-display font-semibold text-ink">{r.title}</h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-ink-soft">“{r.body}”</p>
-                <div className="mt-3 flex items-center gap-2 text-sm">
-                  <span className="font-semibold text-ink">{r.author}</span>
-                  <span className="text-ink-soft">· {r.city}</span>
-                  {r.verified && (
-                    <span className="inline-flex items-center gap-1 text-xs font-medium text-emerald-600">
-                      <CheckCircle2 className="h-3.5 w-3.5" /> {t("product.reviews.verified")}
-                    </span>
-                  )}
-                </div>
+                <p dir="auto" className="mt-2 text-sm leading-relaxed text-ink-soft">
+                  “{r.comment}”
+                </p>
+                <p className="mt-3 text-sm font-semibold text-ink" dir="auto">{r.name}</p>
               </div>
             ))}
           </div>
         ) : (
-          <p className="mt-4 text-ink-soft">
-            {t("product.reviews.empty")}
-          </p>
+          <p className="mt-4 text-ink-soft">{t("product.reviews.empty")}</p>
         )}
+
+        {/* Leave a review */}
+        <ReviewForm productId={product.id} productSlug={product.slug} />
       </div>
 
       {/* Related */}
