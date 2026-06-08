@@ -4,6 +4,7 @@ import { useActionState } from "react";
 import { Check, ShieldCheck } from "lucide-react";
 import { updateAdminAccountAction, type AccountState } from "@/lib/account-actions";
 import { useI18n } from "@/i18n/i18n-context";
+import { PasswordInput } from "@/components/ui/password-input";
 
 const initial: AccountState = { error: null };
 
@@ -44,11 +45,11 @@ export function AdminAccountForm({ currentEmail }: { currentEmail: string }) {
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
             <label className={label}>{t("admin.account.newPasswordLabel")}</label>
-            <input name="newPassword" type="password" placeholder="••••••••" className={input} />
+            <PasswordInput name="newPassword" />
           </div>
           <div>
             <label className={label}>{t("admin.account.confirmPasswordLabel")}</label>
-            <input name="confirmPassword" type="password" placeholder="••••••••" className={input} />
+            <PasswordInput name="confirmPassword" />
           </div>
         </div>
 
@@ -56,7 +57,7 @@ export function AdminAccountForm({ currentEmail }: { currentEmail: string }) {
           <label className={label}>
             {t("admin.account.currentPasswordLabel")} <span className="font-normal text-ink-soft">{t("admin.account.currentPasswordHint")}</span>
           </label>
-          <input name="currentPassword" type="password" required placeholder="••••••••" className={`${input} max-w-xs`} />
+          <PasswordInput name="currentPassword" required className="max-w-xs" />
         </div>
 
         <button
