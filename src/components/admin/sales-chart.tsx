@@ -66,24 +66,33 @@ export function SalesChart({ series }: { series: SalesSeries }) {
       {total === 0 ? (
         <p className="py-20 text-center text-sm text-ink-soft">{t("admin.dash.noSalesRange")}</p>
       ) : (
-        <div className="mt-6 flex h-52 items-end justify-between gap-1">
-          {data.map((b, i) => {
-            const pct = max > 0 ? Math.round((b.revenue / max) * 100) : 0;
-            return (
-              <div key={i} className="flex flex-1 flex-col items-center gap-2">
-                <div className="flex w-full flex-1 items-end">
+        <div className="mt-6">
+          {/* Bar track — fixed height so the percentage bar heights resolve */}
+          <div className="flex h-52 items-end gap-1">
+            {data.map((b, i) => {
+              const pct = max > 0 ? Math.round((b.revenue / max) * 100) : 0;
+              return (
+                <div key={i} className="flex h-full flex-1 items-end">
                   <div
-                    className="w-full rounded-t bg-gradient-to-t from-brand-500 to-aqua-400 transition-all"
-                    style={{ height: b.revenue > 0 ? `${Math.max(pct, 4)}%` : "0%" }}
+                    className="w-full rounded-t bg-gradient-to-t from-brand-500 to-aqua-400 transition-all hover:opacity-90"
+                    style={{ height: b.revenue > 0 ? `${Math.max(pct, 2)}%` : "0%" }}
                     title={formatMAD(b.revenue)}
                   />
                 </div>
-                <span className="h-3 text-[10px] leading-none text-ink-soft">
-                  {showLabel(range, i) ? labelFor(b) : ""}
-                </span>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
+          {/* X-axis labels in their own row, aligned to the bars above */}
+          <div className="mt-2 flex gap-1">
+            {data.map((b, i) => (
+              <span
+                key={i}
+                className="flex-1 truncate text-center text-[10px] leading-none text-ink-soft"
+              >
+                {showLabel(range, i) ? labelFor(b) : ""}
+              </span>
+            ))}
+          </div>
         </div>
       )}
     </div>
