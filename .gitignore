@@ -49,3 +49,7 @@ _design/
 
 # Deployment secrets reference (real keys — must NEVER be committed)
 DEPLOYMENT-KEYS.local.md
+
+# package-lock.json is OS-specific: Windows omits Linux-only optional deps,
+# which breaks strict installs on Linux hosts. Let the host resolve deps.
+package-lock.json
