@@ -134,13 +134,10 @@ const SALE_STATUSES = ["confirmed", "installed"];
 
 export async function getDashboardStats() {
   const now = new Date();
-  const startToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const start7 = new Date(startToday);
-  start7.setDate(start7.getDate() - 6);
   const startThisMonth = new Date(now.getFullYear(), now.getMonth(), 1);
   const startLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
 
-  const [total, products, paid, grouped, weekOrders, ordersThisMonth, ordersLastMonth] =
+  const [total, products, paid, grouped, ordersThisMonth, ordersLastMonth] =
     await Promise.all([
       prisma.order.count(),
       prisma.product.count(),
@@ -149,10 +146,6 @@ export async function getDashboardStats() {
         select: { total: true },
       }),
       prisma.order.groupBy({ by: ["status"], _count: { _all: true } }),
-      prisma.order.findMany({
-        where: { createdAt: { gte: start7 }, status: { in: SALE_STATUSES } },
-        select: { createdAt: true, total: true },
-      }),
       prisma.order.count({ where: { createdAt: { gte: startThisMonth } } }),
       prisma.order.count({
         where: { createdAt: { gte: startLastMonth, lt: startThisMonth } },
@@ -161,19 +154,6 @@ export async function getDashboardStats() {
 
   const byStatus: Record<string, number> = {};
   for (const g of grouped) byStatus[g.status] = g._count._all;
-
-  // Real revenue per day for the last 7 days
-  const trend7d = Array.from({ length: 7 }, (_, i) => {
-    const d = new Date(start7);
-    d.setDate(d.getDate() + i);
-    return { dow: d.getDay(), revenue: 0 };
-  });
-  for (const o of weekOrders) {
-    const d = new Date(o.createdAt);
-    const day0 = new Date(d.getFullYear(), d.getMonth(), d.getDate());
-    const idx = Math.round((day0.getTime() - start7.getTime()) / 86_400_000);
-    if (idx >= 0 && idx < 7) trend7d[idx].revenue += o.total;
-  }
 
   // Real month-over-month change in order count (null when no prior month to compare)
   const ordersMoMPct =
@@ -187,10 +167,54 @@ export async function getDashboardStats() {
     products,
     revenue: paid.reduce((s, o) => s + o.total, 0),
     byStatus,
-    trend7d,
     ordersThisMonth,
     ordersMoMPct,
   };
+}
+
+export type SalesBucket = { revenue: number; dow?: number; hour?: number; date?: string };
+export type SalesSeries = { day: SalesBucket[]; week: SalesBucket[]; month: SalesBucket[] };
+
+/**
+ * Real sales revenue (Confirmed + Installed orders only) bucketed three ways for
+ * the dashboard chart's Today / 7 days / 30 days toggle. One query covers all three.
+ */
+export async function getSalesSeries(): Promise<SalesSeries> {
+  const now = new Date();
+  const startToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const start7 = new Date(startToday);
+  start7.setDate(start7.getDate() - 6);
+  const start30 = new Date(startToday);
+  start30.setDate(start30.getDate() - 29);
+
+  const orders = await prisma.order.findMany({
+    where: { createdAt: { gte: start30 }, status: { in: SALE_STATUSES } },
+    select: { createdAt: true, total: true },
+  });
+
+  const day: SalesBucket[] = Array.from({ length: 24 }, (_, h) => ({ hour: h, revenue: 0 }));
+  const week: SalesBucket[] = Array.from({ length: 7 }, (_, i) => {
+    const d = new Date(start7);
+    d.setDate(d.getDate() + i);
+    return { dow: d.getDay(), revenue: 0 };
+  });
+  const month: SalesBucket[] = Array.from({ length: 30 }, (_, i) => {
+    const d = new Date(start30);
+    d.setDate(d.getDate() + i);
+    return { date: `${d.getDate()}/${d.getMonth() + 1}`, revenue: 0 };
+  });
+
+  for (const o of orders) {
+    const d = new Date(o.createdAt);
+    const day0 = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    const mIdx = Math.round((day0.getTime() - start30.getTime()) / 86_400_000);
+    if (mIdx >= 0 && mIdx < 30) month[mIdx].revenue += o.total;
+    const wIdx = Math.round((day0.getTime() - start7.getTime()) / 86_400_000);
+    if (wIdx >= 0 && wIdx < 7) week[wIdx].revenue += o.total;
+    if (day0.getTime() === startToday.getTime()) day[d.getHours()].revenue += o.total;
+  }
+
+  return { day, week, month };
 }
 
 /* ---------- dashboard cards ---------- */

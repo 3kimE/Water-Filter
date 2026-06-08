@@ -14,8 +14,10 @@ import {
   getLowStockProducts,
   getTopSellers,
   getMaintenanceDue,
+  getSalesSeries,
 } from "@/lib/data";
 import { StatusBadge } from "@/components/admin/status-badge";
+import { SalesChart } from "@/components/admin/sales-chart";
 import { STATUS_META, STATUS_ORDER } from "@/lib/order-status";
 import { formatMAD } from "@/lib/utils";
 import { getT } from "@/i18n/server";
@@ -30,13 +32,10 @@ export default async function AdminDashboard() {
     products,
     revenue,
     byStatus,
-    trend7d,
     ordersThisMonth,
     ordersMoMPct,
   } = await getDashboardStats();
 
-  const weekTotal = trend7d.reduce((s, d) => s + d.revenue, 0);
-  const maxRev = Math.max(...trend7d.map((d) => d.revenue), 0);
   const ordersHint =
     ordersMoMPct !== null
       ? t("admin.dash.ordersHintMoM", {
@@ -44,9 +43,10 @@ export default async function AdminDashboard() {
         })
       : t("admin.dash.ordersHintMonth", { n: ordersThisMonth });
   const maintenanceDue = await getMaintenanceDue();
-  const [lowStock, topSellers] = await Promise.all([
+  const [lowStock, topSellers, salesSeries] = await Promise.all([
     getLowStockProducts(5, 6),
     getTopSellers(5),
+    getSalesSeries(),
   ]);
 
   const stats = [
@@ -172,93 +172,60 @@ export default async function AdminDashboard() {
         </div>
       </div>
 
-      <div className="mt-6 grid gap-6 xl:grid-cols-[1fr_20rem]">
-        {/* Recent orders */}
-        <div className="rounded-2xl border border-slate-200 bg-white shadow-sm">
-          <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4">
-            <h2 className="font-display font-bold text-ink">{t("admin.dash.recentOrders")}</h2>
-            <Link
-              href="/admin/orders"
-              className="flex items-center gap-1 text-sm font-semibold text-brand-600 hover:text-brand-700"
-            >
-              {t("admin.dash.seeAll")} <ArrowUpRight className="h-4 w-4" />
-            </Link>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
-              <thead>
-                <tr className="text-xs uppercase tracking-wide text-ink-soft">
-                  <th className="px-5 py-3 font-semibold">{t("admin.dash.thOrder")}</th>
-                  <th className="px-5 py-3 font-semibold">{t("admin.dash.thCustomer")}</th>
-                  <th className="px-5 py-3 font-semibold">{t("admin.dash.thTotal")}</th>
-                  <th className="px-5 py-3 font-semibold">{t("admin.dash.thStatus")}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {recent.map((o) => (
-                  <tr
-                    key={o.id}
-                    className="border-t border-slate-100 transition-colors hover:bg-slate-50"
-                  >
-                    <td className="px-5 py-3">
-                      <Link
-                        href={`/admin/orders/${o.id}`}
-                        className="font-semibold text-brand-700 hover:underline"
-                      >
-                        {o.id}
-                      </Link>
-                    </td>
-                    <td className="px-5 py-3">
-                      <p className="font-medium text-ink">{o.customerName}</p>
-                      <p className="text-xs text-ink-soft">{o.city}</p>
-                    </td>
-                    <td className="px-5 py-3 font-semibold text-ink">
-                      {formatMAD(o.total)}
-                    </td>
-                    <td className="px-5 py-3">
-                      <StatusBadge status={o.status} />
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
+      {/* Sales chart — Today / 7 days / 30 days toggle (real data) */}
+      <div className="mt-6">
+        <SalesChart series={salesSeries} />
+      </div>
 
-        {/* Weekly sales (real data) */}
-        <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-          <div className="flex items-center justify-between gap-2">
-            <div className="flex items-center gap-2">
-              <TrendingUp className="h-5 w-5 text-brand-500" />
-              <h2 className="font-display font-bold text-ink">{t("admin.dash.weeklySales")}</h2>
-            </div>
-            <span className="font-display text-sm font-bold text-ink">
-              {formatMAD(weekTotal)}
-            </span>
-          </div>
-          {weekTotal === 0 ? (
-            <p className="py-16 text-center text-sm text-ink-soft">
-              {t("admin.dash.noSales7d")}
-            </p>
-          ) : (
-            <div className="mt-6 flex h-44 items-end justify-between gap-2">
-              {trend7d.map((b, i) => {
-                const pct = maxRev > 0 ? Math.round((b.revenue / maxRev) * 100) : 0;
-                return (
-                  <div key={i} className="flex flex-1 flex-col items-center gap-2">
-                    <div className="flex w-full flex-1 items-end">
-                      <div
-                        className="w-full rounded-t-lg bg-gradient-to-t from-brand-500 to-aqua-400 transition-all"
-                        style={{ height: b.revenue > 0 ? `${Math.max(pct, 4)}%` : "0%" }}
-                        title={formatMAD(b.revenue)}
-                      />
-                    </div>
-                    <span className="text-xs text-ink-soft">{t(`common.dow.${b.dow}`)}</span>
-                  </div>
-                );
-              })}
-            </div>
-          )}
+      {/* Recent orders */}
+      <div className="mt-6 rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4">
+          <h2 className="font-display font-bold text-ink">{t("admin.dash.recentOrders")}</h2>
+          <Link
+            href="/admin/orders"
+            className="flex items-center gap-1 text-sm font-semibold text-brand-600 hover:text-brand-700"
+          >
+            {t("admin.dash.seeAll")} <ArrowUpRight className="h-4 w-4" />
+          </Link>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-sm">
+            <thead>
+              <tr className="text-xs uppercase tracking-wide text-ink-soft">
+                <th className="px-5 py-3 font-semibold">{t("admin.dash.thOrder")}</th>
+                <th className="px-5 py-3 font-semibold">{t("admin.dash.thCustomer")}</th>
+                <th className="px-5 py-3 font-semibold">{t("admin.dash.thTotal")}</th>
+                <th className="px-5 py-3 font-semibold">{t("admin.dash.thStatus")}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {recent.map((o) => (
+                <tr
+                  key={o.id}
+                  className="border-t border-slate-100 transition-colors hover:bg-slate-50"
+                >
+                  <td className="px-5 py-3">
+                    <Link
+                      href={`/admin/orders/${o.id}`}
+                      className="font-semibold text-brand-700 hover:underline"
+                    >
+                      {o.id}
+                    </Link>
+                  </td>
+                  <td className="px-5 py-3">
+                    <p className="font-medium text-ink">{o.customerName}</p>
+                    <p className="text-xs text-ink-soft">{o.city}</p>
+                  </td>
+                  <td className="px-5 py-3 font-semibold text-ink">
+                    {formatMAD(o.total)}
+                  </td>
+                  <td className="px-5 py-3">
+                    <StatusBadge status={o.status} />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
 
