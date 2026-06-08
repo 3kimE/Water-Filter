@@ -41,12 +41,11 @@ export const STATUS_META: Record<
   },
 };
 
+// Only the statuses actually used by the install flow are shown in the UI.
+// (shipped / delivered / returned stay in the type for safety but are never set.)
 export const STATUS_ORDER: OrderStatus[] = [
   "pending",
   "confirmed",
   "installed",
-  "shipped",
-  "delivered",
-  "returned",
   "cancelled",
 ];

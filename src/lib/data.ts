@@ -130,7 +130,7 @@ export async function getOrderById(id: string): Promise<Order | null> {
 
 // "installed" is the field-service done state — it must count as a sale, otherwise
 // completing a job would DECREASE revenue.
-const SALE_STATUSES = ["confirmed", "shipped", "delivered", "installed"];
+const SALE_STATUSES = ["confirmed", "installed"];
 
 export async function getDashboardStats() {
   const now = new Date();

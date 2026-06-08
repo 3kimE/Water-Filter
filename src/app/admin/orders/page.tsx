@@ -13,9 +13,6 @@ const TABS: { key: string; labelKey: string }[] = [
   { key: "pending", labelKey: "admin.ordersPage.tabPending" },
   { key: "confirmed", labelKey: "admin.ordersPage.tabConfirmed" },
   { key: "installed", labelKey: "admin.ordersPage.tabInstalled" },
-  { key: "shipped", labelKey: "admin.ordersPage.tabShipped" },
-  { key: "delivered", labelKey: "admin.ordersPage.tabDelivered" },
-  { key: "returned", labelKey: "admin.ordersPage.tabReturned" },
   { key: "cancelled", labelKey: "admin.ordersPage.tabCancelled" },
 ];
 
